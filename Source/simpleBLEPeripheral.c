@@ -156,6 +156,34 @@ static uint8 simpleBLEPeripheral_TaskID;   // Task ID for internal task/event pr
 
 static gaprole_States_t gapProfileState = GAPROLE_INIT;
 
+
+// GAP - SCAN RSP data (max size = 31 bytes)
+// Test comment
+static uint8 scanRspData[] =
+{
+  // complete name
+  5,   // length of this data
+  GAP_ADTYPE_LOCAL_NAME_COMPLETE,
+  'T',
+  'e',
+  's',
+  't',
+
+  // connection interval range
+  0x05,   // length of this data
+  GAP_ADTYPE_SLAVE_CONN_INTERVAL_RANGE,
+  LO_UINT16( DEFAULT_DESIRED_MIN_CONN_INTERVAL ),   // 100ms
+  HI_UINT16( DEFAULT_DESIRED_MIN_CONN_INTERVAL ),
+  LO_UINT16( DEFAULT_DESIRED_MAX_CONN_INTERVAL ),   // 1s
+  HI_UINT16( DEFAULT_DESIRED_MAX_CONN_INTERVAL ),
+
+  // Tx power level
+  0x02,   // length of this data
+  GAP_ADTYPE_POWER_LEVEL,
+  0       // 0dBm
+};
+
+/*
 // GAP - SCAN RSP data (max size = 31 bytes)
 // Test comment
 static uint8 scanRspData[] =
@@ -195,7 +223,7 @@ static uint8 scanRspData[] =
   0x02,   // length of this data
   GAP_ADTYPE_POWER_LEVEL,
   0       // 0dBm
-};
+};*/
 
 // GAP - Advertisement data (max size = 31 bytes, though this is
 // best kept short to conserve power while advertisting)
