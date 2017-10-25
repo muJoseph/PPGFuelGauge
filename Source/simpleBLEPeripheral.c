@@ -157,6 +157,7 @@ static uint8 simpleBLEPeripheral_TaskID;   // Task ID for internal task/event pr
 static gaprole_States_t gapProfileState = GAPROLE_INIT;
 
 // GAP - SCAN RSP data (max size = 31 bytes)
+// Test comment
 static uint8 scanRspData[] =
 {
   // complete name
