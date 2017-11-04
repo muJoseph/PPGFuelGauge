@@ -68,21 +68,24 @@
 #include "gattservapp.h"
 #include "devinfoservice.h"
 #include "simpleGATTprofile.h"
+#include "muJoeGenericProfile.h"
 
+/*
 #if defined( CC2540_MINIDK )
-  #include "simplekeys.h"
+  //#include "simplekeys.h"
 #endif
+*/
 
 #include "peripheral.h"
-
 #include "gapbondmgr.h"
-
 #include "simpleBLEPeripheral.h"
 
+/*
 #if defined FEATURE_OAD
-  #include "oad.h"
-  #include "oad_target.h"
+  //#include "oad.h"
+  //#include "oad_target.h"
 #endif
+*/
 
 /*********************************************************************
  * MACROS
@@ -161,13 +164,21 @@ static gaprole_States_t gapProfileState = GAPROLE_INIT;
 // Test comment
 static uint8 scanRspData[] =
 {
-  // complete name
-  5,   // length of this data
+        // complete name
+  13,   // length of this data
   GAP_ADTYPE_LOCAL_NAME_COMPLETE,
-  'T',
+  'P',
+  'P',
+  'G',
+  'F',
+  'u',
   'e',
-  's',
-  't',
+  'l',
+  'G',
+  'a',
+  'u',
+  'g',
+  'e',
 
   // connection interval range
   0x05,   // length of this data
@@ -246,7 +257,8 @@ static uint8 advertData[] =
 };
 
 // GAP GATT Attributes
-static uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "Simple BLE Peripheral";
+//static uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "Simple BLE Peripheral";
+static uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "PPGFuelGauge";
 
 /*********************************************************************
  * LOCAL FUNCTIONS
@@ -317,13 +329,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   
   // Setup the GAP Peripheral Role Profile
   {
-    #if defined( CC2540_MINIDK )
-      // For the CC2540DK-MINI keyfob, device doesn't start advertising until button is pressed
-      uint8 initial_advertising_enable = FALSE;
-    #else
-      // For other hardware platforms, device starts advertising upon initialization
-      uint8 initial_advertising_enable = TRUE;
-    #endif
+    // For other hardware platforms, device starts advertising upon initialization
+    uint8 initial_advertising_enable = TRUE;
 
     // By setting this to zero, the device will go into the waiting state after
     // being discoverable for 30.72 second, and will not being advertising again
