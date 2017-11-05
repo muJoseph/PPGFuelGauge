@@ -38,7 +38,7 @@ ShowSource=1
 [Simulator]
 Freq=50000000
 [DebugChecksum]
-Checksum=1555028525
+Checksum=281227513
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -51,8 +51,9 @@ Category=_ 0
 LoggingEnabled=_ 0
 LogFile=_ ""
 [Breakpoints]
-Bp0=_ "STD_LOG" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.603.5" 1 0 0 0 "" 0 "" 0
-Count=1
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.373.3" 0 0 0 0 "" 0 ""
+Bp1=_ "STD_LOG" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.599.6" 1 0 0 0 "" 0 "Response noti sent" 0
+Count=2
 [ChipconEmu]
 Stop timers on halt=0
 Leave target running=1

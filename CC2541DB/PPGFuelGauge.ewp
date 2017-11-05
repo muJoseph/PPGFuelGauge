@@ -305,6 +305,7 @@
           <state>HAL_KEY=FALSE</state>
           <state>xCC2540_MINIDK</state>
           <state>MUJOE_GEN_PROFILE</state>
+          <state>ASSET_TAG_BLE</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -6845,9 +6846,6 @@
   <group>
     <name>APP</name>
     <file>
-      <name>$PROJ_DIR$\..\Source\mujoeGenericProfile.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\..\Source\OSAL_SimpleBLEPeripheral.c</name>
     </file>
     <file>
@@ -7030,6 +7028,30 @@
     <file>
       <name>$PROJ_DIR$\..\..\Libraries\Common\bin\CC254x_BLE_HCI_TL_None.lib</name>
     </file>
+  </group>
+  <group>
+    <name>MUJOE</name>
+    <group>
+      <name>BLE PROFILES</name>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeGenericProfile.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeGenericProfileMgr.c</name>
+      </file>
+    </group>
+    <group>
+      <name>CC254X DRIVERS</name>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeGPIO.c</name>
+      </file>
+    </group>
+    <group>
+      <name>COMMON</name>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeBoardConfig.c</name>
+      </file>
+    </group>
   </group>
   <group>
     <name>NPI</name>

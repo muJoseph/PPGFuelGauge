@@ -10,6 +10,16 @@
 // INCLUDE
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <string.h>
+
+#include "bcomdef.h"
+#include "OSAL.h"
+#include "linkdb.h"
+#include "att.h"
+#include "gatt.h"
+#include "gatt_uuid.h"
+#include "gattservapp.h"
+#include "gapbondmgr.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINE
@@ -70,16 +80,6 @@ typedef struct muJoeGenService_Char_def
   
 }muJoeGenService_Char_t;
 
-/*
-// muJoe Generic Service Characteristic Table
-typedef struct muJoeGenService_CharTbl_def
-{
-   muJoeGenService_Char_t       *muJoeGenService_charTbl;
-   uint8                        size;
-   
-} muJoeGenService_CharTbl_t;
-*/
-
 // muJoe Generic Service 
 typedef struct muJoeGenService_def
 {
@@ -131,17 +131,11 @@ extern bStatus_t muJoeGenProfile_SetParameter( uint8 param, uint8 len, void *val
  *          uint16 pointer).
  */
 extern bStatus_t muJoeGenProfile_GetParameter( uint8 param, void *value );
-  
-/*********************************************************************
- * @fn          muJoeGenProfile_ResponseNotify
- *
- * @brief       Send a Response Characteristic notification
- *
- * @param       connHandle - connection handle
- * @param       pNoti - pointer to notification structure
- *
- * @return      Success or Failure
- */
-//extern bStatus_t muJoeGenProfile_ResponseNotify( uint16 connHandle, attHandleValueNoti_t *pNoti );
 
+extern bStatus_t muJoeGenProfile_readCommand( uint16 *pCommandValue );
+extern bStatus_t muJoeGenProfile_writeCommand( uint16 commandValue );
+extern bStatus_t muJoeGenProfile_writeResponse( uint16 responseValue );
+extern bStatus_t muJoeGenProfile_writeMailbox( uint8 *pMailboxBuff, uint8 buffSize );
+extern bStatus_t muJoeGenProfile_readMailbox( uint8 *pMailboxBuff, uint8 buffSize );
+  
 #endif

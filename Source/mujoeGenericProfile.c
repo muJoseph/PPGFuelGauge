@@ -8,16 +8,6 @@
 // INCLUDE
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <string.h>
-
-#include "bcomdef.h"
-#include "OSAL.h"
-#include "linkdb.h"
-#include "att.h"
-#include "gatt.h"
-#include "gatt_uuid.h"
-#include "gattservapp.h"
-#include "gapbondmgr.h"
 
 #include "muJoeGenericProfile.h"
 
@@ -105,8 +95,7 @@ static CONST gattAttrType_t muJoeGenProfileService = { ATT_BT_UUID_SIZE, mujoeGe
 static uint8  muJoeGenProfileCmdProps = GATT_PROP_READ | GATT_PROP_WRITE;
 
 // muJoe Generic Profile Response Characteristic Properties
-//static uint8  muJoeGenProfileRspProps = GATT_PROP_READ | GATT_PROP_NOTIFY;      // DEFAULT, seems unstable
-static uint8  muJoeGenProfileRspProps = GATT_PROP_NOTIFY;                       // TEST
+static uint8  muJoeGenProfileRspProps = GATT_PROP_NOTIFY;                      
 
 // muJoe Generic Profile Mailbox Characteristic Properties
 static uint8  muJoeGenProfileMboxProps = GATT_PROP_READ | GATT_PROP_WRITE;
@@ -205,8 +194,7 @@ static gattAttribute_t muJoeGenProfileAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
   // Response Characteristic Value
   { 
     { ATT_BT_UUID_SIZE, mujoeGenericProfileRspUUID },
-    //GATT_PROP_READ | GATT_PROP_NOTIFY,  // DEFAULT,  seems unstable
-    0,//GATT_PROP_NOTIFY,     // TEST
+    0,// GATT_PROP_NOTIFY       // NOTE: Should be zero, do NOT match muJoeGenProfileRspProps. Will need investigate further.
     0, 
     muJoeGenProfileRsp 
   },
@@ -673,40 +661,53 @@ bStatus_t muJoeGenProfile_RegisterAppCBs( muJoeGenProfileCBs_t *appCallbacks )
     return ( bleAlreadyInRequestedMode );
   }
 } // muJoeGenProfile_RegisterAppCBs
-                                             
-/*********************************************************************
- * @fn          muJoeGenProfile_ResponseNotify
- *
- * @brief       Send a Response Characteristic notification
- *
- * @param       connHandle - connection handle
- * @param       pNoti - pointer to notification structure
- *
- * @return      Success or Failure
- */
-/*
-bStatus_t muJoeGenProfile_ResponseNotify( uint16 connHandle, attHandleValueNoti_t *pNoti )
+
+bStatus_t muJoeGenProfile_readCommand( uint16 *pCommandValue )
 {
-  uint16 value = GATTServApp_ReadCharCfg( connHandle, muJoeGenProfileRspConfig );
-
-  // If notifications enabled
-  if ( value & GATT_CLIENT_CFG_NOTIFY )
-  {
-    // Set the handle
-    pNoti->handle = muJoeGenProfileAttrTbl[MUJOEGEN_RSP_VAL_POS].handle;
+  bStatus_t bStatus;
+  uint8 newCmdVal[MUJOEGENERICPROFILE_CMD_LEN];
+  bStatus = muJoeGenProfile_GetParameter( MUJOEGENERICPROFILE_COMMAND, newCmdVal );
   
-    // Send the notification
-    //return GATT_Notification( connHandle, pNoti, FALSE ); //DEFAULT
-    uint8 breakVal = 0;
-    bStatus_t bStatus = GATT_Notification( connHandle, pNoti, FALSE ); //TEST
-    if( bStatus == SUCCESS )
-      breakVal = 100;
-    else
-      breakVal = 200;
-    return bStatus;
-  }
-
-  return bleIncorrectMode;
+  if( bStatus == SUCCESS )
+    *pCommandValue = (( (uint16)newCmdVal[1] )<< 8 ) + newCmdVal[0];
   
-} // muJoeGenProfile_ResponseNotify
-*/
+  return bStatus;
+  
+} // muJoeGenProfile_readCommand
+
+bStatus_t muJoeGenProfile_writeCommand( uint16 commandValue )
+{
+  uint8 newCmdVal[MUJOEGENERICPROFILE_CMD_LEN] = { (uint8)commandValue, (uint8)(commandValue >> 8) };
+  return muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_COMMAND, 
+                                       MUJOEGENERICPROFILE_CMD_LEN, 
+                                       newCmdVal );
+} // muJoeGenProfile_writeCommand
+
+bStatus_t muJoeGenProfile_writeResponse( uint16 responseValue )
+{
+  uint8 newRspVal[MUJOEGENERICPROFILE_RSP_LEN] = { (uint8)responseValue, (uint8)(responseValue >> 8) };
+  return muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_RESPONSE, 
+                                       MUJOEGENERICPROFILE_RSP_LEN, 
+                                       newRspVal );
+} // muJoeGenProfile_writeResponse
+
+bStatus_t muJoeGenProfile_readMailbox( uint8 *pMailboxBuff, uint8 buffSize )
+{
+  if( buffSize >= MUJOEGENERICPROFILE_MBOX_LEN )
+    return muJoeGenProfile_GetParameter( MUJOEGENERICPROFILE_MAILBOX, pMailboxBuff );
+  else
+    return FAILURE;
+  
+} // muJoeGenProfile_readMailbox
+
+bStatus_t muJoeGenProfile_writeMailbox( uint8 *pMailboxBuff, uint8 buffSize )
+{
+  if( buffSize == MUJOEGENERICPROFILE_MBOX_LEN )
+    return muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_MAILBOX, 
+                                         MUJOEGENERICPROFILE_MBOX_LEN, 
+                                         pMailboxBuff );
+  else
+    return FAILURE;
+  
+} // muJoeGenProfile_writeMailbox
+                                             

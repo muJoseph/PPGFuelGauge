@@ -74,7 +74,9 @@
 #include "gapbondmgr.h"
 #include "simpleBLEPeripheral.h"
 
-
+#include "muJoeGenericProfileMgr.h"
+#include "muJoeBoardConfig.h"
+   
 /*********************************************************************
  * MACROS
  */
@@ -139,14 +141,9 @@
  * LOCAL VARIABLES
  */
 
-static uint16 responseValTest = 0;      // DEBUG
-
 // HipScience characteristic notification control identifiers
-static attHandleValueNoti_t             notiResponse;
 static uint8                            simpleBLEPeripheral_TaskID;             // Task ID for internal task/event processing
 static gaprole_States_t                 gapProfileState = GAPROLE_INIT;
-static uint16                           gapConnHandle;                          // GAP connection handle
-
 
 // GAP - SCAN RSP data (max size = 31 bytes)
 // Test comment
@@ -214,7 +211,6 @@ static void peripheralStateNotificationCB( gaprole_States_t newState );
 static void performPeriodicTask( void );
 static void simpleProfileChangeCB( uint8 paramID );
 static void muJoeGenProfileChangeCB( uint8 paramID );
-//static bool performResponseNotify ( void );
 
 /*********************************************************************
  * PROFILE CALLBACKS
@@ -348,7 +344,7 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   
 
 #if defined( MUJOE_GEN_PROFILE )
-  
+
    uint8 initValue[2] = { 0x00, 0x01 };
    muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_COMMAND, MUJOEGENERICPROFILE_CMD_LEN, initValue );
    muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_RESPONSE, MUJOEGENERICPROFILE_RSP_LEN, initValue );
@@ -369,7 +365,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   }
 #endif
 
- // *** Init board here ***
+  bool initBoardstatus = muJoeBoardConfig_initBoard();           // Init board
+  while( !initBoardstatus );                                     // Trap MCU if init failed        
 
 #if defined( MUJOE_GEN_PROFILE )
   // Register callback with muJoeGenericProfile
@@ -444,6 +441,19 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
     return ( events ^ SBP_START_DEVICE_EVT );
   }
 
+  // Command Characteristic Write Handler Event 
+  if( events & MAIN_CMD_WRITE_EVT )
+  {
+     muJoeGenMgr_cmdWriteHandler();
+     return ( events ^ MAIN_CMD_WRITE_EVT );
+  }
+  
+  // Response Characteristic Noti Handler Event 
+  if( events & MAIN_RSP_NOTI_EVT )
+  {
+     return ( events ^ MAIN_RSP_NOTI_EVT );
+  }
+  
   if ( events & SBP_PERIODIC_EVT )
   {
     // Restart timer
@@ -583,34 +593,10 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
  */
 static void performPeriodicTask( void )
 {
-#if defined (MUJOE_GEN_PROFILE)
-  
-  uint8 valueToCopy[MUJOEGENERICPROFILE_CMD_LEN];
-  uint8 stat;
-
-  // Call to retrieve the value of the third characteristic in the profile
-  //stat = SimpleProfile_GetParameter( SIMPLEPROFILE_CHAR3, &valueToCopy);
-  stat = muJoeGenProfile_GetParameter( MUJOEGENERICPROFILE_COMMAND, valueToCopy );
-
-  if( stat == SUCCESS )
-  {
-    /*
-     * Call to set that value of the fourth characteristic in the profile. Note
-     * that if notifications of the fourth characteristic have been enabled by
-     * a GATT client device, then a notification will be sent every time this
-     * function is called.
-     */
-    muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_RESPONSE, MUJOEGENERICPROFILE_RSP_LEN, valueToCopy );
-  }
-  
-  /*responseValTest++;
-  uint8 newResponseVal[2];
-  newResponseVal[0] = (uint8)responseValTest;
-  newResponseVal[1] = (uint8)(responseValTest >> 8);
-  muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_RESPONSE, MUJOEGENERICPROFILE_RSP_LEN, newResponseVal );
-  performResponseNotify();*/
-  
- 
+#if defined ( MUJOE_GEN_PROFILE )
+  uint16 cmdValue;
+  if( muJoeGenProfile_readCommand( &cmdValue ) == SUCCESS )
+     muJoeGenProfile_writeResponse( cmdValue );
 #else
   uint8 valueToCopy;
   uint8 stat;
@@ -630,27 +616,6 @@ static void performPeriodicTask( void )
   }
 #endif
 }
-
-// BEGIN TEST
-/*
-static bool performResponseNotify ( void )
-{
-    if( gapProfileState == GAPROLE_CONNECTED )
-    {
-      uint8 currRspValue[MUJOEGENERICPROFILE_RSP_LEN];
-      muJoeGenProfile_GetParameter( MUJOEGENERICPROFILE_RESPONSE, currRspValue );
-      osal_memcpy ( notiResponse.pValue, currRspValue, MUJOEGENERICPROFILE_RSP_LEN );
-      notiResponse.len = MUJOEGENERICPROFILE_RSP_LEN;
-      //muJoeGenProfile_ResponseNotify( gapConnHandle, &notiResponse );
-      return TRUE;
-    }
-    else
-      return FALSE;
-    
-} // performResponseNotify
-*/
-
-// END TEST
 
 /*********************************************************************
  * @fn      simpleProfileChangeCB
