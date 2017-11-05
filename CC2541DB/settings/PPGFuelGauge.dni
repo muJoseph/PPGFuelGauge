@@ -38,7 +38,7 @@ ShowSource=1
 [Simulator]
 Freq=50000000
 [DebugChecksum]
-Checksum=-1786688152
+Checksum=1555028525
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -51,11 +51,8 @@ Category=_ 0
 LoggingEnabled=_ 0
 LogFile=_ ""
 [Breakpoints]
-Bp0=_ "STD_LOG" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.836.7" 1 0 0 0 "" 0 "performResponseNotify" 0
-Bp1=_ "STD_LOG" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.729.9" 0 0 0 0 "" 0 "GAPROLE_CONNECTED" 0
-Bp2=_ "STD_LOG" "{$PROJ_DIR$\..\Source\mujoeGenericProfile.c}.664.7" 1 0 0 0 "" 0 "NOTI PASS" 0
-Bp3=_ "STD_LOG" "{$PROJ_DIR$\..\Source\mujoeGenericProfile.c}.666.7" 1 0 0 0 "" 0 "NOTI FAIL" 0
-Count=4
+Bp0=_ "STD_LOG" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.603.5" 1 0 0 0 "" 0 "" 0
+Count=1
 [ChipconEmu]
 Stop timers on halt=0
 Leave target running=1

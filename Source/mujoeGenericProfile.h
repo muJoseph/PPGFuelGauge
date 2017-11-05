@@ -45,6 +45,8 @@
 // Length of Device Info Characteristic in bytes
 #define MUJOEGENERICPROFILE_DEVINFO_LEN           4
 
+// Number of Characteristics within the muJoe Generic Service
+#define MUJOEGENERICPROFILE_NUM_CHAR              4
 
 ////////////////////////////////////////////////////////////////////////////////
 // Profile Callbacks
@@ -59,6 +61,32 @@ typedef struct
 
 } muJoeGenProfileCBs_t;
 
+// muJoe Generic Service  Characteristic 
+typedef struct muJoeGenService_Char_def
+{
+   uint8                paramId;
+   uint16               uuid;
+   uint8                size;
+  
+}muJoeGenService_Char_t;
+
+/*
+// muJoe Generic Service Characteristic Table
+typedef struct muJoeGenService_CharTbl_def
+{
+   muJoeGenService_Char_t       *muJoeGenService_charTbl;
+   uint8                        size;
+   
+} muJoeGenService_CharTbl_t;
+*/
+
+// muJoe Generic Service 
+typedef struct muJoeGenService_def
+{
+  muJoeGenService_Char_t       *muJoeGenService_charTbl;        // Characteristic Table
+  uint8                         numChars;                       // Number of characteristics
+}muJoeGenService_t;
+
 ////////////////////////////////////////////////////////////////////////////////
 // PROTOS
 ////////////////////////////////////////////////////////////////////////////////
@@ -72,7 +100,6 @@ typedef struct
  */
 
 extern bStatus_t MuJoeGenericProfile_AddService( void );
-
 
 /*
  * muJoeGenProfile_RegisterAppCBs - Registers the application callback function.
@@ -115,6 +142,6 @@ extern bStatus_t muJoeGenProfile_GetParameter( uint8 param, void *value );
  *
  * @return      Success or Failure
  */
-extern bStatus_t muJoeGenProfile_ResponseNotify( uint16 connHandle, attHandleValueNoti_t *pNoti );
+//extern bStatus_t muJoeGenProfile_ResponseNotify( uint16 connHandle, attHandleValueNoti_t *pNoti );
 
 #endif

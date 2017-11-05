@@ -70,22 +70,10 @@
 #include "simpleGATTprofile.h"
 #include "muJoeGenericProfile.h"
 
-/*
-#if defined( CC2540_MINIDK )
-  //#include "simplekeys.h"
-#endif
-*/
-
 #include "peripheral.h"
 #include "gapbondmgr.h"
 #include "simpleBLEPeripheral.h"
 
-/*
-#if defined FEATURE_OAD
-  //#include "oad.h"
-  //#include "oad_target.h"
-#endif
-*/
 
 /*********************************************************************
  * MACROS
@@ -151,6 +139,8 @@
  * LOCAL VARIABLES
  */
 
+static uint16 responseValTest = 0;      // DEBUG
+
 // HipScience characteristic notification control identifiers
 static attHandleValueNoti_t             notiResponse;
 static uint8                            simpleBLEPeripheral_TaskID;             // Task ID for internal task/event processing
@@ -192,48 +182,6 @@ static uint8 scanRspData[] =
   0       // 0dBm
 };
 
-/*
-// GAP - SCAN RSP data (max size = 31 bytes)
-// Test comment
-static uint8 scanRspData[] =
-{
-  // complete name
-  0x14,   // length of this data
-  GAP_ADTYPE_LOCAL_NAME_COMPLETE,
-  0x53,   // 'S'
-  0x69,   // 'i'
-  0x6d,   // 'm'
-  0x70,   // 'p'
-  0x6c,   // 'l'
-  0x65,   // 'e'
-  0x42,   // 'B'
-  0x4c,   // 'L'
-  0x45,   // 'E'
-  0x50,   // 'P'
-  0x65,   // 'e'
-  0x72,   // 'r'
-  0x69,   // 'i'
-  0x70,   // 'p'
-  0x68,   // 'h'
-  0x65,   // 'e'
-  0x72,   // 'r'
-  0x61,   // 'a'
-  0x6c,   // 'l'
-
-  // connection interval range
-  0x05,   // length of this data
-  GAP_ADTYPE_SLAVE_CONN_INTERVAL_RANGE,
-  LO_UINT16( DEFAULT_DESIRED_MIN_CONN_INTERVAL ),   // 100ms
-  HI_UINT16( DEFAULT_DESIRED_MIN_CONN_INTERVAL ),
-  LO_UINT16( DEFAULT_DESIRED_MAX_CONN_INTERVAL ),   // 1s
-  HI_UINT16( DEFAULT_DESIRED_MAX_CONN_INTERVAL ),
-
-  // Tx power level
-  0x02,   // length of this data
-  GAP_ADTYPE_POWER_LEVEL,
-  0       // 0dBm
-};*/
-
 // GAP - Advertisement data (max size = 31 bytes, though this is
 // best kept short to conserve power while advertisting)
 static uint8 advertData[] =
@@ -255,7 +203,6 @@ static uint8 advertData[] =
 };
 
 // GAP GATT Attributes
-//static uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "Simple BLE Peripheral";
 static uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "PPGFuelGauge";
 
 /*********************************************************************
@@ -267,17 +214,7 @@ static void peripheralStateNotificationCB( gaprole_States_t newState );
 static void performPeriodicTask( void );
 static void simpleProfileChangeCB( uint8 paramID );
 static void muJoeGenProfileChangeCB( uint8 paramID );
-static bool performResponseNotify ( void );
-
-#if defined( CC2540_MINIDK )
-static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys );
-#endif
-
-#if (defined HAL_LCD) && (HAL_LCD == TRUE)
-static char *bdAddr2Str ( uint8 *pAddr );
-#endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
-
-
+//static bool performResponseNotify ( void );
 
 /*********************************************************************
  * PROFILE CALLBACKS
@@ -403,18 +340,19 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   DevInfo_AddService();                           // Device Information Service
   
 #if defined( MUJOE_GEN_PROFILE ) 
-  uint8 status = MuJoeGenericProfile_AddService();
-  while( status != SUCCESS );   // Trap if adding service was unsuccessful
+  uint8 status = MuJoeGenericProfile_AddService(); // muJoe Generic GATT Profile
+  while( status != SUCCESS );                      // Trap if adding service was unsuccessful
 #else
-  SimpleProfile_AddService( GATT_ALL_SERVICES );  // DEFAULT, Simple GATT Profile
+  SimpleProfile_AddService( GATT_ALL_SERVICES );  // Simple GATT Profile
 #endif
   
-#if defined FEATURE_OAD
-  VOID OADTarget_AddService();                    // OAD Profile
-#endif
 
 #if defined( MUJOE_GEN_PROFILE )
   
+   uint8 initValue[2] = { 0x00, 0x01 };
+   muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_COMMAND, MUJOEGENERICPROFILE_CMD_LEN, initValue );
+   muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_RESPONSE, MUJOEGENERICPROFILE_RSP_LEN, initValue );
+   
 #else
   // Setup the SimpleProfile Characteristic Values
   {
@@ -431,52 +369,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   }
 #endif
 
+ // *** Init board here ***
 
-#if defined( CC2540_MINIDK )
-
-  SK_AddService( GATT_ALL_SERVICES ); // Simple Keys Profile
-
-  // Register for all key events - This app will handle all key events
-  RegisterForKeys( simpleBLEPeripheral_TaskID );
-
-  // makes sure LEDs are off
-  HalLedSet( (HAL_LED_1 | HAL_LED_2), HAL_LED_MODE_OFF );
-
-  // For keyfob board set GPIO pins into a power-optimized state
-  // Note that there is still some leakage current from the buzzer,
-  // accelerometer, LEDs, and buttons on the PCB.
-
-  P0SEL = 0; // Configure Port 0 as GPIO
-  P1SEL = 0; // Configure Port 1 as GPIO
-  P2SEL = 0; // Configure Port 2 as GPIO
-
-  P0DIR = 0xFC; // Port 0 pins P0.0 and P0.1 as input (buttons),
-                // all others (P0.2-P0.7) as output
-  P1DIR = 0xFF; // All port 1 pins (P1.0-P1.7) as output
-  P2DIR = 0x1F; // All port 1 pins (P2.0-P2.4) as output
-
-  P0 = 0x03; // All pins on port 0 to low except for P0.0 and P0.1 (buttons)
-  P1 = 0;   // All pins on port 1 to low
-  P2 = 0;   // All pins on port 2 to low
-
-#endif // #if defined( CC2540_MINIDK )
-
-/*
-#if (defined HAL_LCD) && (HAL_LCD == TRUE)
-
-#if defined FEATURE_OAD
-  #if defined (HAL_IMAGE_A)
-    HalLcdWriteStringValue( "BLE Peri-A", OAD_VER_NUM( _imgHdr.ver ), 16, HAL_LCD_LINE_1 );
-  #else
-    HalLcdWriteStringValue( "BLE Peri-B", OAD_VER_NUM( _imgHdr.ver ), 16, HAL_LCD_LINE_1 );
-  #endif // HAL_IMAGE_A
-#else
-  HalLcdWriteString( "BLE Peripheral", HAL_LCD_LINE_1 );
-#endif // FEATURE_OAD
-
-#endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
-*/
-  
 #if defined( MUJOE_GEN_PROFILE )
   // Register callback with muJoeGenericProfile
   VOID muJoeGenProfile_RegisterAppCBs( &simpleBLEPeripheral_muJoeGenProfileCBs );
@@ -599,71 +493,6 @@ static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg )
   }
 }
 
-#if defined( CC2540_MINIDK )
-/*********************************************************************
- * @fn      simpleBLEPeripheral_HandleKeys
- *
- * @brief   Handles all key events for this device.
- *
- * @param   shift - true if in shift/alt.
- * @param   keys - bit field for key events. Valid entries:
- *                 HAL_KEY_SW_2
- *                 HAL_KEY_SW_1
- *
- * @return  none
- */
-static void simpleBLEPeripheral_HandleKeys( uint8 shift, uint8 keys )
-{
-  uint8 SK_Keys = 0;
-
-  VOID shift;  // Intentionally unreferenced parameter
-
-  if ( keys & HAL_KEY_SW_1 )
-  {
-    SK_Keys |= SK_KEY_LEFT;
-  }
-
-  if ( keys & HAL_KEY_SW_2 )
-  {
-
-    SK_Keys |= SK_KEY_RIGHT;
-
-    // if device is not in a connection, pressing the right key should toggle
-    // advertising on and off
-    // Note:  If PLUS_BROADCASTER is define this condition is ignored and
-    //        Device may advertise during connections as well. 
-#ifndef PLUS_BROADCASTER  
-    if( gapProfileState != GAPROLE_CONNECTED )
-    {
-#endif // PLUS_BROADCASTER
-      uint8 current_adv_enabled_status;
-      uint8 new_adv_enabled_status;
-
-      //Find the current GAP advertisement status
-      GAPRole_GetParameter( GAPROLE_ADVERT_ENABLED, &current_adv_enabled_status );
-
-      if( current_adv_enabled_status == FALSE )
-      {
-        new_adv_enabled_status = TRUE;
-      }
-      else
-      {
-        new_adv_enabled_status = FALSE;
-      }
-
-      //change the GAP advertisement status to opposite of current status
-      GAPRole_SetParameter( GAPROLE_ADVERT_ENABLED, sizeof( uint8 ), &new_adv_enabled_status );
-#ifndef PLUS_BROADCASTER
-    }
-#endif // PLUS_BROADCASTER
-  }
-
-  // Set the value of the keys state to the Simple Keys Profile;
-  // This will send out a notification of the keys state if enabled
-  SK_SetParameter( SK_KEY_ATTR, sizeof ( uint8 ), &SK_Keys );
-}
-#endif // #if defined( CC2540_MINIDK )
-
 /*********************************************************************
  * @fn      simpleBLEPeripheral_ProcessGATTMsg
  *
@@ -687,11 +516,6 @@ static void simpleBLEPeripheral_ProcessGATTMsg( gattMsgEvent_t *pMsg )
  */
 static void peripheralStateNotificationCB( gaprole_States_t newState )
 {
-#ifdef PLUS_BROADCASTER
-  static uint8 first_conn_flag = 0;
-#endif // PLUS_BROADCASTER
-  
-  
   switch ( newState )
   {
     case GAPROLE_STARTED:
@@ -718,44 +542,21 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
         DevInfo_SetParameter(DEVINFO_SYSTEM_ID, DEVINFO_SYSTEM_ID_LEN, systemId);
       }
       break;
-
     case GAPROLE_ADVERTISING:
-      {
-      }
       break;       
-    case GAPROLE_CONNECTED:
-      {        
-        // Get connection handle
-        GAPRole_GetParameter(GAPROLE_CONNHANDLE, &gapConnHandle);
-      }
+    case GAPROLE_CONNECTED:  
+        //GAPRole_GetParameter(GAPROLE_CONNHANDLE, &gapConnHandle);               // Get connection handle
       break;
-
     case GAPROLE_CONNECTED_ADV:
-      {
-      }
       break;      
     case GAPROLE_WAITING:
-      {
-         
-      }
       break;
-
     case GAPROLE_WAITING_AFTER_TIMEOUT:
-      {
-          
-      }
       break;
-
     case GAPROLE_ERROR:
-      {
-      }
       break;
-
     default:
-      {
-      }
       break;
-
   }
 
   gapProfileState = newState;
@@ -764,8 +565,6 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
   VOID gapProfileState;     // added to prevent compiler warning with
                             // "CC2540 Slave" configurations
 #endif
-
-
 }
 
 /*********************************************************************
@@ -786,22 +585,31 @@ static void performPeriodicTask( void )
 {
 #if defined (MUJOE_GEN_PROFILE)
   
-  /*
   uint8 valueToCopy[MUJOEGENERICPROFILE_CMD_LEN];
   uint8 stat;
-  
-  stat = muJoeGenProfile_GetParameter( MUJOEGENERICPROFILE_COMMAND, valueToCopy);
-  
+
+  // Call to retrieve the value of the third characteristic in the profile
+  //stat = SimpleProfile_GetParameter( SIMPLEPROFILE_CHAR3, &valueToCopy);
+  stat = muJoeGenProfile_GetParameter( MUJOEGENERICPROFILE_COMMAND, valueToCopy );
+
   if( stat == SUCCESS )
   {
-    // Call to set that value of the fourth characteristic in the profile. Note
-    // that if notifications of the fourth characteristic have been enabled by
-    // a GATT client device, then a notification will be sent every time this
-    // function is called.
-    muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_RESPONSE, MUJOEGENERICPROFILE_RSP_LEN, valueToCopy);
-  }*/
+    /*
+     * Call to set that value of the fourth characteristic in the profile. Note
+     * that if notifications of the fourth characteristic have been enabled by
+     * a GATT client device, then a notification will be sent every time this
+     * function is called.
+     */
+    muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_RESPONSE, MUJOEGENERICPROFILE_RSP_LEN, valueToCopy );
+  }
   
-  performResponseNotify();
+  /*responseValTest++;
+  uint8 newResponseVal[2];
+  newResponseVal[0] = (uint8)responseValTest;
+  newResponseVal[1] = (uint8)(responseValTest >> 8);
+  muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_RESPONSE, MUJOEGENERICPROFILE_RSP_LEN, newResponseVal );
+  performResponseNotify();*/
+  
  
 #else
   uint8 valueToCopy;
@@ -824,6 +632,7 @@ static void performPeriodicTask( void )
 }
 
 // BEGIN TEST
+/*
 static bool performResponseNotify ( void )
 {
     if( gapProfileState == GAPROLE_CONNECTED )
@@ -832,13 +641,14 @@ static bool performResponseNotify ( void )
       muJoeGenProfile_GetParameter( MUJOEGENERICPROFILE_RESPONSE, currRspValue );
       osal_memcpy ( notiResponse.pValue, currRspValue, MUJOEGENERICPROFILE_RSP_LEN );
       notiResponse.len = MUJOEGENERICPROFILE_RSP_LEN;
-      muJoeGenProfile_ResponseNotify( gapConnHandle, &notiResponse );
+      //muJoeGenProfile_ResponseNotify( gapConnHandle, &notiResponse );
       return TRUE;
     }
     else
       return FALSE;
     
 } // performResponseNotify
+*/
 
 // END TEST
 
@@ -859,22 +669,11 @@ static void simpleProfileChangeCB( uint8 paramID )
   {
     case SIMPLEPROFILE_CHAR1:
       SimpleProfile_GetParameter( SIMPLEPROFILE_CHAR1, &newValue );
-
-      #if (defined HAL_LCD) && (HAL_LCD == TRUE)
-        HalLcdWriteStringValue( "Char 1:", (uint16)(newValue), 10,  HAL_LCD_LINE_3 );
-      #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
-
       break;
 
     case SIMPLEPROFILE_CHAR3:
       SimpleProfile_GetParameter( SIMPLEPROFILE_CHAR3, &newValue );
-
-      #if (defined HAL_LCD) && (HAL_LCD == TRUE)
-        HalLcdWriteStringValue( "Char 3:", (uint16)(newValue), 10,  HAL_LCD_LINE_3 );
-      #endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
-
       break;
-
     default:
       // should not reach here!
       break;
@@ -915,40 +714,6 @@ static void muJoeGenProfileChangeCB( uint8 paramID )
       break;
   }
 } // muJoeGenProfileChangeCB
-
-#if (defined HAL_LCD) && (HAL_LCD == TRUE)
-/*********************************************************************
- * @fn      bdAddr2Str
- *
- * @brief   Convert Bluetooth address to string. Only needed when
- *          LCD display is used.
- *
- * @return  none
- */
-char *bdAddr2Str( uint8 *pAddr )
-{
-  uint8       i;
-  char        hex[] = "0123456789ABCDEF";
-  static char str[B_ADDR_STR_LEN];
-  char        *pStr = str;
-
-  *pStr++ = '0';
-  *pStr++ = 'x';
-
-  // Start from end of addr
-  pAddr += B_ADDR_LEN;
-
-  for ( i = B_ADDR_LEN; i > 0; i-- )
-  {
-    *pStr++ = hex[*--pAddr >> 4];
-    *pStr++ = hex[*pAddr & 0x0F];
-  }
-
-  *pStr = 0;
-
-  return str;
-}
-#endif // (defined HAL_LCD) && (HAL_LCD == TRUE)
 
 /*********************************************************************
 *********************************************************************/
