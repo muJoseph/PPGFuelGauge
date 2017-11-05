@@ -17,7 +17,7 @@
 
 // Profile Parameter IDs
 #define MUJOEGENERICPROFILE_COMMAND             0  // RW uint8 - Profile Command Characteristic value 
-#define MUJOEGENERICPROFILE_RESPONSE            1  // R uint8 - Profile Response Characteristic value 
+#define MUJOEGENERICPROFILE_RESPONSE            1  // R/Notify uint8 - Profile Response Characteristic value 
 #define MUJOEGENERICPROFILE_MAILBOX             2  // RW uint8 - Profile Mailbox Characteristic value       
 #define MUJOEGENERICPROFILE_DEVICEINFO          3  // R uint8 - Profile Device Info Characteristic value
 
@@ -82,5 +82,39 @@ extern bStatus_t MuJoeGenericProfile_AddService( void );
  */
 extern bStatus_t muJoeGenProfile_RegisterAppCBs( muJoeGenProfileCBs_t *appCallbacks );
 
+/*
+ * muJoeGenProfile_SetParameter - Set a muJoe Generic GATT Profile parameter.
+ *
+ *    param - Profile parameter ID
+ *    len - length of data to right
+ *    value - pointer to data to write.  This is dependent on
+ *          the parameter ID and WILL be cast to the appropriate 
+ *          data type (example: data type of uint16 will be cast to 
+ *          uint16 pointer).
+ */
+extern bStatus_t muJoeGenProfile_SetParameter( uint8 param, uint8 len, void *value );
+
+/*
+ * muJoeGenProfile_GetParameter - Get a muJoe Generic GATT Profile parameter.
+ *
+ *    param - Profile parameter ID
+ *    value - pointer to data to write.  This is dependent on
+ *          the parameter ID and WILL be cast to the appropriate 
+ *          data type (example: data type of uint16 will be cast to 
+ *          uint16 pointer).
+ */
+extern bStatus_t muJoeGenProfile_GetParameter( uint8 param, void *value );
+  
+/*********************************************************************
+ * @fn          muJoeGenProfile_ResponseNotify
+ *
+ * @brief       Send a Response Characteristic notification
+ *
+ * @param       connHandle - connection handle
+ * @param       pNoti - pointer to notification structure
+ *
+ * @return      Success or Failure
+ */
+extern bStatus_t muJoeGenProfile_ResponseNotify( uint16 connHandle, attHandleValueNoti_t *pNoti );
 
 #endif

@@ -102,6 +102,7 @@ C:\Texas Instruments\BLE-CC254x-1.4.2.2\Projects\ble\Profiles\Keys
 -DHAL_LED=FALSE
 -DHAL_KEY=FALSE
 -DxCC2540_MINIDK=1
+-DMUJOE_GEN_PROFILE=1
 -D__CHAR_BITS__=8
 -D__CHAR_MAX__=0xff
 -D__CHAR_MIN__=0

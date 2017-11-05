@@ -25,7 +25,8 @@
 // DEFINES
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MUJOEGEN_NUM_ATTR_SUPPORTED        13
+#define MUJOEGEN_NUM_ATTR_SUPPORTED        14
+#define MUJOEGEN_RSP_VAL_POS               5
 
 ////////////////////////////////////////////////////////////////////////////////
 // GLOBAL VAR
@@ -42,6 +43,25 @@ CONST uint8 mujoeGenericProfileCmdUUID[ATT_BT_UUID_SIZE] =
 { 
   LO_UINT16(MUJOEGENERICPROFILE_COMMAND_UUID), HI_UINT16(MUJOEGENERICPROFILE_COMMAND_UUID)
 };
+
+// Response Characteristic UUID: 0xFFF2
+CONST uint8 mujoeGenericProfileRspUUID[ATT_BT_UUID_SIZE] =
+{ 
+  LO_UINT16(MUJOEGENERICPROFILE_RESPONSE_UUID), HI_UINT16(MUJOEGENERICPROFILE_RESPONSE_UUID)
+};
+
+// Mailbox Characteristic UUID: 0xFFF3
+CONST uint8 mujoeGenericProfileMboxUUID[ATT_BT_UUID_SIZE] =
+{ 
+  LO_UINT16(MUJOEGENERICPROFILE_MAILBOX_UUID), HI_UINT16(MUJOEGENERICPROFILE_MAILBOX_UUID)
+};
+
+// Mailbox Characteristic UUID: 0xFFF4
+CONST uint8 mujoeGenericProfileDevinfoUUID[ATT_BT_UUID_SIZE] =
+{ 
+  LO_UINT16(MUJOEGENERICPROFILE_DEVICEINFO_UUID), HI_UINT16(MUJOEGENERICPROFILE_DEVICEINFO_UUID)
+};
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL VAR
@@ -102,8 +122,9 @@ static uint8 muJoeGenProfileDevinfoUserDesp[12] = "Device Info";
  * Profile Attributes - Table
  */
 
-static gattAttribute_t muJoeGenProifleAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] = 
+static gattAttribute_t muJoeGenProfileAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] = 
 {
+  // Index 0
   // muJoe Generic Profile Service
   { 
     { ATT_BT_UUID_SIZE, primaryServiceUUID }, /* type */
@@ -114,6 +135,7 @@ static gattAttribute_t muJoeGenProifleAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
 
   // COMMAND CHARACTERISTIC ////////////////////////////////////////////////////
   
+  // Index 1
   // Command Characteristic Declaration
   { 
     { ATT_BT_UUID_SIZE, characterUUID },
@@ -122,6 +144,7 @@ static gattAttribute_t muJoeGenProifleAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
     &muJoeGenProfileCmdProps 
   },
 
+  // Index 2
   // Command Characteristic Value
   { 
     { ATT_BT_UUID_SIZE, mujoeGenericProfileCmdUUID },
@@ -130,6 +153,7 @@ static gattAttribute_t muJoeGenProifleAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
     muJoeGenProfileCmd 
   },
 
+  // Index 3
   // Command Characteristic User Description
   { 
     { ATT_BT_UUID_SIZE, charUserDescUUID },
@@ -140,6 +164,7 @@ static gattAttribute_t muJoeGenProifleAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
   
   // RESPONSE CHARACTERISTIC ///////////////////////////////////////////////////
   
+  // Index 4
   // Response Characteristic Declaration
   { 
     { ATT_BT_UUID_SIZE, characterUUID },
@@ -148,14 +173,25 @@ static gattAttribute_t muJoeGenProifleAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
     &muJoeGenProfileRspProps 
   },
 
+  // Index 5
   // Response Characteristic Value
   { 
-    { ATT_BT_UUID_SIZE, mujoeGenericProfileCmdUUID },
+    { ATT_BT_UUID_SIZE, mujoeGenericProfileRspUUID },
     GATT_PROP_READ | GATT_PROP_NOTIFY, 
     0, 
     muJoeGenProfileRsp 
   },
+  
+  // Index 6
+  // Response Characteristic Configuration
+  { 
+    { ATT_BT_UUID_SIZE, clientCharCfgUUID },
+    GATT_PERMIT_READ | GATT_PERMIT_WRITE, 
+    0, 
+    (uint8 *)&muJoeGenProfileRspConfig 
+  },
 
+  // Index 7
   // Response Characteristic User Description
   { 
     { ATT_BT_UUID_SIZE, charUserDescUUID },
@@ -166,6 +202,7 @@ static gattAttribute_t muJoeGenProifleAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
   
   // MAILBOX CHARACTERISTIC ////////////////////////////////////////////////////
   
+  // Index 8
   // Mailbox Characteristic Declaration
   { 
     { ATT_BT_UUID_SIZE, characterUUID },
@@ -174,14 +211,16 @@ static gattAttribute_t muJoeGenProifleAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
     &muJoeGenProfileMboxProps 
   },
 
+  // Index 9
   // Mailbox Characteristic Value
   { 
-    { ATT_BT_UUID_SIZE, mujoeGenericProfileCmdUUID },
+    { ATT_BT_UUID_SIZE, mujoeGenericProfileMboxUUID },
     GATT_PROP_READ | GATT_PROP_WRITE,
     0, 
     muJoeGenProfileMbox 
   },
 
+  // Index 10
   // Mailbox Characteristic User Description
   { 
     { ATT_BT_UUID_SIZE, charUserDescUUID },
@@ -192,6 +231,7 @@ static gattAttribute_t muJoeGenProifleAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
   
   // DEVICE INFO CHARACTERISTIC ////////////////////////////////////////////////
   
+  // Index 11
   // Device Info Characteristic Declaration
   { 
     { ATT_BT_UUID_SIZE, characterUUID },
@@ -200,14 +240,16 @@ static gattAttribute_t muJoeGenProifleAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
     &muJoeGenProfileDevinfoProps 
   },
 
+  // Index 12
   // Device Info Characteristic Value
   { 
-    { ATT_BT_UUID_SIZE, mujoeGenericProfileCmdUUID },
+    { ATT_BT_UUID_SIZE, mujoeGenericProfileDevinfoUUID },
     GATT_PROP_READ | GATT_PROP_WRITE,
     0, 
     muJoeGenProfileDevinfo
   },
 
+  // Index 13
   // Device Info Characteristic User Description
   { 
     { ATT_BT_UUID_SIZE, charUserDescUUID },
@@ -272,8 +314,8 @@ bStatus_t MuJoeGenericProfile_AddService( void )
   GATTServApp_InitCharCfg( INVALID_CONNHANDLE, muJoeGenProfileRspConfig );      // GATTServApp_InitCharCfg must be called for all characteristics with notifications enabled
   
   // Register GATT attribute list and CBs with GATT Server App
-  status = GATTServApp_RegisterService( muJoeGenProifleAttrTbl, 
-                                        GATT_NUM_ATTRS( muJoeGenProifleAttrTbl ),
+  status = GATTServApp_RegisterService( muJoeGenProfileAttrTbl, 
+                                        GATT_NUM_ATTRS( muJoeGenProfileAttrTbl ),
                                         GATT_MAX_ENCRYPT_KEY_SIZE,
                                         &muJoeGenProfileCBs );
   return ( status );
@@ -488,26 +530,14 @@ bStatus_t muJoeGenProfile_SetParameter( uint8 param, uint8 len, void *value )
         ret = bleInvalidRange;
       }
       break;
-    /*case MUJOEGENERICPROFILE_RESPONSE:
-      if( len <= MUJOEGENERICPROFILE_RSP_LEN )
-      {
-        VOID memcpy( muJoeGenProfileRsp, value, len );
-      }
-      else
-      {
-        ret = bleInvalidRange;
-      }
-      break;*/
     case MUJOEGENERICPROFILE_RESPONSE:
       if( len <= MUJOEGENERICPROFILE_RSP_LEN )
-      //if ( len == sizeof ( uint8 ) ) 
       {
         VOID memcpy( muJoeGenProfileRsp, value, len );
-        //simpleProfileChar4 = *((uint8*)value);
         
         // See if Notification has been enabled
         GATTServApp_ProcessCharCfg( muJoeGenProfileRspConfig, muJoeGenProfileRsp, FALSE,
-                                    muJoeGenProifleAttrTbl, GATT_NUM_ATTRS( muJoeGenProifleAttrTbl ),
+                                    muJoeGenProfileAttrTbl, GATT_NUM_ATTRS( muJoeGenProfileAttrTbl ),
                                     INVALID_TASK_ID, muJoeGenProfile_ReadAttrCB );
       }
       else
@@ -543,6 +573,45 @@ bStatus_t muJoeGenProfile_SetParameter( uint8 param, uint8 len, void *value )
   return ( ret );
 } // muJoeGenProfile_SetParameter
 
+
+/*********************************************************************
+ * @fn      muJoeGenProfile_GetParameter
+ *
+ * @brief   Get a muJoe Generic Profile parameter.
+ *
+ * @param   param - Profile parameter ID
+ * @param   value - pointer to data to put.  This is dependent on
+ *          the parameter ID and WILL be cast to the appropriate 
+ *          data type (example: data type of uint16 will be cast to 
+ *          uint16 pointer).
+ *
+ * @return  bStatus_t
+ */
+bStatus_t muJoeGenProfile_GetParameter( uint8 param, void *value )
+{
+  bStatus_t ret = SUCCESS;
+  switch ( param )
+  {
+    case MUJOEGENERICPROFILE_COMMAND:
+      VOID memcpy( value, muJoeGenProfileCmd, MUJOEGENERICPROFILE_CMD_LEN );
+      break;
+    case MUJOEGENERICPROFILE_RESPONSE:
+      VOID memcpy( value, muJoeGenProfileRsp, MUJOEGENERICPROFILE_RSP_LEN );
+      break;      
+    case MUJOEGENERICPROFILE_MAILBOX:
+      VOID memcpy( value, muJoeGenProfileMbox, MUJOEGENERICPROFILE_MBOX_LEN );
+      break;  
+    case MUJOEGENERICPROFILE_DEVICEINFO:
+      VOID memcpy( value, muJoeGenProfileDevinfo, MUJOEGENERICPROFILE_DEVINFO_LEN );
+      break;
+    default:
+      ret = INVALIDPARAMETER;
+      break;
+  }
+  
+  return ( ret );
+} // muJoeGenProfile_GetParameter
+
 /*********************************************************************
  * @fn      muJoeGenProfile_RegisterAppCBs
  *
@@ -566,3 +635,38 @@ bStatus_t muJoeGenProfile_RegisterAppCBs( muJoeGenProfileCBs_t *appCallbacks )
     return ( bleAlreadyInRequestedMode );
   }
 } // muJoeGenProfile_RegisterAppCBs
+                                             
+/*********************************************************************
+ * @fn          muJoeGenProfile_ResponseNotify
+ *
+ * @brief       Send a Response Characteristic notification
+ *
+ * @param       connHandle - connection handle
+ * @param       pNoti - pointer to notification structure
+ *
+ * @return      Success or Failure
+ */
+bStatus_t muJoeGenProfile_ResponseNotify( uint16 connHandle, attHandleValueNoti_t *pNoti )
+{
+  uint16 value = GATTServApp_ReadCharCfg( connHandle, muJoeGenProfileRspConfig );
+
+  // If notifications enabled
+  if ( value & GATT_CLIENT_CFG_NOTIFY )
+  {
+    // Set the handle
+    pNoti->handle = muJoeGenProfileAttrTbl[MUJOEGEN_RSP_VAL_POS].handle;
+  
+    // Send the notification
+    //return GATT_Notification( connHandle, pNoti, FALSE ); //DEFAULT
+    uint8 breakVal = 0;
+    bStatus_t bStatus = GATT_Notification( connHandle, pNoti, FALSE ); //TEST
+    if( bStatus == SUCCESS )
+      breakVal = 100;
+    else
+      breakVal = 200;
+    return bStatus;
+  }
+
+  return bleIncorrectMode;
+  
+} // muJoeGenProfile_ResponseNotify

@@ -304,6 +304,7 @@
           <state>HAL_LED=FALSE</state>
           <state>HAL_KEY=FALSE</state>
           <state>xCC2540_MINIDK</state>
+          <state>MUJOE_GEN_PROFILE</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
