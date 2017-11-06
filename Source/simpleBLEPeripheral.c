@@ -68,7 +68,8 @@
 #include "gattservapp.h"
 #include "devinfoservice.h"
 #include "simpleGATTprofile.h"
-#include "muJoeGenericProfile.h"
+#include "mujoeGenericProfile.h"
+#include "mujoeDataProfile.h"
 
 #include "peripheral.h"
 #include "gapbondmgr.h"
@@ -337,6 +338,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   
 #if defined( MUJOE_GEN_PROFILE ) 
   uint8 status = MuJoeGenericProfile_AddService(); // muJoe Generic GATT Profile
+  while( status != SUCCESS );                      // Trap if adding service was unsuccessful
+  status = MuJoeDataProfile_AddService();          // muJoe Data GATT Profile
   while( status != SUCCESS );                      // Trap if adding service was unsuccessful
 #else
   SimpleProfile_AddService( GATT_ALL_SERVICES );  // Simple GATT Profile

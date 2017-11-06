@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// @filename: muJoeGenericProfile.c
+// @filename: mujoeGenericProfile.c
 // @author: Joseph Corteo Jr.
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -7,7 +7,7 @@
 // INCLUDE
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "muJoeGenericProfile.h"
+#include "mujoeGenericProfile.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINES
@@ -386,7 +386,11 @@ static bStatus_t muJoeGenProfile_ReadAttrCB( uint16 connHandle, gattAttribute_t 
     switch ( uuid )
     {
       // No need for "GATT_SERVICE_UUID" or "GATT_CLIENT_CHAR_CFG_UUID" cases;
-      // gattserverapp handles those reads
+      // gattserverapp handles those reads.
+      
+      // Command, Mailbox and Device Info Characteristics have read permissions.
+      // Response Characteristic does not have read permissions, but because it
+      // can be sent as a notification, it is included here.
       case MUJOEGENERICPROFILE_COMMAND_UUID:
       case MUJOEGENERICPROFILE_RESPONSE_UUID:
         *pLen = MUJOEGENERICPROFILE_CMD_LEN;    // Note: CMD and RSP are of equal length

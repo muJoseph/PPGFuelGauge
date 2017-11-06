@@ -7034,6 +7034,9 @@
     <group>
       <name>BLE PROFILES</name>
       <file>
+        <name>$PROJ_DIR$\..\Source\mujoeDataProfile.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\Source\mujoeGenericProfile.c</name>
       </file>
       <file>
@@ -7057,6 +7060,9 @@
       <file>
         <name>$PROJ_DIR$\..\Source\mujoeBoardConfig.c</name>
       </file>
+    </group>
+    <group>
+      <name>DEVICE DRIVERS</name>
     </group>
   </group>
   <group>
