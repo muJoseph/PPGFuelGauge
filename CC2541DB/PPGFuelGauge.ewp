@@ -7043,7 +7043,13 @@
     <group>
       <name>CC254X DRIVERS</name>
       <file>
+        <name>$PROJ_DIR$\..\Source\mujoeADC.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\Source\mujoeGPIO.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeI2C.c</name>
       </file>
     </group>
     <group>

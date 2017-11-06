@@ -365,7 +365,7 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   }
 #endif
 
-  bool initBoardstatus = muJoeBoardConfig_initBoard();           // Init board
+  bool initBoardstatus = mujoeBoardConfig_initBoard();           // Init board
   while( !initBoardstatus );                                     // Trap MCU if init failed        
 
 #if defined( MUJOE_GEN_PROFILE )
@@ -445,12 +445,21 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
   if( events & MAIN_CMD_WRITE_EVT )
   {
      muJoeGenMgr_cmdWriteHandler();
+     osal_start_timerEx( simpleBLEPeripheral_TaskID, MAIN_RSP_NOTI_EVT, 100 );  // TEST
      return ( events ^ MAIN_CMD_WRITE_EVT );
   }
   
   // Response Characteristic Noti Handler Event 
   if( events & MAIN_RSP_NOTI_EVT )
   {
+     uint16 cmdVal;
+     if( muJoeGenProfile_readCommand( &cmdVal ) == SUCCESS )
+     {
+       if( muJoeGenProfile_writeResponse( cmdVal ) == SUCCESS )
+       {
+         muJoeGenProfile_writeCommand(0x0000);  // If Response Noti successful, clr out Command Characteristic
+       }
+     }
      return ( events ^ MAIN_RSP_NOTI_EVT );
   }
   
@@ -555,7 +564,6 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
     case GAPROLE_ADVERTISING:
       break;       
     case GAPROLE_CONNECTED:  
-        //GAPRole_GetParameter(GAPROLE_CONNHANDLE, &gapConnHandle);               // Get connection handle
       break;
     case GAPROLE_CONNECTED_ADV:
       break;      
@@ -594,9 +602,10 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
 static void performPeriodicTask( void )
 {
 #if defined ( MUJOE_GEN_PROFILE )
-  uint16 cmdValue;
+  /*uint16 cmdValue;
   if( muJoeGenProfile_readCommand( &cmdValue ) == SUCCESS )
      muJoeGenProfile_writeResponse( cmdValue );
+  */
 #else
   uint8 valueToCopy;
   uint8 stat;
@@ -661,12 +670,8 @@ static void muJoeGenProfileChangeCB( uint8 paramID )
   switch( paramID )
   {
     case MUJOEGENERICPROFILE_COMMAND:
-    {
-      uint8 newValue[MUJOEGENERICPROFILE_CMD_LEN];
-      muJoeGenProfile_GetParameter( MUJOEGENERICPROFILE_COMMAND, newValue );
-      // Do stuff here...
+      osal_set_event( simpleBLEPeripheral_TaskID, MAIN_CMD_WRITE_EVT );
       break;
-    }
     case MUJOEGENERICPROFILE_MAILBOX:
     {
       uint8 newValue[MUJOEGENERICPROFILE_MBOX_LEN];

@@ -7,7 +7,7 @@
 // INCLUDE
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "muJoeBoardConfig.h"
+#include "mujoeBoardConfig.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL VARS
@@ -50,15 +50,18 @@ static gpioConfig_t gpioConfigTbl[MUJOE_NUMGPIOS] =
 // LOCAL FUNCTION PROTOS
 ////////////////////////////////////////////////////////////////////////////////
 
-static bool muJoeBoardConfig_initGPIOS( void );
+static bool mujoeBoardConfig_initGPIOS( void );
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
-bool muJoeBoardConfig_initBoard( void )
+bool mujoeBoardConfig_initBoard( void )
 {
-    return muJoeBoardConfig_initGPIOS();         // Init GPIOs
+    bool retVal;
+    retVal = mujoeBoardConfig_initGPIOS();         // Init GPIOs
+    mujoeI2C_initHardware( i2cClock_267KHZ );      // Init I2C Hardware
+    return retVal;
     
 } // muJoeBoardConfig_initBoard
 
@@ -67,7 +70,7 @@ bool muJoeBoardConfig_initBoard( void )
 // STATIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
-static bool muJoeBoardConfig_initGPIOS( void )
+static bool mujoeBoardConfig_initGPIOS( void )
 {
   return muJoeGPIO_configureGPIOs( gpioConfigTbl, MUJOE_NUMGPIOS );
 } // muJoeBoardConfig_initGPIOS
