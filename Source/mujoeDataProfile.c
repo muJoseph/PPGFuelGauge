@@ -13,7 +13,7 @@
 // DEFINES
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MUJOEDATA_NUM_ATTR_SUPPORTED        5
+#define MUJOEDATA_NUM_ATTR_SUPPORTED        8
 
 ////////////////////////////////////////////////////////////////////////////////
 // GLOBAL VAR
@@ -25,25 +25,17 @@ CONST uint8 mujoeDataProfileServUUID[ATT_BT_UUID_SIZE] =
   LO_UINT16(MUJOEDATAPROFILE_SERV_UUID), HI_UINT16(MUJOEDATAPROFILE_SERV_UUID)
 };
 
-// Bulk Data Characteristic UUID: 0xFFE1
+// Async Bulk Characteristic UUID: 0xFFE1
 CONST uint8 mujoeDataProfileAsyncBulkUUID[ATT_BT_UUID_SIZE] =
 { 
   LO_UINT16(MUJOEDATAPROFILE_ASYNCBULK_UUID), HI_UINT16(MUJOEDATAPROFILE_ASYNCBULK_UUID)
 };
 
-// muJoe Generic Service Characteristic Table
-muJoeDataService_Char_t  muJoeDataService_CharTbl[MUJOEDATAPROFILE_NUM_CHAR] =
-{
-  // Bulk Data Characteristic
-  {
-    .paramId    = MUJOEDATAPROFILE_ASYNCBULK,
-    .uuid       = MUJOEDATAPROFILE_ASYNCBULK_UUID,
-    .size       = MUJOEDATAPROFILE_ASYNCBULK_LEN,
-  },
-  
+// Sync Bulk Characteristic UUID: 0xFFE2
+CONST uint8 mujoeDataProfileSyncBulkUUID[ATT_BT_UUID_SIZE] =
+{ 
+  LO_UINT16(MUJOEDATAPROFILE_SYNCBULK_UUID), HI_UINT16(MUJOEDATAPROFILE_SYNCBULK_UUID)
 };
-
-muJoeDataService_t       muJoeDataService;
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL VAR
@@ -56,22 +48,32 @@ static muJoeDataProfileCBs_t *muJoeDataProfile_AppCBs = NULL;
 // muJoe Data Profile Service attribute
 static CONST gattAttrType_t muJoeDataProfileService = { ATT_BT_UUID_SIZE, mujoeDataProfileServUUID };
 
-// muJoe Data Profile Bulk Data Characteristic Properties
-static uint8  muJoeDataProfileAsyncBulkProps = GATT_PROP_NOTIFY;                      
+// muJoe Data Profile Async Bulk Characteristic Properties
+static uint8  muJoeDataProfileAsyncBulkProps = GATT_PROP_NOTIFY;
+
+// muJoe Data Profile Sync Bulk Characteristic Properties
+static uint8  muJoeDataProfileSyncBulkProps = GATT_PROP_READ;
+
 
 // Characteristic Values ///////////////////////////////////////////////////////
 
-// Bulk Data Characteristic Value
+// Async Bulk Characteristic Value
 static uint8 muJoeDataProfileAsyncBulk[MUJOEDATAPROFILE_ASYNCBULK_LEN] = {0};
 
-// muJoe Generic Profile Response Configuration Each client has its own
+// Sync Bulk Characteristic Value
+static uint8 muJoeDataProfileSyncBulk[MUJOEDATAPROFILE_SYNCBULK_LEN] = {0};
+
+// muJoe Data Profile Async Bulk Configuration Each client has its own
 // instantiation of the Client Characteristic Configuration. Reads of the
 // Client Characteristic Configuration only shows the configuration for
 // that client and writes only affect the configuration of that client.
 static gattCharCfg_t *muJoeDataProfileAsyncBulkConfig; // NOTE: Create a seperate config for each characteristic that has Notifications enabled (prob has additional functionality but need more research)
 
-// muJoe Generic Profile Command Characteristic User Description
+// muJoe Data Profile Async Bulk Characteristic User Description
 static uint8 muJoeDataProfileAsyncBulkUserDesp[11] = "Async Bulk";
+
+// muJoe Data Profile Sync Bulk Characteristic User Description
+static uint8 muJoeDataProfileSyncBulkUserDesp[10] = "Sync Bulk";
 
 /*********************************************************************
  * Profile Attributes - Table
@@ -88,7 +90,7 @@ static gattAttribute_t muJoeDataProfileAttrTbl[MUJOEDATA_NUM_ATTR_SUPPORTED] =
     (uint8 *)&muJoeDataProfileService          /* pValue */
   },
 
-  // BULK DATA CHARACTERISTIC ///////////////////////////////////////////////////
+  // ASYNC BULK CHARACTERISTIC //////////////////////////////////////////////////
   
   // Index 1
   // Async Bulk Characteristic Declaration
@@ -124,7 +126,36 @@ static gattAttribute_t muJoeDataProfileAttrTbl[MUJOEDATA_NUM_ATTR_SUPPORTED] =
     GATT_PERMIT_READ, 
     0, 
     muJoeDataProfileAsyncBulkUserDesp 
-  },  
+  },
+
+  // SYNC BULK CHARACTERISTIC //////////////////////////////////////////////////
+  
+  // Index 5
+  // Sync Bulk Characteristic Declaration
+  { 
+    { ATT_BT_UUID_SIZE, characterUUID },
+    GATT_PERMIT_READ, 
+    0,
+    &muJoeDataProfileSyncBulkProps 
+  },
+
+  // Index 6
+  // Sync Bulk Characteristic Value
+  { 
+    { ATT_BT_UUID_SIZE, mujoeDataProfileSyncBulkUUID },
+    GATT_PERMIT_READ,
+    0, 
+    muJoeDataProfileSyncBulk 
+  },
+  
+  // Index 7
+  // Sync Bulk Characteristic User Description
+  { 
+    { ATT_BT_UUID_SIZE, charUserDescUUID },
+    GATT_PERMIT_READ, 
+    0, 
+    muJoeDataProfileSyncBulkUserDesp 
+  },    
   
 };
 
@@ -146,7 +177,7 @@ static bStatus_t muJoeDataProfile_SetParameter( uint8 param, uint8 len, void *va
 // Profile Callbacks
 //////////////////////////////////////////////////////////////////////
 
-// Simple Profile Service Callbacks
+// muJoe Data Profile Service Callbacks
 CONST gattServiceCBs_t muJoeDataProfileCBs =
 {
   muJoeDataProfile_ReadAttrCB,  // Read callback function pointer
@@ -237,6 +268,30 @@ bStatus_t muJoeDataProfile_writeAsyncBulk( uint8 *pAsyncBulkBuff, uint8 buffSize
   
 } // muJoeDataProfile_writeAsyncBulk
 
+
+void muJoeDataProfile_clearAsyncBulk( void )
+{
+  VOID memset(muJoeDataProfileAsyncBulk, 0, MUJOEDATAPROFILE_ASYNCBULK_LEN);
+  
+} // muJoeDataProfile_clearAsyncBulk
+
+bStatus_t muJoeDataProfile_writeSyncBulk( uint8 *pSyncBulkBuff, uint8 buffSize )
+{
+  if( buffSize == MUJOEDATAPROFILE_SYNCBULK_LEN )
+    return muJoeDataProfile_SetParameter( MUJOEDATAPROFILE_SYNCBULK, 
+                                          MUJOEDATAPROFILE_SYNCBULK_LEN, 
+                                          pSyncBulkBuff );
+  else
+    return FAILURE;
+  
+} // muJoeDataProfile_writeSyncBulk
+
+
+void muJoeDataProfile_clearSyncBulk( void )
+{
+  VOID memset(muJoeDataProfileSyncBulk, 0, MUJOEDATAPROFILE_SYNCBULK_LEN);
+} // muJoeDataProfile_clearSyncBulk
+
 //////////////////////////////////////////////////////////////////////
 // STATIC FUNCTIONS
 //////////////////////////////////////////////////////////////////////
@@ -261,6 +316,7 @@ static bStatus_t muJoeDataProfile_ReadAttrCB( uint16 connHandle, gattAttribute_t
                                            uint8 maxLen, uint8 method )
 {
   bStatus_t status = SUCCESS;
+  uint8 notifyApp = 0xFF;
 
   // If attribute permissions require authorization to read, return error
   if ( gattPermitAuthorRead( pAttr->permissions ) )
@@ -284,11 +340,17 @@ static bStatus_t muJoeDataProfile_ReadAttrCB( uint16 connHandle, gattAttribute_t
       // No need for "GATT_SERVICE_UUID" or "GATT_CLIENT_CHAR_CFG_UUID" cases;
       // gattserverapp handles those reads
       
-      // Bulk Data Characteristic does not have read permissions, but because it
+      // Sync Bulk Characteristic has read permissions
+      // Async Bulk Characteristic does not have read permissions, but because it
       // can be sent as a notification, it is included here.
       case MUJOEDATAPROFILE_ASYNCBULK_UUID:
         *pLen = MUJOEDATAPROFILE_ASYNCBULK_LEN;  
         VOID memcpy( pValue, pAttr->pValue, MUJOEDATAPROFILE_ASYNCBULK_LEN );
+        break;
+      case MUJOEDATAPROFILE_SYNCBULK_UUID:
+        *pLen = MUJOEDATAPROFILE_SYNCBULK_LEN;  
+        VOID memcpy( pValue, pAttr->pValue, MUJOEDATAPROFILE_SYNCBULK_LEN );
+        notifyApp = MUJOEDATAPROFILE_SYNCBULK;
         break;
       default:
         // Should never get here!
@@ -304,6 +366,11 @@ static bStatus_t muJoeDataProfile_ReadAttrCB( uint16 connHandle, gattAttribute_t
     status = ATT_ERR_INVALID_HANDLE;
   }
 
+  // If a charactersitic is read then callback function to notify application of change
+  if ( (notifyApp != 0xFF ) && muJoeDataProfile_AppCBs && muJoeDataProfile_AppCBs->pfnDataProfileRead )
+  {
+    muJoeDataProfile_AppCBs->pfnDataProfileRead( notifyApp );  
+  }
   return ( status );
   
 } // muJoeDataProfile_ReadAttrCB
@@ -426,6 +493,12 @@ static bStatus_t muJoeDataProfile_SetParameter( uint8 param, uint8 len, void *va
         ret = bleInvalidRange;
       }
       break;
+    case MUJOEDATAPROFILE_SYNCBULK:
+      if( len <= MUJOEDATAPROFILE_SYNCBULK_LEN )
+        VOID memcpy( muJoeDataProfileSyncBulk, value, len ); 
+      else
+        ret = bleInvalidRange;
+      break;
     default:
       ret = INVALIDPARAMETER;
       break;
@@ -455,6 +528,9 @@ static bStatus_t muJoeDataProfile_GetParameter( uint8 param, void *value )
   {
     case MUJOEDATAPROFILE_ASYNCBULK:
       VOID memcpy( value, muJoeDataProfileAsyncBulk, MUJOEDATAPROFILE_ASYNCBULK_LEN );
+      break;
+    case MUJOEDATAPROFILE_SYNCBULK:
+      VOID memcpy( value, muJoeDataProfileSyncBulk, MUJOEDATAPROFILE_SYNCBULK_LEN );
       break;
     default:
       ret = INVALIDPARAMETER;

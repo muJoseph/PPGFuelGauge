@@ -210,8 +210,9 @@ static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg );
 static void simpleBLEPeripheral_ProcessGATTMsg( gattMsgEvent_t *pMsg );
 static void peripheralStateNotificationCB( gaprole_States_t newState );
 static void performPeriodicTask( void );
-static void simpleProfileChangeCB( uint8 paramID );
+//static void simpleProfileChangeCB( uint8 paramID );
 static void muJoeGenProfileChangeCB( uint8 paramID );
+static void muJoeDataProfileReadCB( uint8 paramID );
 
 /*********************************************************************
  * PROFILE CALLBACKS
@@ -237,6 +238,12 @@ static gapBondCBs_t simpleBLEPeripheral_BondMgrCBs =
 static muJoeGenProfileCBs_t simpleBLEPeripheral_muJoeGenProfileCBs =
 {
   muJoeGenProfileChangeCB    // Charactersitic value change callback
+};
+
+static muJoeDataProfileCBs_t simpleBLEPeripheral_muJoeDataProfileCBs = 
+{
+  NULL,                         // Characteristic value change callback
+  muJoeDataProfileReadCB        // Called when a characteristic is read by central
 };
 
 #else
@@ -347,10 +354,22 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   
 
 #if defined( MUJOE_GEN_PROFILE )
-
-   uint8 initValue[2] = { 0x00, 0x01 };
-   muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_COMMAND, MUJOEGENERICPROFILE_CMD_LEN, initValue );
-   muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_RESPONSE, MUJOEGENERICPROFILE_RSP_LEN, initValue );
+  
+   // Init muJoe Generic Service Characteristic Values
+   muJoeGenProfile_writeCommand( 0x0000 );
+   muJoeGenProfile_writeResponse( 0x0000 );
+   muJoeGenProfile_writeDeviceInfo( 0xAAAA, 0xBBBB );
+   
+   uint8 mailboxBuff[20];
+   for( uint8 i = 0; i < 20; i++ )
+   {
+     mailboxBuff[i] = i;
+   }
+   muJoeGenProfile_writeMailbox( mailboxBuff, 20 );
+   
+   // Init muJoe Data Service Characteristic Values
+   muJoeDataProfile_clearAsyncBulk();
+   muJoeDataProfile_clearSyncBulk();
    
 #else
   // Setup the SimpleProfile Characteristic Values
@@ -374,6 +393,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 #if defined( MUJOE_GEN_PROFILE )
   // Register callback with muJoeGenericProfile
   VOID muJoeGenProfile_RegisterAppCBs( &simpleBLEPeripheral_muJoeGenProfileCBs );
+  // Register callback with muJoeDataProfile
+  VOID muJoeDataProfile_RegisterAppCBs( &simpleBLEPeripheral_muJoeDataProfileCBs );
 #else
   // Register callback with SimpleGATTprofile
   VOID SimpleProfile_RegisterAppCBs( &simpleBLEPeripheral_SimpleProfileCBs );
@@ -668,25 +689,44 @@ static void simpleProfileChangeCB( uint8 paramID )
  */
 static void muJoeGenProfileChangeCB( uint8 paramID )
 {
-  //uint8 newValue;
-
   switch( paramID )
   {
     case MUJOEGENERICPROFILE_COMMAND:
       osal_set_event( simpleBLEPeripheral_TaskID, MAIN_CMD_WRITE_EVT );
       break;
     case MUJOEGENERICPROFILE_MAILBOX:
-    {
-      uint8 newValue[MUJOEGENERICPROFILE_MBOX_LEN];
-      muJoeGenProfile_GetParameter( MUJOEGENERICPROFILE_MAILBOX, newValue );
-      // Do stuff here...
       break;
-    }
     default:
       // should not reach here!
       break;
   }
 } // muJoeGenProfileChangeCB
+
+/*********************************************************************
+ * @fn      muJoeDataProfileReadCB
+ *
+ * @brief   Callback from muJoeDataProfile indicating a characteristic read (by central)
+ *
+ * @param   paramID - parameter ID of the characteristic that was read
+ *
+ * @return  none
+ */
+static void muJoeDataProfileReadCB( uint8 paramID )
+{
+  switch( paramID )
+  {
+    case MUJOEDATAPROFILE_SYNCBULK:
+      {
+        uint8 breakVal = 100;
+      // Do stuff here...
+      break;
+      }
+    default:
+      // should not reach here!
+      break;
+  }
+  
+} // muJoeDataProfileReadCB
 
 /*********************************************************************
 *********************************************************************/

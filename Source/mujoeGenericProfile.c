@@ -191,7 +191,7 @@ static gattAttribute_t muJoeGenProfileAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
   // Response Characteristic Value
   { 
     { ATT_BT_UUID_SIZE, mujoeGenericProfileRspUUID },
-    0,// GATT_PROP_NOTIFY       // NOTE: Should be zero, do NOT match muJoeGenProfileRspProps. Will need investigate further.
+    0,       // NOTE: Should be zero, do NOT match muJoeGenProfileRspProps. Will need investigate further.
     0, 
     muJoeGenProfileRsp 
   },
@@ -229,7 +229,7 @@ static gattAttribute_t muJoeGenProfileAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
   // Mailbox Characteristic Value
   { 
     { ATT_BT_UUID_SIZE, mujoeGenericProfileMboxUUID },
-    GATT_PROP_READ | GATT_PROP_WRITE,
+    GATT_PERMIT_READ | GATT_PERMIT_WRITE,
     0, 
     muJoeGenProfileMbox 
   },
@@ -258,7 +258,7 @@ static gattAttribute_t muJoeGenProfileAttrTbl[MUJOEGEN_NUM_ATTR_SUPPORTED] =
   // Device Info Characteristic Value
   { 
     { ATT_BT_UUID_SIZE, mujoeGenericProfileDevinfoUUID },
-    GATT_PROP_READ | GATT_PROP_WRITE,
+    GATT_PERMIT_READ,
     0, 
     muJoeGenProfileDevinfo
   },
@@ -711,4 +711,18 @@ bStatus_t muJoeGenProfile_writeMailbox( uint8 *pMailboxBuff, uint8 buffSize )
     return FAILURE;
   
 } // muJoeGenProfile_writeMailbox
+
+bStatus_t muJoeGenProfile_writeDeviceInfo( uint16 hwVer , uint16 fwVer )
+{
+  uint8 devInfo[4] = { (uint8)( hwVer >> 8 ), 
+                       (uint8)hwVer,
+                       (uint8)( fwVer >> 8 ),
+                       (uint8)fwVer};
+
+  return muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_DEVICEINFO, 
+                                       MUJOEGENERICPROFILE_DEVINFO_LEN, 
+                                       devInfo );
+
+  
+} // muJoeGenProfile_writeDeviceInfo
                                              

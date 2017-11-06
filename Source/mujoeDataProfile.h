@@ -26,19 +26,24 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // Profile Parameter IDs
-#define MUJOEDATAPROFILE_ASYNCBULK             0  // R/Notify - Bulk Data Characteristic
+#define MUJOEDATAPROFILE_ASYNCBULK             0  // Notify - Async Bulk Characteristic
+#define MUJOEDATAPROFILE_SYNCBULK              1  // R - Sync Bulk Characteristic
 
-// muJoe Generic Profile Service UUID
+// muJoe Data Profile Service UUID
 #define MUJOEDATAPROFILE_SERV_UUID             0xFFE0
 
 // Characteristic UUIDs
 #define MUJOEDATAPROFILE_ASYNCBULK_UUID        0xFFE1
+#define MUJOEDATAPROFILE_SYNCBULK_UUID         0xFFE2
 
-// Length of Bulk Data Characteristic in bytes
+// Length of Async Bulk Characteristic in bytes
 #define MUJOEDATAPROFILE_ASYNCBULK_LEN         20
 
+// Length of Sync Bulk Characteristic in bytes
+#define MUJOEDATAPROFILE_SYNCBULK_LEN          20 
+
 // Number of Characteristics within the muJoe Data Service
-#define MUJOEDATAPROFILE_NUM_CHAR              1
+#define MUJOEDATAPROFILE_NUM_CHAR              2
 
 ////////////////////////////////////////////////////////////////////////////////
 // Profile Callbacks
@@ -50,24 +55,10 @@ typedef void (*muJoeDataProfileChange_t)( uint8 paramID );
 typedef struct
 {
   muJoeDataProfileChange_t        pfnDataProfileChange;  // Called when characteristic value changes
+  muJoeDataProfileChange_t        pfnDataProfileRead;    // Called when a characteristic is read by central
 
 } muJoeDataProfileCBs_t;
 
-// muJoe Generic Service  Characteristic 
-typedef struct muJoeDataService_Char_def
-{
-   uint8                paramId;
-   uint16               uuid;
-   uint8                size;
-  
-}muJoeDataService_Char_t;
-
-// muJoe Generic Service 
-typedef struct muJoeDataService_def
-{
-  muJoeDataService_Char_t       *muJoeDataService_charTbl;        // Characteristic Table
-  uint8                         numChars;                       // Number of characteristics
-}muJoeDataService_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // PROTOS
@@ -93,5 +84,8 @@ bStatus_t muJoeDataProfile_RegisterAppCBs( muJoeDataProfileCBs_t *appCallbacks )
 
 bStatus_t muJoeDataProfile_writeAsyncBulk( uint8 *pAsyncBulkBuff, uint8 buffSize );
 bStatus_t muJoeDataProfile_readAsyncBulk( uint8 *pAsyncBulkBuff, uint8 buffSize );
-  
+void muJoeDataProfile_clearAsyncBulk( void );
+bStatus_t muJoeDataProfile_writeSyncBulk( uint8 *pSyncBulkBuff, uint8 buffSize );
+void muJoeDataProfile_clearSyncBulk( void );
+
 #endif

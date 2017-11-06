@@ -137,5 +137,6 @@ extern bStatus_t muJoeGenProfile_writeCommand( uint16 commandValue );
 extern bStatus_t muJoeGenProfile_writeResponse( uint16 responseValue );
 extern bStatus_t muJoeGenProfile_writeMailbox( uint8 *pMailboxBuff, uint8 buffSize );
 extern bStatus_t muJoeGenProfile_readMailbox( uint8 *pMailboxBuff, uint8 buffSize );
+bStatus_t muJoeGenProfile_writeDeviceInfo( uint16 hwVer , uint16 fwVer );
   
 #endif
