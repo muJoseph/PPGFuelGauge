@@ -19,24 +19,20 @@ extern "C"
 #include "OSAL.h"
 #include "OSAL_PwrMgr.h"
 
-//#include "OnBoard.h"
-//#include "hal_adc.h"
-//#include "hal_led.h"
-//#include "hal_key.h"
-//#include "hal_lcd.h"
-
 #include "gatt.h"
 #include "hci.h"
 
-#include "simpleBLEPeripheral.h"
+#include "mainTask.h"
+
+// Device Drivers
+#include "MS560702.h"
   
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINES
 ////////////////////////////////////////////////////////////////////////////////
 
-
 // Sensor Manager Task Events
-#define SBP_START_DEVICE_EVT                              0x0001
+#define SENSORMGR_INIT_SENSORS_EVT                              0x0001
 
 ////////////////////////////////////////////////////////////////////////////////
 // MACROS

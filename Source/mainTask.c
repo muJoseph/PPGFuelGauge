@@ -148,6 +148,8 @@ static void performPeriodicTask( void );
 static void muJoeGenProfileChangeCB( uint8 paramID );
 static void muJoeDataProfileReadCB( uint8 paramID );
 
+static void mainTask_initMuJoeGenMgrDriver( void );
+
 /*********************************************************************
  * PROFILE CALLBACKS
  */
@@ -346,6 +348,10 @@ void mainTask_Init( uint8 task_id )
 
 #endif // defined ( DC_DC_P0_7 )
 
+  
+  // Init App level drivers
+  mainTask_initMuJoeGenMgrDriver();     // TEST
+  
   // Setup a delayed profile startup
   osal_set_event( mainTask_TaskID, MAIN_START_DEVICE_EVT );
 
@@ -396,14 +402,18 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
     // Set timer for first periodic event
     osal_start_timerEx( mainTask_TaskID, MAIN_PERIODIC_EVT, SBP_PERIODIC_EVT_PERIOD );
 
+    // Set timer for Initializing onboard sensors
+    osal_start_timerEx( sensorMgrTask_getTaskId(), SENSORMGR_INIT_SENSORS_EVT, 200 );
+    
     // BEGIN TEST
-    muJoeGenMgr_t muJoeGenMgr;
+    /*muJoeGenMgr_t muJoeGenMgr;
     muJoeGenMgr.asyncBulkCb.evtFlg = MAIN_ASYNCBULK_EVT;
     muJoeGenMgr.asyncBulkCb.tskId = mainTask_getTaskId();
     muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.tskId = mainTask_getTaskId();
     muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.evtFlg = MAIN_RSP_NOTI_EVT;
     muJoeGenMgr.muJoeGenMgr_rspHdlrCb.pRspBuff = &rspBuffer;
     muJoeGenMgr_initDriver( muJoeGenMgr );
+    */
     // END TEST
     
     return ( events ^ MAIN_START_DEVICE_EVT );
@@ -458,6 +468,18 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
   return 0;
 }
 
+static void mainTask_initMuJoeGenMgrDriver( void )
+{
+  muJoeGenMgr_t muJoeGenMgr;
+  muJoeGenMgr.asyncBulkCb.evtFlg = MAIN_ASYNCBULK_EVT;
+  muJoeGenMgr.asyncBulkCb.tskId = mainTask_getTaskId();
+  muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.tskId = mainTask_getTaskId();
+  muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.evtFlg = MAIN_RSP_NOTI_EVT;
+  muJoeGenMgr.muJoeGenMgr_rspHdlrCb.pRspBuff = &rspBuffer;
+  
+  muJoeGenMgr_initDriver( muJoeGenMgr );
+  
+} // mainTask_initMuJoeGenMgrDriver
 /*********************************************************************
  * @fn      mainTask_ProcessOSALMsg
  *

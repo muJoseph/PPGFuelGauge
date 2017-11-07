@@ -38,7 +38,7 @@ ShowSource=1
 [Simulator]
 Freq=50000000
 [DebugChecksum]
-Checksum=-809011993
+Checksum=-1528356065
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -53,9 +53,10 @@ Category=_ 0
 LoggingEnabled=_ 0
 LogFile=_ ""
 [Breakpoints]
-Count=0
+Bp0=_ "STD_LOG" "{$PROJ_DIR$\..\Source\sensorMgrTask.c}.109.5" 1 0 0 0 "" 0 "" 0
+Count=1
 [ChipconEmu]
-Stop timers on halt=0
+Stop timers on halt=1
 Leave target running=1
 [Aliases]
 Count=0

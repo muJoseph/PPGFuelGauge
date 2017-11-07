@@ -33,6 +33,7 @@ static uint8                sensorMgrTask_TaskID;                               
 
 static void sensorMgrTask_ProcessOSALMsg( osal_event_hdr_t *pMsg );
 static void sensorMgrTask_ProcessGATTMsg( gattMsgEvent_t *pMsg );
+static bool sensorMgrTask_initSensors( void );
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTIONS
@@ -61,6 +62,8 @@ uint8 sensorMgrTask_getTaskId( void )
 void sensorMgrTask_Init( uint8 task_id )
 {
   sensorMgrTask_TaskID = task_id;
+  
+  MS560702_initDriver(FALSE);   // Init BAR Drivers, CSB = GND
 
 } // sensorMgrTask_Init
 
@@ -97,6 +100,14 @@ uint16 sensorMgrTask_ProcessEvent( uint8 task_id, uint16 events )
     // return unprocessed events
     return (events ^ SYS_EVENT_MSG);
   }
+  
+  // Init Sensors Event ////////////////////////////////////////////////////////
+  if( events & SENSORMGR_INIT_SENSORS_EVT )
+  {
+    bool stat = sensorMgrTask_initSensors();
+    //while( !stat );     // Trap MCU if failure
+    return (events ^ SENSORMGR_INIT_SENSORS_EVT);
+  }
 
   // Discard unknown events
   return 0;
@@ -106,6 +117,17 @@ uint16 sensorMgrTask_ProcessEvent( uint8 task_id, uint16 events )
 ////////////////////////////////////////////////////////////////////////////////
 // STATIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
+
+static bool sensorMgrTask_initSensors( void )
+{
+  
+  if( !MS560702_initHardware() )
+    return FALSE;
+  
+  
+  return TRUE;
+  
+} // sensorMgrTask_initSensors
 
 /*********************************************************************
  * @fn      sensorMgrTask_ProcessOSALMsg

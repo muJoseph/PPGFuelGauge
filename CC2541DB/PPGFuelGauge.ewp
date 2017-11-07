@@ -6855,12 +6855,6 @@
       <name>$PROJ_DIR$\..\Source\sensorMgrTask.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\Source\simpleBLEPeripheral.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\Source\simpleBLEPeripheral.h</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\..\Source\SimpleBLEPeripheral_Main.c</name>
     </file>
   </group>
@@ -7075,6 +7069,9 @@
     </group>
     <group>
       <name>DEVICE DRIVERS</name>
+      <file>
+        <name>$PROJ_DIR$\..\Source\MS560702.c</name>
+      </file>
     </group>
   </group>
   <group>
