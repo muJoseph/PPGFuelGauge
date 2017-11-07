@@ -23,7 +23,7 @@ static void issueResponse( uint16 rspCode );
 static uint16 cmdGroup_sysGrp( uint8 cmd_id );
 static uint16 cmdGroup_datGrp( uint8 cmd_id );
 
-static bStatus_t getSamplePeriod( uint32 *pSampPeriod );
+static bStatus_t getAsyncSamplePeriod( uint32 *pSampPeriod );
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTIONS
@@ -111,7 +111,7 @@ static uint16 cmdGroup_datGrp( uint8 cmd_id )
   {
     case MUJOE_GRP_DAT_ID_STASYNCBULK:
     {
-      getSamplePeriod(&(mujoeBrdSettings.asyncBulkSampPeriod));
+      getAsyncSamplePeriod(&(mujoeBrdSettings.asyncBulkSampPeriod));
       osal_set_event( muJoeGenMgr.asyncBulkCb.tskId, muJoeGenMgr.asyncBulkCb.evtFlg );
       break;
     }
@@ -124,7 +124,7 @@ static uint16 cmdGroup_datGrp( uint8 cmd_id )
   return rspVal;
 } // cmdGroup_datGrp
 
-static bStatus_t getSamplePeriod( uint32 *pSampPeriod )
+static bStatus_t getAsyncSamplePeriod( uint32 *pSampPeriod )
 {
   bStatus_t bStatus = SUCCESS;
   uint8 mailBoxBuff[20];
@@ -133,12 +133,12 @@ static bStatus_t getSamplePeriod( uint32 *pSampPeriod )
   if( bStatus == SUCCESS )
   {
      
-     uint32 tSamp = (uint32)(( ( (uint32)(mailBoxBuff[0]) ) << 24 ) +
+     *pSampPeriod = (uint32)(( ( (uint32)(mailBoxBuff[0]) ) << 24 ) +
                    ( ( (uint32)(mailBoxBuff[1]) ) << 16 ) +
                    ( ( (uint32)(mailBoxBuff[2]) ) << 8 ) +
                     mailBoxBuff[3]);
      
-     *pSampPeriod =  tSamp;
+     //*pSampPeriod =  tSamp;
   }
   return bStatus;
-}
+} // getAsyncSamplePeriod

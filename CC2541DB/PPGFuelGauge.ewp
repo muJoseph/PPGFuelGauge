@@ -6846,7 +6846,13 @@
   <group>
     <name>APP</name>
     <file>
+      <name>$PROJ_DIR$\..\Source\mainTask.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\Source\OSAL_SimpleBLEPeripheral.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\sensorMgrTask.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\Source\simpleBLEPeripheral.c</name>

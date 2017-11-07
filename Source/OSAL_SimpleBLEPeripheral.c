@@ -83,7 +83,11 @@
 
 
 /* Application */
+#include "mainTask.h"
+
 #include "simpleBLEPeripheral.h"
+
+#include "sensorMgrTask.h"
 
 /*********************************************************************
  * GLOBAL VARIABLES
@@ -105,7 +109,8 @@ const pTaskEventHandlerFn tasksArr[] =
   GAPRole_ProcessEvent,                                             // task 8
   GAPBondMgr_ProcessEvent,                                          // task 9
   GATTServApp_ProcessEvent,                                         // task 10
-  SimpleBLEPeripheral_ProcessEvent                                  // task 11
+  mainTask_ProcessEvent,//SimpleBLEPeripheral_ProcessEvent,         // task 11
+  sensorMgrTask_ProcessEvent                                        // task 12    
 };
 
 const uint8 tasksCnt = sizeof( tasksArr ) / sizeof( tasksArr[0] );
@@ -165,7 +170,11 @@ void osalInitTasks( void )
   GATTServApp_Init( taskID++ );
 
   /* Application */
-  SimpleBLEPeripheral_Init( taskID );
+  mainTask_Init( taskID++ );
+  //SimpleBLEPeripheral_Init( taskID++ );
+  
+  // Sensor Manager Task
+  sensorMgrTask_Init( taskID );
 }
 
 /*********************************************************************
