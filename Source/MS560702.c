@@ -26,7 +26,6 @@ static MS560702_t MS560702 =
 static bool MS560702_readPROMCoeff( MS560702_promCoeffAddr_t addr, uint16 *pCoeffVal );
 static bool MS560702_sendCommand( MS560702_cmds_t cmd );
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
@@ -103,6 +102,11 @@ bool MS560702_readAdcConv( uint32 *pAdcCode )
     return FALSE;
   
 } // MS560702_readAdcConv
+
+// @TODO: 
+// - Add fncs to read PROM CRC
+// - Add fncs to convert ADC codes to mBar and degrees C (prob better to do this on the central device due to floating pt math)
+// TODO@
 
 ////////////////////////////////////////////////////////////////////////////////
 // STATIC FUNCTIONS

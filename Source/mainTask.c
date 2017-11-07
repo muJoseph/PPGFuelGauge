@@ -348,7 +348,6 @@ void mainTask_Init( uint8 task_id )
 
 #endif // defined ( DC_DC_P0_7 )
 
-  
   // Init App level drivers
   mainTask_initMuJoeGenMgrDriver();     // TEST
   
@@ -404,17 +403,6 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
 
     // Set timer for Initializing onboard sensors
     osal_start_timerEx( sensorMgrTask_getTaskId(), SENSORMGR_INIT_SENSORS_EVT, 200 );
-    
-    // BEGIN TEST
-    /*muJoeGenMgr_t muJoeGenMgr;
-    muJoeGenMgr.asyncBulkCb.evtFlg = MAIN_ASYNCBULK_EVT;
-    muJoeGenMgr.asyncBulkCb.tskId = mainTask_getTaskId();
-    muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.tskId = mainTask_getTaskId();
-    muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.evtFlg = MAIN_RSP_NOTI_EVT;
-    muJoeGenMgr.muJoeGenMgr_rspHdlrCb.pRspBuff = &rspBuffer;
-    muJoeGenMgr_initDriver( muJoeGenMgr );
-    */
-    // END TEST
     
     return ( events ^ MAIN_START_DEVICE_EVT );
   }

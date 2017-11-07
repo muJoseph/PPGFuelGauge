@@ -10,30 +10,67 @@
 #include "sensorMgrTask.h"
 
 ////////////////////////////////////////////////////////////////////////////////
+// GLOBAL VAR
+////////////////////////////////////////////////////////////////////////////////
+
+boardSensorData_t               brdSensorDat;
+
+////////////////////////////////////////////////////////////////////////////////
 // TYPEDEFS
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// EXTERN VAR
-////////////////////////////////////////////////////////////////////////////////
+typedef struct evtCallback_def
+{
+    //uint8          taskId;
+    //uint16         evtFlg;     
+    uint32         delay;
+    
+}evtCallback_t;
+
+typedef struct sensorDatColl_def
+{
+  bool                  nextSensor;
+  uint8                 currSensor;
+  uint8                 numSensors;
+  uint8                 sensorState;
+  uint8                 sensorFlags;
+  evtCallback_t         evtCb;
+
+}sensorDatColl_t, *p_sensorDatColl_t;
+
+typedef void (*sensorDatCollFncTbl_t)( p_sensorDatColl_t );
 
 ////////////////////////////////////////////////////////////////////////////////
-// EXTERN FNC
+// LOCAL FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////
-// INCLUDE
-////////////////////////////////////////////////////////////////////////////////
-
-static uint8                sensorMgrTask_TaskID;                               // Task ID for internal task/event processing
-
-/*********************************************************************
- * LOCAL FUNCTIONS
- */
 
 static void sensorMgrTask_ProcessOSALMsg( osal_event_hdr_t *pMsg );
 static void sensorMgrTask_ProcessGATTMsg( gattMsgEvent_t *pMsg );
 static bool sensorMgrTask_initSensors( void );
+
+static void MS560702_dataCollector( p_sensorDatColl_t sdc );
+static void MMA8453_dataCollector( p_sensorDatColl_t sdc );
+static void sensorMgrTask_dataCollector( void );
+
+////////////////////////////////////////////////////////////////////////////////
+// LOCAL VAR
+////////////////////////////////////////////////////////////////////////////////
+
+static uint8                       sensorMgrTask_TaskID;                               // Task ID for internal task/event processing
+
+static sensorDatColl_t             sensorDatColl = 
+{
+  .nextSensor = FALSE,
+  .currSensor = 0,
+  .numSensors = SENSORMGR_MAX_NUM_SENSORS,
+};
+
+// Sensor Data Collection Function Table
+sensorDatCollFncTbl_t       sensorDatCollFncTbl[SENSORMGR_MAX_NUM_SENSORS] = 
+{
+  MS560702_dataCollector,
+  MMA8453_dataCollector
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTIONS
@@ -105,8 +142,16 @@ uint16 sensorMgrTask_ProcessEvent( uint8 task_id, uint16 events )
   if( events & SENSORMGR_INIT_SENSORS_EVT )
   {
     bool stat = sensorMgrTask_initSensors();
-    //while( !stat );     // Trap MCU if failure
+    //while( !stat );     // Trap MCU if failure  
+    osal_set_event( sensorMgrTask_TaskID, SENSORMGR_DATA_COLLECTOR_EVT );       // TEST
     return (events ^ SENSORMGR_INIT_SENSORS_EVT);
+  }
+  
+  // Sensor Data Collector Event ///////////////////////////////////////////////
+  if( events & SENSORMGR_DATA_COLLECTOR_EVT )
+  {
+    sensorMgrTask_dataCollector();
+    return (events ^ SENSORMGR_DATA_COLLECTOR_EVT);
   }
 
   // Discard unknown events
@@ -118,12 +163,94 @@ uint16 sensorMgrTask_ProcessEvent( uint8 task_id, uint16 events )
 // STATIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
+static void sensorMgrTask_dataCollector( void )
+{
+  // Call the current sensor within the queu data collection fnc
+  if( sensorDatColl.currSensor < sensorDatColl.numSensors )
+    sensorDatCollFncTbl[sensorDatColl.currSensor](&sensorDatColl);
+  
+  if( sensorDatColl.nextSensor )
+  {
+    sensorDatColl.currSensor++;
+    // If end of sensor queue reached, restart
+    if( sensorDatColl.currSensor == sensorDatColl.numSensors )  
+      sensorDatColl.currSensor = 0;
+    
+    // Reset sensor specific state machine var
+    sensorDatColl.sensorState = 0;
+    sensorDatColl.sensorFlags = 0;
+    VOID memset( &(sensorDatColl.evtCb), 0, sizeof( evtCallback_t ) );
+    
+    sensorDatColl.nextSensor = FALSE;
+  }
+  
+  // Schedule next event to continue data collection
+  if( sensorDatColl.evtCb.delay )
+  {
+    osal_start_timerEx( sensorMgrTask_TaskID, 
+                        SENSORMGR_DATA_COLLECTOR_EVT, 
+                        sensorDatColl.evtCb.delay );
+    sensorDatColl.evtCb.delay = 0;
+  }
+  else
+    osal_set_event( sensorMgrTask_TaskID, SENSORMGR_DATA_COLLECTOR_EVT );
+  
+} // sensorMgrTask_dataCollector
+
+static void MS560702_dataCollector( p_sensorDatColl_t sdc )
+{
+   switch( sdc->sensorState )
+   {
+     // Trigger Pressure Conversion
+     case 0:
+       if( sdc->sensorFlags & 0x01 )
+         MS560702_trigTemperatureConv( MS5_OSR_4096 );
+       else
+         MS560702_trigPressureConv( MS5_OSR_4096 );
+       sdc->evtCb.delay = 100;
+       sdc->sensorState = 1;  
+       break;
+     // Poll and fetch Conversion
+     case 1:
+     {
+        uint32 adcConv;
+        if( MS560702_readAdcConv( &adcConv ) )
+        {
+            if( sdc->sensorFlags & 0x01 )
+            {
+              brdSensorDat.ppgfg.barTempCode = adcConv;
+              sdc->nextSensor = TRUE;
+            }
+            else
+            {
+              brdSensorDat.ppgfg.barPresCode = adcConv;
+              sdc->sensorFlags |= 0x01;
+              sdc->sensorState = 0;
+            }
+        }
+        else
+        {
+          sdc->sensorState = 1;
+          sdc->evtCb.delay = 100;
+        }
+        break;
+     }
+     default:
+        break;
+   }
+   
+} // MS560702_dataCollector
+
+static void MMA8453_dataCollector( p_sensorDatColl_t sdc )
+{
+  // Add data colleciton state machine
+  
+} // MMA8453_dataCollector
+
 static bool sensorMgrTask_initSensors( void )
 {
-  
   if( !MS560702_initHardware() )
     return FALSE;
-  
   
   return TRUE;
   

@@ -33,14 +33,31 @@ extern "C"
 
 // Sensor Manager Task Events
 #define SENSORMGR_INIT_SENSORS_EVT                              0x0001
+#define SENSORMGR_DATA_COLLECTOR_EVT                            0x0002
+  
+// Max number of onboard sensors
+#define SENSORMGR_MAX_NUM_SENSORS                               2
 
 ////////////////////////////////////////////////////////////////////////////////
-// MACROS
+// TYPEDEFS
 ////////////////////////////////////////////////////////////////////////////////
 
-/*********************************************************************
- * FUNCTIONS
- */
+typedef struct ppgfgSensorData_def
+{
+  uint32                barPresCode;
+  uint32                barTempCode;
+  
+}ppgfgSensorData_t;
+
+typedef union boardSensorData_def
+{
+  ppgfgSensorData_t             ppgfg;
+  
+} boardSensorData_t;
+
+////////////////////////////////////////////////////////////////////////////////
+// API FUNCTIONS
+////////////////////////////////////////////////////////////////////////////////
 
 uint8 sensorMgrTask_getTaskId( void );
 /*
