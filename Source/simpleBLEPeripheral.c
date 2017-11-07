@@ -75,8 +75,9 @@
 #include "gapbondmgr.h"
 #include "simpleBLEPeripheral.h"
 
-#include "muJoeGenericProfileMgr.h"
-#include "muJoeBoardConfig.h"
+#include "mujoeGenericProfileMgr.h"
+#include "mujoeBoardConfig.h"
+#include "mujoeBoardSettings.h"
    
 /*********************************************************************
  * MACROS
@@ -141,6 +142,9 @@
 /*********************************************************************
  * LOCAL VARIABLES
  */
+
+static uint16 rspBuffer;         // TEST
+static uint8  asyncBulkBuff[20]; // TEST
 
 // HipScience characteristic notification control identifiers
 static uint8                            simpleBLEPeripheral_TaskID;             // Task ID for internal task/event processing
@@ -260,6 +264,12 @@ static simpleProfileCBs_t simpleBLEPeripheral_SimpleProfileCBs =
  * PUBLIC FUNCTIONS
  */
 
+uint8 SimpleBLEPeripheral_getTaskId( void )
+{
+  return simpleBLEPeripheral_TaskID;
+  
+} // SimpleBLEPeripheral_getTaskId
+
 /*********************************************************************
  * @fn      SimpleBLEPeripheral_Init
  *
@@ -360,12 +370,14 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
    muJoeGenProfile_writeResponse( 0x0000 );
    muJoeGenProfile_writeDeviceInfo( 0xAAAA, 0xBBBB );
    
-   uint8 mailboxBuff[20];
+   /*uint8 mailboxBuff[20];
    for( uint8 i = 0; i < 20; i++ )
    {
      mailboxBuff[i] = i;
    }
    muJoeGenProfile_writeMailbox( mailboxBuff, 20 );
+   */
+   muJoeGenProfile_clearMailbox();
    
    // Init muJoe Data Service Characteristic Values
    muJoeDataProfile_clearAsyncBulk();
@@ -462,6 +474,16 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
     // Set timer for first periodic event
     osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT, SBP_PERIODIC_EVT_PERIOD );
 
+    // BEGIN TEST
+    muJoeGenMgr_t muJoeGenMgr;
+    muJoeGenMgr.asyncBulkCb.evtFlg = MAIN_ASYNCBULK_EVT;
+    muJoeGenMgr.asyncBulkCb.tskId = SimpleBLEPeripheral_getTaskId();
+    muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.tskId = SimpleBLEPeripheral_getTaskId();
+    muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.evtFlg = MAIN_RSP_NOTI_EVT;
+    muJoeGenMgr.muJoeGenMgr_rspHdlrCb.pRspBuff = &rspBuffer;
+    muJoeGenMgr_initDriver( muJoeGenMgr );
+    // END TEST
+    
     return ( events ^ SBP_START_DEVICE_EVT );
   }
 
@@ -469,22 +491,31 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
   if( events & MAIN_CMD_WRITE_EVT )
   {
      muJoeGenMgr_cmdWriteHandler();
-     osal_start_timerEx( simpleBLEPeripheral_TaskID, MAIN_RSP_NOTI_EVT, 100 );  // TEST
      return ( events ^ MAIN_CMD_WRITE_EVT );
   }
   
   // Response Characteristic Noti Handler Event 
   if( events & MAIN_RSP_NOTI_EVT )
   {
-     uint16 cmdVal;
-     if( muJoeGenProfile_readCommand( &cmdVal ) == SUCCESS )
-     {
-       if( muJoeGenProfile_writeResponse( cmdVal ) == SUCCESS )
-       {
-         muJoeGenProfile_writeCommand(0x0000);  // If Response Noti successful, clr out Command Characteristic
-       }
-     }
+     muJoeGenProfile_writeResponse( rspBuffer );
      return ( events ^ MAIN_RSP_NOTI_EVT );
+  }
+  
+  // Async Bulk Data Transfer Event 
+  if( events & MAIN_ASYNCBULK_EVT )
+  {
+     // Restart timer
+     if ( SBP_PERIODIC_EVT_PERIOD )
+        osal_start_timerEx( simpleBLEPeripheral_TaskID, 
+                            MAIN_ASYNCBULK_EVT, 
+                            mujoeBrdSettings.asyncBulkSampPeriod );
+     
+     // BEGIN TEST
+     if( muJoeDataProfile_writeAsyncBulk( asyncBulkBuff, sizeof( asyncBulkBuff ) ) == SUCCESS )
+       asyncBulkBuff[0]++;
+     // END TEST
+     
+     return ( events ^ MAIN_ASYNCBULK_EVT );
   }
   
   if ( events & SBP_PERIODIC_EVT )
@@ -716,11 +747,8 @@ static void muJoeDataProfileReadCB( uint8 paramID )
   switch( paramID )
   {
     case MUJOEDATAPROFILE_SYNCBULK:
-      {
-        uint8 breakVal = 100;
       // Do stuff here...
       break;
-      }
     default:
       // should not reach here!
       break;

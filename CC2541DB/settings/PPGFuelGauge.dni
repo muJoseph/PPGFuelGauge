@@ -38,11 +38,13 @@ ShowSource=1
 [Simulator]
 Freq=50000000
 [DebugChecksum]
-Checksum=1731297456
+Checksum=-1692014831
 [CallStack]
 ShowArgs=0
 [Disassembly]
 MixedMode=1
+[array_types]
+Fmt0=uint8 [20]	4	0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -51,7 +53,7 @@ Category=_ 0
 LoggingEnabled=_ 0
 LogFile=_ ""
 [Breakpoints]
-Bp0=_ "STD_LOG" "{$PROJ_DIR$\..\Source\simpleBLEPeripheral.c}.720.15" 1 0 0 0 "" 0 "" 0
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\..\Source\mujoeGenericProfileMgr.c}.141.6" 0 0 0 0 "" 0 ""
 Count=1
 [ChipconEmu]
 Stop timers on halt=0

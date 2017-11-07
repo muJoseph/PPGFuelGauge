@@ -7060,6 +7060,12 @@
       <file>
         <name>$PROJ_DIR$\..\Source\mujoeBoardConfig.c</name>
       </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeBoardSettings.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeEvtMsgr.c</name>
+      </file>
     </group>
     <group>
       <name>DEVICE DRIVERS</name>

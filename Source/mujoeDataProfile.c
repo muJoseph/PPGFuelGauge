@@ -82,7 +82,7 @@ static uint8 muJoeDataProfileSyncBulkUserDesp[10] = "Sync Bulk";
 static gattAttribute_t muJoeDataProfileAttrTbl[MUJOEDATA_NUM_ATTR_SUPPORTED] = 
 {
   // Index 0
-  // muJoe Generic Profile Service
+  // muJoe Data Profile Service
   { 
     { ATT_BT_UUID_SIZE, primaryServiceUUID }, /* type */
     GATT_PERMIT_READ,                         /* permissions */
@@ -395,7 +395,6 @@ static bStatus_t muJoeDataProfile_WriteAttrCB( uint16 connHandle, gattAttribute_
 {
   bStatus_t status = SUCCESS;
   uint8 notifyApp = 0xFF;
-  uint8 *pCurValue = NULL;
   
   // If attribute permissions require authorization to write, return error
   if ( gattPermitAuthorWrite( pAttr->permissions ) )
@@ -410,30 +409,6 @@ static bStatus_t muJoeDataProfile_WriteAttrCB( uint16 connHandle, gattAttribute_
     uint16 uuid = BUILD_UINT16( pAttr->type.uuid[0], pAttr->type.uuid[1]);
     switch ( uuid )
     {
-      /*
-      case MUJOEDATAPROFILE_MAILBOX_UUID:
-        // Make sure it's not a blob oper
-        if ( offset == 0 )
-        {
-          // Validate length of data
-          if ( len != MUJOEDATAPROFILE_MBOX_LEN )
-          {
-            status = ATT_ERR_INVALID_VALUE_SIZE;
-          }
-        }
-        else
-        {
-          status = ATT_ERR_ATTR_NOT_LONG;
-        }
-        
-        // Write the value
-        if ( status == SUCCESS )
-        {
-          pCurValue = (uint8 *)pAttr->pValue;
-          VOID memcpy( pCurValue + offset, pValue, len );
-          notifyApp = MUJOEDATAPROFILE_MAILBOX;
-        }  
-        break;*/
       case GATT_CLIENT_CHAR_CFG_UUID:
         status = GATTServApp_ProcessCCCWriteReq( connHandle, pAttr, pValue, len,
                                                  offset, GATT_CLIENT_CFG_NOTIFY );

@@ -485,7 +485,8 @@ static bStatus_t muJoeGenProfile_WriteAttrCB( uint16 connHandle, gattAttribute_t
         if ( offset == 0 )
         {
           // Validate length of data
-          if ( len != MUJOEGENERICPROFILE_MBOX_LEN )
+          //if ( len != MUJOEGENERICPROFILE_MBOX_LEN ) // Strict
+          if ( len > MUJOEGENERICPROFILE_MBOX_LEN ) // Less strict
           {
             status = ATT_ERR_INVALID_VALUE_SIZE;
           }
@@ -711,6 +712,11 @@ bStatus_t muJoeGenProfile_writeMailbox( uint8 *pMailboxBuff, uint8 buffSize )
     return FAILURE;
   
 } // muJoeGenProfile_writeMailbox
+
+void muJoeGenProfile_clearMailbox( void )
+{
+  VOID memset(muJoeGenProfileMbox, 0, MUJOEGENERICPROFILE_MBOX_LEN);
+} // muJoeGenProfile_clearMailbox
 
 bStatus_t muJoeGenProfile_writeDeviceInfo( uint16 hwVer , uint16 fwVer )
 {
