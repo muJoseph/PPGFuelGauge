@@ -7070,6 +7070,9 @@
     <group>
       <name>DEVICE DRIVERS</name>
       <file>
+        <name>$PROJ_DIR$\..\Source\CAT24C512.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\Source\MS560702.c</name>
       </file>
     </group>

@@ -38,17 +38,18 @@ ShowSource=1
 [Simulator]
 Freq=50000000
 [DebugChecksum]
-Checksum=912989713
+Checksum=1914625210
 [CallStack]
 ShowArgs=0
 [Disassembly]
 MixedMode=1
 [struct_types]
-Fmt0=sensorDatColl_t-currSensor	3	0
-Fmt1=sensorDatColl_t-nextSensor	3	0
-Fmt2=sensorDatColl_t-numSensors	3	0
-Fmt3=sensorDatColl_t-sensorFlags	3	0
-Fmt4=sensorDatColl_t-sensorState	3	0
+Fmt0=CAT24C512_t-pBuff	4	0
+Fmt1=sensorDatColl_t-currSensor	3	0
+Fmt2=sensorDatColl_t-nextSensor	3	0
+Fmt3=sensorDatColl_t-numSensors	3	0
+Fmt4=sensorDatColl_t-sensorFlags	3	0
+Fmt5=sensorDatColl_t-sensorState	3	0
 [array_types]
 Fmt0=uint8 [20]	4	0
 [Log file]
@@ -59,8 +60,9 @@ Category=_ 0
 LoggingEnabled=_ 0
 LogFile=_ ""
 [Breakpoints]
-Bp0=_ "STD_CODE" "{$PROJ_DIR$\..\Source\sensorMgrTask.c}.212.8" 1 0 0 0 "" 0 ""
-Count=1
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\..\Source\sensorMgrTask.c}.227.8" 1 0 0 0 "" 0 ""
+Bp1=_ "STD_CODE" "{$PROJ_DIR$\..\Source\CAT24C512.c}.97.3" 1 0 0 0 "" 0 ""
+Count=2
 [ChipconEmu]
 Stop timers on halt=0
 Leave target running=1

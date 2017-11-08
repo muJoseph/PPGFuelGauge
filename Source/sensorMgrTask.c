@@ -101,6 +101,21 @@ void sensorMgrTask_Init( uint8 task_id )
   sensorMgrTask_TaskID = task_id;
   
   MS560702_initDriver(FALSE);   // Init BAR Drivers, CSB = GND
+  bool stat = CAT24C512_initDriver( 64, FALSE, FALSE, FALSE );
+  while( !stat );               // TRAP MCU if init failed
+  
+  // BEGIN TEST
+  /*if( CAT24C512_initDriver( 128, FALSE, FALSE, FALSE ) )
+  {
+    uint8 testData[128];
+    for( uint8 i = 0; i < 128; i++ )
+    {
+      testData[i] = i;
+    }
+    
+    CAT24C512_writePage( 511, 127, testData, 128 );
+  }*/
+  // END TEST
 
 } // sensorMgrTask_Init
 
