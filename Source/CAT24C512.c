@@ -73,9 +73,12 @@ bool CAT24C512_writeByte( uint16 byteAddr, uint8 byteData )
   
 } // CAT24C512_writeByte
 
-
 bool CAT24C512_writePage( uint16 stPageAddr, uint8 stByteAddr, uint8 *pDataBytes, uint8 numBytes )
 {
+  // Drivers uninitialized, abort
+  if( CAT24C512.i2cWriteAddr == 0x00 ) 
+    return FALSE;
+  
   // Check for unsupported params, abort if necessary
   if( ( numBytes > 128 ) || ( stPageAddr > 511 ) || ( stByteAddr > 127 ) )
     return FALSE;
@@ -100,6 +103,55 @@ bool CAT24C512_writePage( uint16 stPageAddr, uint8 stByteAddr, uint8 *pDataBytes
     return FALSE;
   
 } // CAT24C512_writePage
+
+// Read a single byte
+bool CAT24C512_selectiveRead( uint16 byteAddr, uint8 *pByteData )
+{
+  // Drivers uninitialized, abort
+  if( CAT24C512.i2cWriteAddr == 0x00 ) 
+    return FALSE;
+  
+  uint8 txBuff[2] = { (uint8)(byteAddr >> 8), (uint8)byteAddr };
+  if( mujoeI2C_write( CAT24C512.i2cWriteAddr, 2, txBuff, REPEAT_CMD ) == 2 )
+  {
+     uint8 rxBuff;
+     if( mujoeI2C_read( CAT24C512.i2cWriteAddr, 1, &rxBuff ) )
+     {
+       *pByteData = rxBuff;
+       return TRUE;
+     }
+     else
+       return FALSE;
+  }
+  else
+    return FALSE;
+} // CAT24C512_selectiveRead
+
+bool CAT24C512_sequentialRead( uint16 stByteAddr, uint8 *pByteData, uint8 numBytes )
+{
+  // Drivers uninitialized or Buff size is too small for read operation, abort
+  if( CAT24C512.i2cWriteAddr == 0x00  || numBytes > CAT24C512.buffSize ) 
+    return FALSE;
+  
+  uint8 txBuff[2] = { (uint8)(stByteAddr >> 8), (uint8)stByteAddr };
+  if( mujoeI2C_write( CAT24C512.i2cWriteAddr, 2, txBuff, REPEAT_CMD ) == 2 )
+  {
+     if( mujoeI2C_read( CAT24C512.i2cWriteAddr, numBytes, CAT24C512.pBuff ) == numBytes )
+     {
+       // Copy RX'd data into output buffer arg
+       for( uint8 i = 0; i < numBytes; i++ )
+       {
+         pByteData[i] = CAT24C512.pBuff[i];
+       }
+       return TRUE;
+     }
+     else
+       return FALSE;
+  }
+  else
+    return FALSE;
+  
+} // CAT24C512_sequentialRead
 
 ////////////////////////////////////////////////////////////////////////////////
 // STATIC FUNCTIONS

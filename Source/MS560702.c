@@ -25,6 +25,7 @@ static MS560702_t MS560702 =
 
 static bool MS560702_readPROMCoeff( MS560702_promCoeffAddr_t addr, uint16 *pCoeffVal );
 static bool MS560702_sendCommand( MS560702_cmds_t cmd );
+static uint8 crc4( uint16 *prom );
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTIONS
@@ -43,17 +44,21 @@ bool MS560702_initDriver( bool csbState )
 
 // Initialize the MS560702 IC
 // Reads out the cal coefficients stored within the PROM (C1 thru C6) 
-// and stores them in the local driver struct
+// and stores them in the local driver struct along with assoc CRC.
 // Returns TRUE if successful, FALSE otherwise.
 bool MS560702_initHardware( void )
 {
-  for( uint8 i = MS5_PROM_COEFF1_ADDR; i <= MS5_PROM_COEFF6_ADDR; i++ )
+  for( uint8 i = MS5_PROM_RESERVED_ADDR; i <= MS5_PROM_CRC_ADDR; i++ )
   {
-     if( !MS560702_readPROMCoeff( (MS560702_promCoeffAddr_t)i, MS560702.coeffTbl + i - 1 ) )
+     if( !MS560702_readPROMCoeff( (MS560702_promCoeffAddr_t)i, MS560702.prom + i ) )
        return FALSE;
   }
   
-  return TRUE;
+  // Check stored CRC of PROM
+  if( crc4( MS560702.prom ) == (uint8)MS560702.prom[7] )
+    return TRUE;
+  else
+    return FALSE;
   
 } // MS560702_initHardware
 
@@ -92,7 +97,7 @@ bool MS560702_readAdcConv( uint32 *pAdcCode )
     {
       *pAdcCode = ( ( (uint32)adcConvBytes[0] ) << 16 ) + 
                   ( ( (uint32)adcConvBytes[1] ) << 8 ) +
-                   adcConvBytes[2]; 
+                  adcConvBytes[2]; 
       return TRUE;
     }
     else
@@ -111,10 +116,11 @@ bool MS560702_readAdcConv( uint32 *pAdcCode )
 ////////////////////////////////////////////////////////////////////////////////
 // STATIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
+
 static bool MS560702_readPROMCoeff( MS560702_promCoeffAddr_t addr, uint16 *pCoeffVal )
 {
-  // Attempt reading reserved mem or drivers uninitialized, return failure
-  if( addr == MS5_PROM_RESERVED_ADDR || MS560702.i2cWriteAddr == 0 )  
+  // Drivers uninitialized, abort
+  if( MS560702.i2cWriteAddr == 0 )  
     return FALSE;
   
   // Send PROM read cmd concatenated with shifted coeff addr
@@ -146,4 +152,37 @@ static bool MS560702_sendCommand( MS560702_cmds_t cmd )
     return FALSE;
   
 } // MS560702_sendCommand
+
+// Computes the 4-bit crc on PROM data
+static uint8 crc4( uint16 *prom )
+{
+  uint16 n_rem = 0x00;               // crc remainder
+  uint16 crc_read = prom[7];         // original value of the crc
+  prom[7] &= 0xFF00;                 // CRC byte is replaced by 0
+  
+  // operation is performed on bytes
+  for ( uint8 cnt = 0; cnt < 16; cnt++) 
+  {     
+    // choose LSB or MSB
+    if ( cnt % 2 == 1 )
+      n_rem ^= (uint16) ((prom[cnt>>1]) & 0x00FF);  // LSB
+    else
+      n_rem ^= (uint16) (prom[cnt>>1]>>8);          // MSB
+    
+    for ( uint8 n_bit = 8; n_bit > 0; n_bit-- )
+    {
+        if (n_rem & (0x8000))
+          n_rem = (n_rem << 1) ^ 0x3000;
+        else
+          n_rem = (n_rem << 1);
+    }
+  }
+  
+  // final 4-bit reminder is CRC code
+  n_rem = (0x000F & (n_rem >> 12));
+  // restore the crc_read to its original place
+  prom[7] = crc_read; 
+  
+  return (n_rem ^ 0x0);
+}
 

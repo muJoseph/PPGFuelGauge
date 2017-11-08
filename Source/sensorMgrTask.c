@@ -104,7 +104,9 @@ void sensorMgrTask_Init( uint8 task_id )
   bool stat = CAT24C512_initDriver( 64, FALSE, FALSE, FALSE );
   while( !stat );               // TRAP MCU if init failed
   
-  // BEGIN TEST
+  //MS560702_initHardware();      // BAR TEST
+  
+  // BEGIN EEPROM DRIVER TEST
   /*if( CAT24C512_initDriver( 128, FALSE, FALSE, FALSE ) )
   {
     uint8 testData[128];
@@ -115,7 +117,7 @@ void sensorMgrTask_Init( uint8 task_id )
     
     CAT24C512_writePage( 511, 127, testData, 128 );
   }*/
-  // END TEST
+  // END EEPROM DRIVER TEST
 
 } // sensorMgrTask_Init
 

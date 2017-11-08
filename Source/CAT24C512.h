@@ -24,12 +24,19 @@
 // TYPEDEFS
 ////////////////////////////////////////////////////////////////////////////////
 
+typedef struct memMgr_def
+{
+   uint16               currHdrAddr;
+   uint16               currTlAddr;
+   
+}memMgr_t;
 
 typedef struct CAT24C512_def
 {
   uint8         i2cWriteAddr;
   uint8         *pBuff;                 // Pointer to RX/TX buff
   uint8         buffSize;               // Size of buffer that pBuff pts to
+  memMgr_t      memMgr;
   
 }CAT24C512_t;
 
@@ -38,6 +45,8 @@ typedef struct CAT24C512_def
 ////////////////////////////////////////////////////////////////////////////////
 
 bool CAT24C512_initDriver( uint8 buffSize, bool a2, bool a1, bool a0 );
+bool CAT24C512_writeByte( uint16 byteAddr, uint8 byteData );
 bool CAT24C512_writePage( uint16 stPageAddr, uint8 stByteAddr, uint8 *pDataBytes, uint8 numBytes );
+bool CAT24C512_selectiveRead( uint16 byteAddr, uint8 *pByteData );
 
 #endif // CAT24C512_H

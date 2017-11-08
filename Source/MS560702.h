@@ -58,13 +58,16 @@ typedef enum
   MS5_PROM_COEFF4_ADDR,
   MS5_PROM_COEFF5_ADDR,
   MS5_PROM_COEFF6_ADDR,
+  MS5_PROM_CRC_ADDR
   
 }MS560702_promCoeffAddr_t;
 
 typedef struct MS560702_def
 {
   uint8         i2cWriteAddr;
-  uint16        coeffTbl[6];
+  uint16        prom[8];        // Index 0: Mfg reserved, Indices 1-6: Coefficients, Index 7: CRC for coefficients
+  //uint16        coeffTbl[7];    // Indices 0-5: Coefficients, Index 6: CRC for coefficients
+  //uint8         coeffCrc;
   
 }MS560702_t;
 
