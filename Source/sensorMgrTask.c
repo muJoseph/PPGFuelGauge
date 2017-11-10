@@ -102,7 +102,9 @@ void sensorMgrTask_Init( uint8 task_id )
   
   MS560702_initDriver(FALSE);   // Init BAR Drivers, CSB = GND
   bool stat = CAT24C512_initDriver( 64, FALSE, FALSE, FALSE );
-  while( !stat );               // TRAP MCU if init failed
+  //while( !stat );               // TRAP MCU if init failed
+  stat = MMA8453Q_initDriver( 10, FALSE );
+  //while( !stat );               // TRAP MCU if init failed
   
   //MS560702_initHardware();      // BAR TEST
   

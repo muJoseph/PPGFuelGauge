@@ -27,6 +27,7 @@ extern "C"
 // Device Drivers
 #include "MS560702.h"
 #include "CAT24C512.h"
+#include "MMA8453Q.h"
   
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINES

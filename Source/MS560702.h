@@ -66,8 +66,6 @@ typedef struct MS560702_def
 {
   uint8         i2cWriteAddr;
   uint16        prom[8];        // Index 0: Mfg reserved, Indices 1-6: Coefficients, Index 7: CRC for coefficients
-  //uint16        coeffTbl[7];    // Indices 0-5: Coefficients, Index 6: CRC for coefficients
-  //uint8         coeffCrc;
   
 }MS560702_t;
 

@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
-// @filename: CAT24C512.h
+// @filename: MMA8453QMgr.h
 // @author: Joseph Corteo Jr.
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef CAT24C512_H
-#define CAT24C512_H
+#ifndef MMA8453QMGR_H
+#define MMA8453QMGR_H
 
 ////////////////////////////////////////////////////////////////////////////////
 // INCLUDE
@@ -12,42 +12,30 @@
 
 #include "hal_types.h"
 #include "mujoeI2C.h"
-#include "OSAL_Memory.h"        // for osal_mem_alloc
-#include "string.h"             // for memcpy
+#include "MMA8453Q.h"
+
+//#include "OSAL_Memory.h"        // for osal_mem_alloc
+//#include "string.h"             // for memcpy
 
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINES
 ////////////////////////////////////////////////////////////////////////////////
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // TYPEDEFS
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef struct memMgr_def
+typedef struct MMA8453QMGR_def
 {
-   uint16               currHdrAddr;
-   uint16               currTlAddr;
-   
-}memMgr_t;
+  mma845xq_sysOdr_t             sysOdr;         // System Output Data Rate
+  mma845xq_slpOdr_t             slpOdr;         // Sleep Mode Output Data Rate
+  mma845xq_actPwrSch_t          actPwrSch;      // Active Power Scheme
+  mma845xq_slpPwrSch_t          slpPwrSch;      // Sleep Power Scheme 
 
-typedef struct CAT24C512_def
-{
-  uint8         i2cWriteAddr;
-  uint8         *pBuff;                 // Pointer to RX/TX buff
-  uint8         buffSize;               // Size of buffer that pBuff pts to
-  memMgr_t      memMgr;
-  
-}CAT24C512_t;
+} MMA8453QMGR_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTION PROTOS
 ////////////////////////////////////////////////////////////////////////////////
 
-bool CAT24C512_initDriver( uint8 buffSize, bool a2, bool a1, bool a0 );
-bool CAT24C512_writeByte( uint16 byteAddr, uint8 byteData );
-bool CAT24C512_writePage( uint16 stPageAddr, uint8 stByteAddr, uint8 *pDataBytes, uint8 numBytes );
-bool CAT24C512_selectiveRead( uint16 byteAddr, uint8 *pByteData );
-bool CAT24C512_sequentialRead( uint16 stByteAddr, uint8 *pByteData, uint8 numBytes );
-
-#endif // CAT24C512_H
+#endif // MMA8453QMGR_H

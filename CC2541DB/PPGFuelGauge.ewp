@@ -7073,6 +7073,12 @@
         <name>$PROJ_DIR$\..\Source\CAT24C512.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\Source\MMA8453Q.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\MMA8453QMgr.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\Source\MS560702.c</name>
       </file>
     </group>
