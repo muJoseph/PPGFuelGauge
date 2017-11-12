@@ -38,7 +38,7 @@ ShowSource=1
 [Simulator]
 Freq=50000000
 [DebugChecksum]
-Checksum=460743102
+Checksum=888339338
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -46,15 +46,20 @@ MixedMode=1
 [struct_types]
 Fmt0=CAT24C512_t-pBuff	4	0
 Fmt1=MMA845xQ_t-pBuff	4	0
-Fmt2=sensorDatColl_t-currSensor	3	0
-Fmt3=sensorDatColl_t-nextSensor	3	0
-Fmt4=sensorDatColl_t-numSensors	3	0
-Fmt5=sensorDatColl_t-sensorFlags	3	0
-Fmt6=sensorDatColl_t-sensorState	3	0
+Fmt2=MS560702_t-i2cWriteAddr	4	0
+Fmt3=sensorDatColl_t-currSensor	3	0
+Fmt4=sensorDatColl_t-nextSensor	3	0
+Fmt5=sensorDatColl_t-numSensors	3	0
+Fmt6=sensorDatColl_t-sensorFlags	3	0
+Fmt7=sensorDatColl_t-sensorState	3	0
 [array_types]
-Fmt0=uint8 [20]	4	0
+Fmt0=uint16 [8]	4	0
+Fmt1=uint8 [20]	4	0
 [watch_formats]
 Fmt0={W}1:crc	4	0
+Fmt1={W}1:crcTest	4	0
+Fmt2={W}1:rxBuff	4	0
+Fmt3={W}1:rxByte	4	0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""

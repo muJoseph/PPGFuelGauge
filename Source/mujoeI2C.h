@@ -93,6 +93,7 @@ typedef enum
 ////////////////////////////////////////////////////////////////////////////////
 
 void mujoeI2C_initHardware( i2cClock_t clockRate );
+bool mujoeI2C_i2cPingSlave( uint8 slaWriteAddr );
 uint8 mujoeI2C_read( uint8 addr, uint8 len, uint8 *pBuf );
 uint8 mujoeI2C_write( uint8 addr, uint8 len, uint8 *pBuf, uint8 stp );
 

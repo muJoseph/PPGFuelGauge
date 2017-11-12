@@ -19,6 +19,11 @@
 // DEFINES
 ////////////////////////////////////////////////////////////////////////////////
 
+#define CAT24C512_FIRST_PAGE_ADDR       0
+#define CAT24C512_LAST_PAGE_ADDR        511
+
+#define CAT24C512_FIRST_BYTE_ADDR       0
+#define CAT24C512_LAST_BYTE_ADDR        127
 
 ////////////////////////////////////////////////////////////////////////////////
 // TYPEDEFS
@@ -45,9 +50,10 @@ typedef struct CAT24C512_def
 ////////////////////////////////////////////////////////////////////////////////
 
 bool CAT24C512_initDriver( uint8 buffSize, bool a2, bool a1, bool a0 );
-bool CAT24C512_writeByte( uint16 byteAddr, uint8 byteData );
+bool CAT24C512_initHardware( void );
+bool CAT24C512_writeByte( uint16 pageAddr, uint8 byteAddr, uint8 byteData );
 bool CAT24C512_writePage( uint16 stPageAddr, uint8 stByteAddr, uint8 *pDataBytes, uint8 numBytes );
-bool CAT24C512_selectiveRead( uint16 byteAddr, uint8 *pByteData );
-bool CAT24C512_sequentialRead( uint16 stByteAddr, uint8 *pByteData, uint8 numBytes );
+bool CAT24C512_selectiveRead( uint16 pageAddr, uint8 byteAddr, uint8 *pByteData );
+bool CAT24C512_sequentialRead( uint16 stPageAddr, uint8 stByteAddr, uint8 *pByteData, uint8 numBytes );
 
 #endif // CAT24C512_H

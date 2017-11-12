@@ -58,8 +58,16 @@ static bool mujoeBoardConfig_initGPIOS( void );
 
 bool mujoeBoardConfig_initBoard( void )
 {
-    bool retVal;
-    retVal = mujoeBoardConfig_initGPIOS();         // Init GPIOs
+    bool retVal = TRUE;
+    // Uncomment for deployment
+    //retVal = mujoeBoardConfig_initGPIOS();         // Init GPIOs
+    // BEGIN TEST
+    //P2DIR |= 0x01;      // P2.0 RLED
+    //P2 &= ~0x01;
+    //P1DIR |= 0x01;      // P1.0 GLED
+    //P1 &= ~0x01;
+    // END TEST
+    
     mujoeI2C_initHardware( i2cClock_267KHZ );      // Init I2C Hardware
     return retVal;
     

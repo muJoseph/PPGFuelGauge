@@ -134,6 +134,7 @@ typedef struct MMA845xQ_def
 ////////////////////////////////////////////////////////////////////////////////
 
 bool MMA8453Q_initDriver( uint8 buffSize, bool sa0 );
+bool MMA845Q_initHardware( void );
 bool MMA8453Q_readReg( mma845xq_regAddr_t addr, uint8 *pData );
 bool MMA8453Q_bulkRead( mma845xq_regAddr_t stAddr, uint8 *pData, uint8 numBytes );
 bool MMA8453Q_writeReg( mma845xq_regAddr_t addr, uint8 data );

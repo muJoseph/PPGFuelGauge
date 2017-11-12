@@ -75,6 +75,7 @@ typedef struct MS560702_def
 
 bool MS560702_initDriver( bool csbState );
 bool MS560702_initHardware( void );
+bool MS560702_reset( void );
 bool MS560702_trigPressureConv( MS560702_osr_t osr );
 bool MS560702_trigTemperatureConv( MS560702_osr_t osr );
 bool MS560702_readAdcConv( uint32 *pAdcCode );

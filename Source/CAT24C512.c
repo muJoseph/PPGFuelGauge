@@ -24,6 +24,8 @@ static CAT24C512_t CAT24C512 =
 // LOCAL FUNCTION PROTOS
 ////////////////////////////////////////////////////////////////////////////////
 
+static void CAT24C512_buildAddrPayload(uint16 pageAddr, uint8 byteAddr, uint8 *pPayload );
+
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
@@ -59,13 +61,25 @@ bool CAT24C512_initDriver( uint8 buffSize, bool a2, bool a1, bool a0 )
   
 } // CAT24C512_initDriver
 
-// Write to single byte
-bool CAT24C512_writeByte( uint16 byteAddr, uint8 byteData )
+bool CAT24C512_initHardware( void )
 {
-  if( CAT24C512.i2cWriteAddr == 0x00 )  // Drivers uninitialized, abort
+  return mujoeI2C_i2cPingSlave( CAT24C512.i2cWriteAddr );
+  
+} // CAT24C512_initHardware
+
+// Write to single byte
+bool CAT24C512_writeByte( uint16 pageAddr, uint8 byteAddr, uint8 byteData )
+{
+  // Drivers uninitialized, abort
+  if( CAT24C512.i2cWriteAddr == 0x00 )  
     return FALSE;
   
-  uint8 txBuff[3] = { (uint8)(byteAddr >> 8), (uint8)byteAddr , byteData };
+  // Build TX payload
+  uint8 txBuff[3] = {0};
+  CAT24C512_buildAddrPayload(pageAddr, byteAddr, txBuff );
+  txBuff[2] = byteData;
+ 
+  // Send TX payload
   if( mujoeI2C_write( CAT24C512.i2cWriteAddr, 3, txBuff, STOP_CMD ) == 3 )
     return TRUE;
   else
@@ -80,9 +94,10 @@ bool CAT24C512_writePage( uint16 stPageAddr, uint8 stByteAddr, uint8 *pDataBytes
     return FALSE;
   
   // Check for unsupported params, abort if necessary
-  if( ( numBytes > 128 ) || ( stPageAddr > 511 ) || ( stByteAddr > 127 ) )
+  if( ( numBytes > 128 ) || ( stPageAddr > CAT24C512_LAST_PAGE_ADDR ) || ( stByteAddr > CAT24C512_LAST_BYTE_ADDR ) )
     return FALSE;
   
+  /*
   uint8 addrMsbyte = (uint8)(stPageAddr >> 1);
   uint8 addrLsbyte = stByteAddr;
   if( stPageAddr & 0x0001 )     // Transfer LSb of stPageAddr to MSb of addrLsbyte
@@ -91,6 +106,10 @@ bool CAT24C512_writePage( uint16 stPageAddr, uint8 stByteAddr, uint8 *pDataBytes
   // Load 16 bit address into local TX/RX buffer
   CAT24C512.pBuff[0] = addrMsbyte;
   CAT24C512.pBuff[1] = addrLsbyte;
+  */
+  
+  // Load 16 bit address into local TX/RX buffer
+  CAT24C512_buildAddrPayload( stPageAddr, stByteAddr, CAT24C512.pBuff );
   
   // Copy data to be written into local TX/RX buffer
   if( CAT24C512.pBuff != NULL )
@@ -105,13 +124,17 @@ bool CAT24C512_writePage( uint16 stPageAddr, uint8 stByteAddr, uint8 *pDataBytes
 } // CAT24C512_writePage
 
 // Read a single byte
-bool CAT24C512_selectiveRead( uint16 byteAddr, uint8 *pByteData )
+bool CAT24C512_selectiveRead( uint16 pageAddr, uint8 byteAddr, uint8 *pByteData )
 {
   // Drivers uninitialized, abort
   if( CAT24C512.i2cWriteAddr == 0x00 ) 
     return FALSE;
   
-  uint8 txBuff[2] = { (uint8)(byteAddr >> 8), (uint8)byteAddr };
+  // Build TX payload
+  uint8 txBuff[2] ={0};
+  CAT24C512_buildAddrPayload( pageAddr, byteAddr, txBuff );
+
+  // TX payload
   if( mujoeI2C_write( CAT24C512.i2cWriteAddr, 2, txBuff, REPEAT_CMD ) == 2 )
   {
      uint8 rxBuff;
@@ -125,15 +148,19 @@ bool CAT24C512_selectiveRead( uint16 byteAddr, uint8 *pByteData )
   }
   else
     return FALSE;
+  
 } // CAT24C512_selectiveRead
 
-bool CAT24C512_sequentialRead( uint16 stByteAddr, uint8 *pByteData, uint8 numBytes )
+bool CAT24C512_sequentialRead( uint16 stPageAddr, uint8 stByteAddr, uint8 *pByteData, uint8 numBytes )
 {
   // Drivers uninitialized or Buff size is too small for read operation, abort
   if( CAT24C512.i2cWriteAddr == 0x00  || numBytes > CAT24C512.buffSize ) 
     return FALSE;
   
-  uint8 txBuff[2] = { (uint8)(stByteAddr >> 8), (uint8)stByteAddr };
+  // Build TX payload
+  uint8 txBuff[2] = {0};
+  CAT24C512_buildAddrPayload( stPageAddr, stByteAddr, txBuff );
+  
   if( mujoeI2C_write( CAT24C512.i2cWriteAddr, 2, txBuff, REPEAT_CMD ) == 2 )
   {
      if( mujoeI2C_read( CAT24C512.i2cWriteAddr, numBytes, CAT24C512.pBuff ) == numBytes )
@@ -157,6 +184,22 @@ bool CAT24C512_sequentialRead( uint16 stByteAddr, uint8 *pByteData, uint8 numByt
 // STATIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
+// Prepares the page address and byte address into a 2-byte array payload in preparation
+// for a serial I2C transaction.
+static void CAT24C512_buildAddrPayload( uint16 pageAddr, uint8 byteAddr, uint8 *pPayload )
+{
+  // Clamp page and byte addresses to last address if exceeded
+  if( pageAddr > CAT24C512_LAST_PAGE_ADDR ) { pageAddr = CAT24C512_LAST_PAGE_ADDR; }
+  if( byteAddr > CAT24C512_LAST_BYTE_ADDR ) { byteAddr = CAT24C512_LAST_BYTE_ADDR; }
+  
+  // Transfer LSb of pageAddr to MSb of addrLsbyte
+  uint8 addrLsbyte = byteAddr;
+  if( pageAddr & 0x0001 )    
+    addrLsbyte |= 0x80;
+  
+  pPayload[0] = (uint8)(pageAddr >> 1); // Load Address MSByte
+  pPayload[1] = addrLsbyte;             // Load Address LSByte
+}
 
 
 

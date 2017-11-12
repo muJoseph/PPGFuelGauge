@@ -102,24 +102,9 @@ void sensorMgrTask_Init( uint8 task_id )
   
   MS560702_initDriver(FALSE);   // Init BAR Drivers, CSB = GND
   bool stat = CAT24C512_initDriver( 64, FALSE, FALSE, FALSE );
-  //while( !stat );               // TRAP MCU if init failed
+  while( !stat );               // TRAP MCU if init failed
   stat = MMA8453Q_initDriver( 10, FALSE );
-  //while( !stat );               // TRAP MCU if init failed
-  
-  //MS560702_initHardware();      // BAR TEST
-  
-  // BEGIN EEPROM DRIVER TEST
-  /*if( CAT24C512_initDriver( 128, FALSE, FALSE, FALSE ) )
-  {
-    uint8 testData[128];
-    for( uint8 i = 0; i < 128; i++ )
-    {
-      testData[i] = i;
-    }
-    
-    CAT24C512_writePage( 511, 127, testData, 128 );
-  }*/
-  // END EEPROM DRIVER TEST
+  while( !stat );               // TRAP MCU if init failed
 
 } // sensorMgrTask_Init
 
@@ -161,8 +146,8 @@ uint16 sensorMgrTask_ProcessEvent( uint8 task_id, uint16 events )
   if( events & SENSORMGR_INIT_SENSORS_EVT )
   {
     bool stat = sensorMgrTask_initSensors();
-    //while( !stat );     // Trap MCU if failure  
-    osal_set_event( sensorMgrTask_TaskID, SENSORMGR_DATA_COLLECTOR_EVT );       // TEST
+    while( !stat );     // Trap MCU if failure  
+    //osal_set_event( sensorMgrTask_TaskID, SENSORMGR_DATA_COLLECTOR_EVT );       // TEST
     return (events ^ SENSORMGR_INIT_SENSORS_EVT);
   }
   
@@ -268,7 +253,14 @@ static void MMA8453_dataCollector( p_sensorDatColl_t sdc )
 
 static bool sensorMgrTask_initSensors( void )
 {
+  // Init Barometer IC
   if( !MS560702_initHardware() )
+    return FALSE;
+  // Init Accelerometer IC
+  if( !MMA845Q_initHardware() )
+    return FALSE;
+  // Init EEPROM IC
+  if( !CAT24C512_initHardware() )
     return FALSE;
   
   return TRUE;

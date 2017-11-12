@@ -48,14 +48,16 @@ bool MS560702_initDriver( bool csbState )
 // Returns TRUE if successful, FALSE otherwise.
 bool MS560702_initHardware( void )
 {
+  // Read the eight 16-bit words out of PROM
   for( uint8 i = MS5_PROM_RESERVED_ADDR; i <= MS5_PROM_CRC_ADDR; i++ )
   {
+     // Abort if any words cannot be read
      if( !MS560702_readPROMCoeff( (MS560702_promCoeffAddr_t)i, MS560702.prom + i ) )
        return FALSE;
   }
   
-  // Check stored CRC of PROM
-  if( crc4( MS560702.prom ) == (uint8)MS560702.prom[7] )
+  // Check the 4-bit CRC stored in PROM against the computed CRC
+  if( crc4( MS560702.prom ) == ( MS560702.prom[7] & 0x000F ) )
     return TRUE;
   else
     return FALSE;
@@ -146,14 +148,15 @@ static bool MS560702_sendCommand( MS560702_cmds_t cmd )
   if( MS560702.i2cWriteAddr == 0 )      // Driver not initialized, abort
     return FALSE;
   
-  if( mujoeI2C_write( MS560702.i2cWriteAddr , 1, (uint8*)cmd, STOP_CMD ) )
+  uint8 u8_cmd = (uint8)cmd;
+  if( mujoeI2C_write( MS560702.i2cWriteAddr , 1, &u8_cmd, STOP_CMD ) )
     return TRUE;
   else 
     return FALSE;
   
 } // MS560702_sendCommand
 
-// Computes the 4-bit crc on PROM data
+// Computes the 4-bit crc on eight 16-bit words of PROM data
 static uint8 crc4( uint16 *prom )
 {
   uint16 n_rem = 0x00;               // crc remainder

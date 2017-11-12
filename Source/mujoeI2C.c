@@ -184,6 +184,15 @@ uint8 mujoeI2C_write( uint8 addr, uint8 len, uint8 *pBuf, uint8 stp )
   return len;                                     // Return the number of bytes successfully transmitted
 } // mujoeI2C_write
 
+// Pings the I2C IC with the I2C slave write address of "slaWriteAddr"
+// with a START condition followed by a SLA + R byte.
+// Returns TRUE if ACK was RX'd from slave, FALSE otherwise.
+bool mujoeI2C_i2cPingSlave( uint8 slaWriteAddr )
+{
+  return ( masterStartI2C( slaWriteAddr, 0x01 ) == mstAddrAckR ) ? TRUE : FALSE;
+    
+} // mujoeI2C_i2cPingSlave
+
 ////////////////////////////////////////////////////////////////////////////////
 // STATIC FUNCTIONS                             
 ////////////////////////////////////////////////////////////////////////////////
