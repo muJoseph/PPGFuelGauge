@@ -143,6 +143,8 @@ static uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "PPGFuelGauge";
  */
 static void mainTask_ProcessOSALMsg( osal_event_hdr_t *pMsg );
 static void mainTask_ProcessGATTMsg( gattMsgEvent_t *pMsg );
+static void mainTask_ProcessSensorMgrMsg( msg_t *msg );
+
 static void peripheralStateNotificationCB( gaprole_States_t newState );
 static void performPeriodicTask( void );
 static void muJoeGenProfileChangeCB( uint8 paramID );
@@ -380,7 +382,8 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
 
     if ( (pMsg = osal_msg_receive( mainTask_TaskID )) != NULL )
     {
-      mainTask_ProcessOSALMsg( (osal_event_hdr_t *)pMsg );
+      mainTask_ProcessOSALMsg( (osal_event_hdr_t *)pMsg );    // DEFAULT
+      //mainTask_ProcessMsg( (taskMsgrMsg_t *)pMsg ); // TEST
 
       // Release the OSAL message
       VOID osal_msg_deallocate( pMsg );
@@ -485,13 +488,30 @@ static void mainTask_ProcessOSALMsg( osal_event_hdr_t *pMsg )
       // Process GATT message
       mainTask_ProcessGATTMsg( (gattMsgEvent_t *)pMsg );
       break;
-      
+    // Process Messages from SensorManager Task
+    case SENSORMGRTASK:
+      mainTask_ProcessSensorMgrMsg( (msg_t *)pMsg );
+      break;
     default:
       // do nothing
       break;
   }
 } // mainTask_ProcessOSALMsg
 
+static void mainTask_ProcessSensorMgrMsg( msg_t *msg )
+{
+  sensorMgrTask_msg_t sensorMgrTask_msg = msg->sensorMgrTask;
+  
+  switch( sensorMgrTask_msg )
+  {
+    case SENSORMGR_HWINIT_DONE:
+      muJoeGPIO_writePin(MUJOE_PINID_CHG_LED,FALSE);    // TEST: Turn on RLED
+      break;
+    default:
+      break;
+  }
+  
+}//mainTask_ProcessSensorMgrMsg
 /*********************************************************************
  * @fn      mainTask_ProcessGATTMsg
  *

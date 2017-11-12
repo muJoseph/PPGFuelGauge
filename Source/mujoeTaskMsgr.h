@@ -1,0 +1,70 @@
+////////////////////////////////////////////////////////////////////////////////
+// @filename: mujoeTaskMsgr.h
+// @author: Joseph Corteo Jr.
+////////////////////////////////////////////////////////////////////////////////
+
+#ifndef MUJOETASKMSGR_H
+#define MUJOETASKMSGR_H
+
+////////////////////////////////////////////////////////////////////////////////
+// INCLUDE
+////////////////////////////////////////////////////////////////////////////////
+
+#include "hal_types.h"
+#include "OSAL.h"
+#include "string.h"     // For memcpy
+
+////////////////////////////////////////////////////////////////////////////////
+// TYPEDEFS
+////////////////////////////////////////////////////////////////////////////////
+
+typedef enum
+{
+  MAINTASK              = 0,
+  SENSORMGRTASK,
+  
+}osalMsg_evt_t;
+
+typedef enum
+{
+  MAIN_GENERIC = 0,
+  
+}mainTask_msg_t;
+
+typedef enum
+{
+  SENSORMGR_GENERIC = 0,
+  SENSORMGR_HWINIT_DONE,     // Hardware init complete
+  
+}sensorMgrTask_msg_t;
+
+typedef union msg_def
+{
+  mainTask_msg_t         mainTask;
+  sensorMgrTask_msg_t    sensorMgrTask;
+  
+}msg_t;
+
+/* // EXAMPLE
+typedef struct
+{
+  osal_event_hdr_t hdr;
+  uint8             state; // shift
+  uint8             keys;  // keys
+} keyChange_t;
+*/
+
+typedef struct taskMsgrMsg_def
+{
+  osal_event_hdr_t      hdr;
+  msg_t                 msg;
+  
+}taskMsgrMsg_t;
+
+////////////////////////////////////////////////////////////////////////////////
+// FUNCTION PROTOS
+////////////////////////////////////////////////////////////////////////////////
+
+bool mujoeTaskMsgr_sendMsg( uint8 destTaskID, taskMsgrMsg_t msg );
+
+#endif // MUJOETASKMSGR_H

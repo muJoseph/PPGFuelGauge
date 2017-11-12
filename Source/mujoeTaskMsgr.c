@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// @filename: mujoeBoardSettings.c
+// @filename: mujoeTaskMsgr.c
 // @author: Joseph Corteo Jr.
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -7,14 +7,24 @@
 // INCLUDE
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "mujoeBoardSettings.h"
+#include "mujoeTaskMsgr.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-// GLOBAL VAR
+// FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
-mujoeBrdSettings_t mujoeBrdSettings = 
+bool mujoeTaskMsgr_sendMsg( uint8 destTaskID, taskMsgrMsg_t msg )
 {
-  .asyncBulkSampPeriod = MUJOE_ASYNCBULK_PERIOD_DEFAULT,
+  taskMsgrMsg_t *msgPtr = (taskMsgrMsg_t *)osal_msg_allocate( sizeof(taskMsgrMsg_t) );
   
-}; // mujoeBrdSettings
+  if( msgPtr )
+  {
+    VOID memcpy( msgPtr, &msg, sizeof( taskMsgrMsg_t ) );
+    if( osal_msg_send( destTaskID, (uint8 *)msgPtr ) == SUCCESS )
+      return TRUE;
+    else
+      return FALSE;
+  }
+  else
+    return FALSE;
+} // mujoeTaskMsgr_sendMsg

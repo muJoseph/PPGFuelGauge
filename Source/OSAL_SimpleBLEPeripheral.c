@@ -109,7 +109,7 @@ const pTaskEventHandlerFn tasksArr[] =
   GAPRole_ProcessEvent,                                             // task 8
   GAPBondMgr_ProcessEvent,                                          // task 9
   GATTServApp_ProcessEvent,                                         // task 10
-  mainTask_ProcessEvent,//SimpleBLEPeripheral_ProcessEvent,         // task 11
+  mainTask_ProcessEvent,                                            // task 11
   sensorMgrTask_ProcessEvent                                        // task 12    
 };
 

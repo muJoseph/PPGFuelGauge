@@ -51,6 +51,7 @@ static bool sensorMgrTask_initSensors( void );
 static void MS560702_dataCollector( p_sensorDatColl_t sdc );
 static void MMA8453_dataCollector( p_sensorDatColl_t sdc );
 static void sensorMgrTask_dataCollector( void );
+static bool sensorMgrTask_SendOSALMsg( uint8 destTaskID, sensorMgrTask_msg_t msg );
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL VAR
@@ -146,7 +147,7 @@ uint16 sensorMgrTask_ProcessEvent( uint8 task_id, uint16 events )
   if( events & SENSORMGR_INIT_SENSORS_EVT )
   {
     bool stat = sensorMgrTask_initSensors();
-    while( !stat );     // Trap MCU if failure  
+    while( !stat );     // Trap MCU if failure
     //osal_set_event( sensorMgrTask_TaskID, SENSORMGR_DATA_COLLECTOR_EVT );       // TEST
     return (events ^ SENSORMGR_INIT_SENSORS_EVT);
   }
@@ -263,9 +264,21 @@ static bool sensorMgrTask_initSensors( void )
   if( !CAT24C512_initHardware() )
     return FALSE;
   
+  // BEGIN TEST
+  sensorMgrTask_SendOSALMsg( mainTask_getTaskId(), SENSORMGR_HWINIT_DONE );     // TEST
+  
   return TRUE;
   
 } // sensorMgrTask_initSensors
+
+static bool sensorMgrTask_SendOSALMsg( uint8 destTaskID, sensorMgrTask_msg_t msg )
+{
+  taskMsgrMsg_t taskMsg;
+  taskMsg.hdr.event = SENSORMGRTASK;
+  taskMsg.msg.sensorMgrTask = msg;
+  return mujoeTaskMsgr_sendMsg( mainTask_getTaskId(), taskMsg );
+  
+} // sensorMgrTask_SendOSALMsg
 
 /*********************************************************************
  * @fn      sensorMgrTask_ProcessOSALMsg

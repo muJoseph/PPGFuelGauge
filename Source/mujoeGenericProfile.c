@@ -336,15 +336,6 @@ bStatus_t MuJoeGenericProfile_AddService( void )
   
 } // MuJoeGenericProfile_AddService
 
-// NOTE: Consider deleting
-static void muJoeGenProfile_initServiceStruct( void )
-{
-
-  muJoeGenService.muJoeGenService_charTbl = muJoeGenService_CharTbl;
-  muJoeGenService.numChars = MUJOEGENERICPROFILE_NUM_CHAR;
-  
-} // muJoeGenProfile_initServiceStruct
-
 /*********************************************************************
  * @fn          muJoeGenProfile_ReadAttrCB
  *

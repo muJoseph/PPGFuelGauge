@@ -10,47 +10,16 @@
 #include "mujoeBoardConfig.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-// LOCAL VARS
+// GLOBAL VARS
 ////////////////////////////////////////////////////////////////////////////////
 
-#if defined( ASSET_TAG_BLE )
-
-static gpioConfig_t gpioConfigTbl[MUJOE_NUMGPIOS] = 
-{
-  // GLED
-  {
-     .gpio_pin = GPIOPIN_P0_7,
-     .output = TRUE,
-     .disablePUPDRes = TRUE, 
-     .setPDRes = TRUE,     
-  },
-  
-  // VCC_HUM
-  {
-     .gpio_pin = GPIOPIN_P1_1,
-     .output = TRUE,
-     .disablePUPDRes = TRUE, 
-     .setPDRes = TRUE,     
-  },
-  
-  // P2.0 (NC)
-  {
-     .gpio_pin = GPIOPIN_P2_0,
-     .output = FALSE,
-     .disablePUPDRes = TRUE, 
-     .setPDRes = TRUE,     
-  },
-};
-
-#else
-
-#endif // #if defined( ASSET_TAG_BLE )
+////////////////////////////////////////////////////////////////////////////////
+// LOCAL VARS
+////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL FUNCTION PROTOS
 ////////////////////////////////////////////////////////////////////////////////
-
-static bool mujoeBoardConfig_initGPIOS( void );
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTIONS
@@ -59,26 +28,12 @@ static bool mujoeBoardConfig_initGPIOS( void );
 bool mujoeBoardConfig_initBoard( void )
 {
     bool retVal = TRUE;
-    // Uncomment for deployment
-    //retVal = mujoeBoardConfig_initGPIOS();         // Init GPIOs
-    // BEGIN TEST
-    //P2DIR |= 0x01;      // P2.0 RLED
-    //P2 &= ~0x01;
-    //P1DIR |= 0x01;      // P1.0 GLED
-    //P1 &= ~0x01;
-    // END TEST
-    
+    retVal = muJoeGPIO_initGPIOS();                // Init GPIOs
     mujoeI2C_initHardware( i2cClock_267KHZ );      // Init I2C Hardware
     return retVal;
     
 } // muJoeBoardConfig_initBoard
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // STATIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
-
-static bool mujoeBoardConfig_initGPIOS( void )
-{
-  return muJoeGPIO_configureGPIOs( gpioConfigTbl, MUJOE_NUMGPIOS );
-} // muJoeBoardConfig_initGPIOS

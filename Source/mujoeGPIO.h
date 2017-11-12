@@ -12,6 +12,7 @@
 
 #include "hal_types.h"
 #include "iocc2541.h"
+#include "mujoeBoardConfig.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINES
@@ -20,6 +21,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 // TYPEDEFS 
 ////////////////////////////////////////////////////////////////////////////////
+
+// Note: IDs must match the index of the respective "gpioConfig_t" struct
+// within the "gpioConfigTbl" array as defined in the mujoeGPIO.c
+typedef enum 
+{
+  MUJOE_PINID_STATUS_LED =      0,
+  MUJOE_PINID_CHG_LED,
+  MUJOE_PINID_PS_HOLD,
+  MUJOE_PINID_NUMGPIOS,
+}mujoe_gpioid_t;
 
 typedef enum
 {
@@ -50,14 +61,14 @@ typedef struct gpioConfig_def
   bool                  output;
   bool                  disablePUPDRes; // If TRUE, GPIO is in tri-state. If FALSE, internal PU/PD res is enabled
   bool                  setPDRes;       // If TRUE, then internal PU/PD is cfg'd as pull-down resistor. If FALSE, pull-up res. (Note: disablePUPDRes must be FALSE for this to take affect)        
-  
+  bool                  initState;      // If TRUE, pin is set HIGH, set LOW if FALSE. (NOTE: Only valid when "output" struct member is TRUE)
 }gpioConfig_t;
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTION PROTOS 
 ////////////////////////////////////////////////////////////////////////////////
 
-extern bool muJoeGPIO_configureGPIOs( gpioConfig_t *gpioConfigTbl, uint8 gpioTblSize );
+bool muJoeGPIO_initGPIOS( void );
+bool muJoeGPIO_writePin( mujoe_gpioid_t gpioid, bool state );
 
 #endif

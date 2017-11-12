@@ -39,6 +39,7 @@ extern "C"
 #include "peripheral.h"
 #include "gapbondmgr.h"
 
+#include "mujoeTaskMsgr.h"
 #include "sensorMgrTask.h"
 #include "mujoeGenericProfileMgr.h"
 #include "mujoeBoardConfig.h"

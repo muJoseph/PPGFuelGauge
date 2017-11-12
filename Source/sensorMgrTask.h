@@ -22,6 +22,7 @@ extern "C"
 #include "gatt.h"
 #include "hci.h"
 
+#include "mujoeTaskMsgr.h"
 #include "mainTask.h"
 
 // Device Drivers
