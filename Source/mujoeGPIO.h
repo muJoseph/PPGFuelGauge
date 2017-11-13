@@ -18,6 +18,11 @@
 // DEFINES
 ////////////////////////////////////////////////////////////////////////////////
 
+// GPIO ISR Vectors
+#define PORT0_VECTOR                    0x6B
+#define PORT1_VECTOR                    0x7B
+#define PORT2_VECTOR                    0x33
+
 ////////////////////////////////////////////////////////////////////////////////
 // TYPEDEFS 
 ////////////////////////////////////////////////////////////////////////////////
@@ -26,9 +31,9 @@
 // within the "gpioConfigTbl" array as defined in the mujoeGPIO.c
 typedef enum 
 {
-  MUJOE_PINID_STATUS_LED =      0,
+  MUJOE_PINID_PS_HOLD = 0,
+  MUJOE_PINID_STATUS_LED,
   MUJOE_PINID_CHG_LED,
-  MUJOE_PINID_PS_HOLD,
   MUJOE_PINID_NUMGPIOS,
 }mujoe_gpioid_t;
 
@@ -63,6 +68,26 @@ typedef struct gpioConfig_def
   bool                  setPDRes;       // If TRUE, then internal PU/PD is cfg'd as pull-down resistor. If FALSE, pull-up res. (Note: disablePUPDRes must be FALSE for this to take affect)        
   bool                  initState;      // If TRUE, pin is set HIGH, set LOW if FALSE. (NOTE: Only valid when "output" struct member is TRUE)
 }gpioConfig_t;
+
+typedef struct osalCbEvt_def
+{
+  uint8            taskId;
+  uint16           evt;
+}osalCbEvt_t;
+
+typedef struct muJoeGPIO_intMgr_def
+{
+  osalCbEvt_t           osalCbEvt;
+  
+}muJoeGPIO_intMgr_t;
+
+typedef struct gpioIntSrc_def
+{
+  uint8         p0Ints;
+  uint8         p1Ints;
+  uint8         p2Ints;
+  
+}gpioIntSrc_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTION PROTOS 

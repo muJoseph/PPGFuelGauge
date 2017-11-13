@@ -13,7 +13,7 @@
 // LOCAL FUNCTION PROTOS
 ////////////////////////////////////////////////////////////////////////////////
 
-static bool configureGPIOPin( gpioConfig_t gpioConfig );
+static bool muJoeGPIO_configureGPIOPin( gpioConfig_t gpioConfig );
 static bool muJoeGPIO_configureGPIOs( gpioConfig_t *gpioConfigTbl, uint8 gpioTblSize );
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,6 +57,15 @@ static gpioConfig_t gpioConfigTbl[MUJOE_NUMGPIOS] =
 
 static gpioConfig_t gpioConfigTbl[MUJOE_PINID_NUMGPIOS] = 
 {
+  // PS_HOLD
+  {
+     .gpio_pin = GPIOPIN_P1_3,
+     .output = TRUE,
+     .disablePUPDRes = TRUE, 
+     .setPDRes = TRUE,
+     .initState = TRUE,   
+  },
+  
   // STAT_LEDn (GLED)
   {
      .gpio_pin = GPIOPIN_P1_0,
@@ -75,17 +84,18 @@ static gpioConfig_t gpioConfigTbl[MUJOE_PINID_NUMGPIOS] =
      .initState = TRUE,   // LED = OFF (active low) 
   },
   
-  // PS_HOLD
-  {
-     .gpio_pin = GPIOPIN_P1_3,
-     .output = TRUE,
-     .disablePUPDRes = TRUE, 
-     .setPDRes = TRUE,
-     .initState = TRUE,   
-  },
 };
 
 #endif // #if defined( ASSET_TAG_BLE )
+
+static muJoeGPIO_intMgr_t       muJoeGPIO_intMgr;
+
+volatile static gpioIntSrc_t    gpioIntSrc = 
+{
+  .p0Ints = 0,
+  .p1Ints = 0,
+  .p2Ints = 0,
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTIONS
@@ -154,14 +164,14 @@ static bool muJoeGPIO_configureGPIOs( gpioConfig_t *gpioConfigTbl, uint8 gpioTbl
 {
   for( uint8 i = 0; i < gpioTblSize; i++ )
   {
-    if( !configureGPIOPin( gpioConfigTbl[i]) )   // If pin config failed, return failure immediately
+    if( !muJoeGPIO_configureGPIOPin( gpioConfigTbl[i]) )   // If pin config failed, return failure immediately
       return FALSE;
   }
   
   return TRUE;
 } // muJoeGPIO_configureGPIOs
 
-static bool configureGPIOPin( gpioConfig_t gpioConfig )
+static bool muJoeGPIO_configureGPIOPin( gpioConfig_t gpioConfig )
 {
   bool retVal = TRUE;
   
@@ -275,6 +285,87 @@ static bool configureGPIOPin( gpioConfig_t gpioConfig )
   }
           
   return retVal;
-} 
+}
+
+gpioIntSrc_t muJoeGPIO_getIntSource( void )
+{
+  return gpioIntSrc;
+  
+}// muJoeGPIO_getIntSource
+
+////////////////////////////////////////////////////////////////////////////////
+// INTERRUPT SERVICE ROUTINES
+////////////////////////////////////////////////////////////////////////////////
+
+// PORT 1 ISR //////////////////////////////////////////////////////////////////
+HAL_ISR_FUNCTION( PORT1_ISR , P1INT_VECTOR )    // TEST
+//HAL_ISR_FUNCTION( PORT1_ISR , PORT1_VECTOR )  // DEFAULT
+{
+  HAL_ENTER_ISR();
+  
+  // P1.0
+  if( P1IFG & 0x01 )                        
+  { 
+     gpioIntSrc.p1Ints |= 0x01;
+     P1IFG = ~0x01;            // Clear P1.0 Source Interrupt Flag. Note register has R/W0 access , i.e. writing ones to bits does not do anything                          
+  }
+  
+  // P1.1
+  if( P1IFG & 0x02 )
+  {
+     gpioIntSrc.p1Ints |= 0x02;
+     P1IFG = ~0x02; 
+  }
+  
+  // P1.2
+  if( P1IFG & 0x04 )
+  {
+     gpioIntSrc.p1Ints |= 0x04;
+     P1IFG = ~0x04; 
+  }
+  
+  // P1.3
+  if( P1IFG & 0x08 )
+  {
+     gpioIntSrc.p1Ints |= 0x08;
+     P1IFG = ~0x08; 
+  }
+  
+  // P1.4
+  if( P1IFG & 0x10 )
+  {
+     gpioIntSrc.p1Ints |= 0x10;
+     P1IFG = ~0x10; 
+  }
+  
+  // P1.5
+  if( P1IFG & 0x20 )
+  {
+     gpioIntSrc.p1Ints |= 0x20;
+     P1IFG = ~0x20; 
+  }
+  
+  // P1.6
+  if( P1IFG & 0x40 )
+  {
+     gpioIntSrc.p1Ints |= 0x40;
+     P1IFG = ~0x40; 
+  }
+  
+  // P1.7
+  if( P1IFG & 0x80 )
+  {
+     gpioIntSrc.p1Ints |= 0x80;
+     P1IFG = ~0x80; 
+  }
+  
+  // Notify app of interrupt
+  osal_set_event( muJoeGPIO_intMgr.osalCbEvt.taskId, muJoeGPIO_intMgr.osalCbEvt.evt );
+  
+  P1IF = 0;                                                                     // Clear Port 1 flag in Interrupt Flags 5 SFR
+  //IRCON2 &= ~IRCON2_P1IF;                                                     // Clear Port 1 flag in Interrupt Flags 5 SFR
+  HAL_EXIT_ISR();
+  return;
+}
 
 
