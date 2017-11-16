@@ -7069,7 +7069,13 @@
         <name>$PROJ_DIR$\..\Source\mujoeBoardSettings.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\Source\mujoeBoardSpecificDrivers.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\Source\mujoeEvtMsgr.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeToolBox.c</name>
       </file>
     </group>
     <group>

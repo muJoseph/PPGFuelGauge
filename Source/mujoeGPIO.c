@@ -13,8 +13,8 @@
 // LOCAL FUNCTION PROTOS
 ////////////////////////////////////////////////////////////////////////////////
 
-static bool muJoeGPIO_configureGPIOPin( gpioConfig_t gpioConfig );
-static bool muJoeGPIO_configureGPIOs( gpioConfig_t *gpioConfigTbl, uint8 gpioTblSize );
+static bool muJoeGPIO_pinWrite( gpioPin_t gpioPin, bool high );
+static bool muJoeGPIO_cfgPin( gpioPin_t gpioPin );
 
 ////////////////////////////////////////////////////////////////////////////////
 // GLOBAL VAR
@@ -24,275 +24,152 @@ static bool muJoeGPIO_configureGPIOs( gpioConfig_t *gpioConfigTbl, uint8 gpioTbl
 // LOCAL VAR
 ////////////////////////////////////////////////////////////////////////////////
 
-#if defined( ASSET_TAG_BLE )
-
-static gpioConfig_t gpioConfigTbl[MUJOE_NUMGPIOS] = 
-{
-  // GLED
-  {
-     .gpio_pin = GPIOPIN_P0_7,
-     .output = TRUE,
-     .disablePUPDRes = TRUE, 
-     .setPDRes = TRUE,     
-  },
-  
-  // VCC_HUM
-  {
-     .gpio_pin = GPIOPIN_P1_1,
-     .output = TRUE,
-     .disablePUPDRes = TRUE, 
-     .setPDRes = TRUE,     
-  },
-  
-  // P2.0 (NC)
-  {
-     .gpio_pin = GPIOPIN_P2_0,
-     .output = FALSE,
-     .disablePUPDRes = TRUE, 
-     .setPDRes = TRUE,     
-  },
-};
-
-#else   // PPGFG-REV0
-
-static gpioConfig_t gpioConfigTbl[MUJOE_PINID_NUMGPIOS] = 
-{
-  // PS_HOLD
-  {
-     .gpio_pin = GPIOPIN_P1_3,
-     .output = TRUE,
-     .disablePUPDRes = TRUE, 
-     .setPDRes = TRUE,
-     .initState = TRUE,   
-  },
-  
-  // STAT_LEDn (GLED)
-  {
-     .gpio_pin = GPIOPIN_P1_0,
-     .output = TRUE,
-     .disablePUPDRes = TRUE, 
-     .setPDRes = TRUE, 
-     .initState = FALSE,   // LED = ON (active low) 
-  },
-  
-  // CHG_LEDn (RLED)
-  {
-     .gpio_pin = GPIOPIN_P2_0,
-     .output = TRUE,
-     .disablePUPDRes = TRUE, 
-     .setPDRes = TRUE,
-     .initState = TRUE,   // LED = OFF (active low) 
-  },
-  
-};
-
-#endif // #if defined( ASSET_TAG_BLE )
-
-static muJoeGPIO_intMgr_t       muJoeGPIO_intMgr;
-
+// BEGIN TEST
 volatile static gpioIntSrc_t    gpioIntSrc = 
 {
-  .p0Ints = 0,
-  .p1Ints = 0,
-  .p2Ints = 0,
+  .pxInts = {0},
 };
+// END TEST
+
+static gpioPin_t        *pGpioPinTbl = NULL;    // Local ptr to pin config table defined in mujoeBoardConfig.c
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
-// Initializes the CC254x GPIOs in accordance with gpioConfigTbl array
-bool muJoeGPIO_initGPIOS( void )
+bool muJoeGPIO_writePin( mujoegpio_pinid_t pinId, bool high )
 {
-  return muJoeGPIO_configureGPIOs( gpioConfigTbl, MUJOE_PINID_NUMGPIOS );
+  // Driver uninitialized or pinId invalid, abort
+  if( ( pGpioPinTbl == NULL ) || ( pinId >= PINID_NUMGPIOS ) )
+     return FALSE;
   
-} // muJoeGPIO_initGPIOS
+  return muJoeGPIO_pinWrite(  pGpioPinTbl[pinId], high );
 
-bool muJoeGPIO_writePin( mujoe_gpioid_t gpioid, bool state )
-{
-  // Check if GPIO ID is valid
-  if( gpioid < MUJOE_PINID_NUMGPIOS )
-  {
-     // Check if pin is configured as output
-     if( gpioConfigTbl[gpioid].output )
-     {
-        // Port 0
-        if( gpioConfigTbl[gpioid].gpio_pin < GPIOPIN_P1_0 )
-        {
-           // Set state
-           if( state )
-             P0 |= 0x01 << gpioConfigTbl[gpioid].gpio_pin;
-           else
-             P0 &= ~(0x01 << gpioConfigTbl[gpioid].gpio_pin);
-        }
-        // Port 1
-        else if( gpioConfigTbl[gpioid].gpio_pin < GPIOPIN_P2_0 )
-        {
-           // Set state
-           if( state )
-             P1 |= 0x01 << ( gpioConfigTbl[gpioid].gpio_pin - 8 );
-           else
-             P1 &= ~(0x01 << ( gpioConfigTbl[gpioid].gpio_pin - 8 ) );
-        }
-        // Pin 2.0
-        else
-        {
-           // Set state
-           if( state )
-             P2 |= 0x01;
-           else
-             P2 &= ~0x01;
-        }
-        
-        return TRUE;
-     }
-     // Pin configured as input, abort
-     else
-       return FALSE;
-  }
-  else
-    return FALSE;
 } // muJoeGPIO_writePin
 
-////////////////////////////////////////////////////////////////////////////////
-// STATIC FUNCTIONS
-////////////////////////////////////////////////////////////////////////////////
-
-// Runs thru the gpioConfigTbl array defined with mujoeBoardConfig.c and configures
-// the appropriate GPIO SFRs
-static bool muJoeGPIO_configureGPIOs( gpioConfig_t *gpioConfigTbl, uint8 gpioTblSize )
+bool muJoeGPIO_cfgInternalResistor( uint8 port, bool pullDown )
 {
-  for( uint8 i = 0; i < gpioTblSize; i++ )
+  // Check if port is valid
+  if( port > 2 )
+    return FALSE;
+  
+  // Configure as Pull-down resistor
+  if( pullDown )
+    P2INP |= ( 0x01 << ( 5 + port ) );
+  // Configure as Pull-up resistor
+  else
+    P2INP &= ~( 0x01 << ( 5 + port ) );
+  
+  return TRUE;
+  
+} // muJoeGPIO_cfgInternalResistor
+
+bool mujoeGPIO_initHardware( gpioPin_t *gpioPinTbl, uint8 numPins )
+{
+  // Store cfg table addr in local var
+  pGpioPinTbl = gpioPinTbl;
+
+  
+  for( uint8 i = 0; i < numPins; i++ )
   {
-    if( !muJoeGPIO_configureGPIOPin( gpioConfigTbl[i]) )   // If pin config failed, return failure immediately
+    if( !muJoeGPIO_cfgPin( gpioPinTbl[i] ) )
       return FALSE;
   }
   
   return TRUE;
-} // muJoeGPIO_configureGPIOs
-
-static bool muJoeGPIO_configureGPIOPin( gpioConfig_t gpioConfig )
-{
-  bool retVal = TRUE;
   
-  // Configure a Port 0 Pin
-  if( gpioConfig.gpio_pin < GPIOPIN_P1_0 )
+} // mujoeGPIO_initHardware
+  
+////////////////////////////////////////////////////////////////////////////////
+// STATIC FUNCTIONS
+////////////////////////////////////////////////////////////////////////////////
+
+static bool muJoeGPIO_pinWrite( gpioPin_t gpioPin, bool high )
+{
+  switch( gpioPin.port )
   {
-      // Configure pin as output
-      if( gpioConfig.output )
-      {
-        P0DIR |= 0x01 << gpioConfig.gpio_pin;
-        
-        // Configure initial output pin state
-        if( gpioConfig.initState )
-          P0 |= 0x01 << gpioConfig.gpio_pin;
-        else
-          P0 &= ~(0x01 << gpioConfig.gpio_pin);
-      }
-      // Configure pin as input
+    case 0:
+      if( high )
+        P0 |= (0x01 << gpioPin.pin);
       else
-      {
-        P0DIR &= ~(0x01 << gpioConfig.gpio_pin);
-        
-        // Disable internal PU/PD resistor
-        if( gpioConfig.disablePUPDRes )
-            P0INP |= 0x01 << gpioConfig.gpio_pin;
-        // Enable internal PU/PD resistor
-        else
-        {
-            P0INP &= ~(0x01 << gpioConfig.gpio_pin);
-            
-            // Configure internal resistor as Pulldown
-            if( gpioConfig.setPDRes )
-              P2INP |= 0x20;
-            // Configure internal resistor as Pullup
-            else
-              P2INP &= ~0x20;
-        }
-      }
+        P0 &= ~(0x01 << gpioPin.pin);
+      break;
+    case 1:
+      if( high )
+        P1 |= (0x01 << gpioPin.pin);
+      else
+        P1 &= ~(0x01 << gpioPin.pin);
+      break;
+    case 2:
+      if( high )
+        P2 |= (0x01 << gpioPin.pin);
+      else
+        P2 &= ~(0x01 << gpioPin.pin);
+      break;
+    default:
+      return FALSE;
+      break;
   }
-  // Configure a Port 1 Pin
-  else if( gpioConfig.gpio_pin < GPIOPIN_P2_0 )
+  
+  return TRUE;
+} // muJoeGPIO_pinWrite
+
+static bool muJoeGPIO_cfgPin( gpioPin_t gpioPin )
+{
+  // If port OR pin are invalid, abort
+  if( ( gpioPin.port > 2 ) || ( gpioPin.pin > 7 ) )
+    return FALSE;
+
+  // Configure as OUTPUT
+  if( gpioPin.cfg & PINCFG_OUTPUT )
   {
-       // Configure pin as output
-      if( gpioConfig.output )
-      {
-        P1DIR |= 0x01 << ( gpioConfig.gpio_pin - 8 );
-        
-        // Configure initial output pin state
-        if( gpioConfig.initState )
-          P1 |= 0x01 << ( gpioConfig.gpio_pin - 8 );
-        else
-          P1 &= ~(0x01 << ( gpioConfig.gpio_pin - 8 ) );
-      }
-      // Configure pin as input
-      else
-      {
-        P1DIR &= ~(0x01 << ( gpioConfig.gpio_pin - 8 ) );
-        
-        // Disable internal PU/PD resistor
-        if( gpioConfig.disablePUPDRes )
-            P1INP |= 0x01 << ( gpioConfig.gpio_pin - 8 );
-        // Enable internal PU/PD resistor
-        else
-        {
-            P1INP &= ~(0x01 << ( gpioConfig.gpio_pin - 8 ) );
-            
-            // Configure internal resistor as Pulldown
-            if( gpioConfig.setPDRes )
-              P2INP |= 0x40;
-            // Configure internal resistor as Pullup
-            else
-              P2INP &= ~0x40;
-        }
-      }
+    // Set respective bit within the respective PxDIR SFR
+    SFRIO( SFR_PXDIR_BASE_ADDR + gpioPin.port ) |= ( 0x01 << gpioPin.pin );
+
+    // Initialize output state
+    if( gpioPin.cfg & PINCFG_INIT_HIGH )
+      muJoeGPIO_pinWrite( gpioPin, TRUE );
+    else
+      muJoeGPIO_pinWrite( gpioPin, FALSE );
   }
-  // Configure Port 2.0 Pin
+  // Configure as INPUT
   else
   {
-    // Configure P2.0 pin as output
-    if( gpioConfig.output )
+    // Clear respective bit within the respective PxDIR SFR
+    SFRIO( SFR_PXDIR_BASE_ADDR + gpioPin.port ) &= ~( 0x01 << gpioPin.pin );
+    
+    // Disable internal pull-up/pull-down resistor (3-state)
+    if( gpioPin.cfg & PINCFG_DISABLE_PUPDRES )
     {
-      P2DIR |= 0x01;
-      
-      // Configure initial output pin state
-      if( gpioConfig.initState )
-        P2 |= 0x01;
-      else
-        P2 &= ~0x01;
+        // Port 0
+        if( gpioPin.port == 0 )
+          P0INP |= ( 0x01 << gpioPin.pin );
+        // Port 1
+        else if( gpioPin.port == 1 )
+          P1INP |= ( 0x01 << gpioPin.pin );
+        // Pin P2.0
+        else
+          P2INP |= 0x01;
     }
-    // Configure P2.0 pin as input
+    // Enable internal pull-up/pull-down resistor
     else
     {
-      P2DIR &= ~0x01;
-      
-      // Disable internal PU/PD resistor
-      if( gpioConfig.disablePUPDRes )
-        P2INP |= 0x01;
-      // Enable internal PU/PD resistor
-      else
-      {
-        P2INP &= ~0x01;
-        
-        // Configure internal resistor as Pulldown
-        if( gpioConfig.setPDRes )
-          P2INP |= 0x80;
-        // Configure internal resistor as Pullup
+        // Port 0
+        if( gpioPin.port == 0 )
+          P0INP &= ~( 0x01 << gpioPin.pin ); 
+        // Port 1
+        else if( gpioPin.port == 1 )
+          P1INP &= ~( 0x01 << gpioPin.pin );
+        // Pin P2.0
         else
-          P2INP &= ~0x80;
-      }
+          P2INP &= ~0x01;
     }
   }
-          
-  return retVal;
-}
-
-gpioIntSrc_t muJoeGPIO_getIntSource( void )
-{
-  return gpioIntSrc;
   
-}// muJoeGPIO_getIntSource
-
+  return TRUE;
+  
+} // muJoeGPIO_cfgPin
+    
 ////////////////////////////////////////////////////////////////////////////////
 // INTERRUPT SERVICE ROUTINES
 ////////////////////////////////////////////////////////////////////////////////
@@ -306,61 +183,61 @@ HAL_ISR_FUNCTION( PORT1_ISR , P1INT_VECTOR )    // TEST
   // P1.0
   if( P1IFG & 0x01 )                        
   { 
-     gpioIntSrc.p1Ints |= 0x01;
+     gpioIntSrc.pxInts[1] |= 0x01;
      P1IFG = ~0x01;            // Clear P1.0 Source Interrupt Flag. Note register has R/W0 access , i.e. writing ones to bits does not do anything                          
   }
   
   // P1.1
   if( P1IFG & 0x02 )
   {
-     gpioIntSrc.p1Ints |= 0x02;
+     gpioIntSrc.pxInts[1] |= 0x02;
      P1IFG = ~0x02; 
   }
   
   // P1.2
   if( P1IFG & 0x04 )
   {
-     gpioIntSrc.p1Ints |= 0x04;
+     gpioIntSrc.pxInts[1] |= 0x04;
      P1IFG = ~0x04; 
   }
   
   // P1.3
   if( P1IFG & 0x08 )
   {
-     gpioIntSrc.p1Ints |= 0x08;
+     gpioIntSrc.pxInts[1] |= 0x08;
      P1IFG = ~0x08; 
   }
   
   // P1.4
   if( P1IFG & 0x10 )
   {
-     gpioIntSrc.p1Ints |= 0x10;
+     gpioIntSrc.pxInts[1] |= 0x10;
      P1IFG = ~0x10; 
   }
   
   // P1.5
   if( P1IFG & 0x20 )
   {
-     gpioIntSrc.p1Ints |= 0x20;
+     gpioIntSrc.pxInts[1] |= 0x20;
      P1IFG = ~0x20; 
   }
   
   // P1.6
   if( P1IFG & 0x40 )
   {
-     gpioIntSrc.p1Ints |= 0x40;
+     gpioIntSrc.pxInts[1] |= 0x40;
      P1IFG = ~0x40; 
   }
   
   // P1.7
   if( P1IFG & 0x80 )
   {
-     gpioIntSrc.p1Ints |= 0x80;
+     gpioIntSrc.pxInts[1] |= 0x80;
      P1IFG = ~0x80; 
   }
   
   // Notify app of interrupt
-  osal_set_event( muJoeGPIO_intMgr.osalCbEvt.taskId, muJoeGPIO_intMgr.osalCbEvt.evt );
+  //osal_set_event( muJoeGPIO_intMgr.intMgrCb.taskId, muJoeGPIO_intMgr.intMgrCb.evt );
   
   P1IF = 0;                                                                     // Clear Port 1 flag in Interrupt Flags 5 SFR
   //IRCON2 &= ~IRCON2_P1IF;                                                     // Clear Port 1 flag in Interrupt Flags 5 SFR

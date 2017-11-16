@@ -10,22 +10,48 @@
 // INCLUDE
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "mujoeGPIO.h"
-#include "mujoeI2C.h"
-#include "mujoeADC.h"
+#include "hal_types.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINES
 ////////////////////////////////////////////////////////////////////////////////   
 
+// gpioPin_t.pinCfg bit map
+#define PINCFG_OUTPUT                     0x01  // If set, pin is OUTPUT, INPUT otherwise
+#define PINCFG_DISABLE_PUPDRES            0x02  // If set, internal PU/PD resistor disabled (only valid when PINCFG_OUTPUT = 0) 
+#define PINCFG_ENABLE_INT                 0x08  // If set, GPIO interrupt is enabled, disabled otherwise
+#define PINCFG_INIT_HIGH                  0x10  // If set, GPIO output is initialized HIGH, LOW otherwise ( only valid when PINCFG_OUTPUT = 0 )
+
+// For readability...
+#define PINCFG_INPUT                      0x00
+#define PINCFG_ENABLE_PUPDRES             0x00
+#define PINCFG_DISABLE_INT                0x00
+#define PINCFG_INIT_LOW                   0x00
+
 ////////////////////////////////////////////////////////////////////////////////
 // TYPEDEFS
 ////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////
-// API FUNCTION PROTOS
-////////////////////////////////////////////////////////////////////////////////
+// Note: IDs must match the index of the respective "gpioPin_t" struct
+// within the "gpioPinTable" array as defined in the mujoeBoardConfig.c
+typedef enum 
+{
+  PINID_PS_HOLD = 0,
+  PINID_STATUS_LED,
+  PINID_CHG_LED,
+  PINID_NUMGPIOS,
+  
+}mujoegpio_pinid_t;
 
-bool mujoeBoardConfig_initBoard( void );
+typedef void (*pinIntCb_t)( void );
 
-#endif
+typedef struct gpioPin_def
+{
+  uint8         port;
+  uint8         pin;
+  uint8         cfg;
+  pinIntCb_t    IntCb;
+  
+}gpioPin_t;
+
+#endif // MUJOEBOARDCONFIG_H

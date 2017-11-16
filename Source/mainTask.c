@@ -325,7 +325,7 @@ void mainTask_Init( uint8 task_id )
   }
 #endif
 
-  bool initBoardstatus = mujoeBoardConfig_initBoard();           // Init board
+  bool initBoardstatus = mujoeBSD_initBoard();                   // Init board
   while( !initBoardstatus );                                     // Trap MCU if init failed        
 
 #if defined( MUJOE_GEN_PROFILE )
@@ -505,7 +505,8 @@ static void mainTask_ProcessSensorMgrMsg( msg_t *msg )
   switch( sensorMgrTask_msg )
   {
     case SENSORMGR_HWINIT_DONE:
-      muJoeGPIO_writePin(MUJOE_PINID_CHG_LED,FALSE);    // TEST: Turn on RLED
+      //muJoeGPIO_writePin(MUJOE_PINID_CHG_LED,FALSE);    // TEST: Turn on RLED
+      muJoeGPIO_writePin( PINID_CHG_LED, FALSE );
       break;
     default:
       break;

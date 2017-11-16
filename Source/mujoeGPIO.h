@@ -12,80 +12,31 @@
 
 #include "hal_types.h"
 #include "iocc2541.h"
+#include "hal_mcu.h"
 #include "mujoeBoardConfig.h"
+#include "mujoeToolBox.h"
+#include "string.h"     // For memcpy
 
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINES
 ////////////////////////////////////////////////////////////////////////////////
 
 // GPIO ISR Vectors
-#define PORT0_VECTOR                    0x6B
-#define PORT1_VECTOR                    0x7B
-#define PORT2_VECTOR                    0x33
+//#define PORT0_VECTOR                    0x6B
+//#define PORT1_VECTOR                    0x7B
+//#define PORT2_VECTOR                    0x33
+
+////////////////////////////////////////////////////////////////////////////////
+// MACROS 
+////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 // TYPEDEFS 
 ////////////////////////////////////////////////////////////////////////////////
 
-// Note: IDs must match the index of the respective "gpioConfig_t" struct
-// within the "gpioConfigTbl" array as defined in the mujoeGPIO.c
-typedef enum 
-{
-  MUJOE_PINID_PS_HOLD = 0,
-  MUJOE_PINID_STATUS_LED,
-  MUJOE_PINID_CHG_LED,
-  MUJOE_PINID_NUMGPIOS,
-}mujoe_gpioid_t;
-
-typedef enum
-{
-  GPIOPIN_P0_0 = 0,
-  GPIOPIN_P0_1, // 1
-  GPIOPIN_P0_2, // 2
-  GPIOPIN_P0_3, // 3
-  GPIOPIN_P0_4, // 4
-  GPIOPIN_P0_5, // 5
-  GPIOPIN_P0_6, // 6
-  GPIOPIN_P0_7, // 7
-  GPIOPIN_P1_0, // 8
-  GPIOPIN_P1_1, // 9
-  GPIOPIN_P1_2, // 10
-  GPIOPIN_P1_3, // 11
-  GPIOPIN_P1_4, // 12
-  GPIOPIN_P1_5, // 13
-  GPIOPIN_P1_6, // 14
-  GPIOPIN_P1_7, // 15
-  GPIOPIN_P2_0, // 16
-  NUM_GPIOPINS  // 17
-    
-}gpio_pin_t;
-
-typedef struct gpioConfig_def
-{
-  gpio_pin_t            gpio_pin;
-  bool                  output;
-  bool                  disablePUPDRes; // If TRUE, GPIO is in tri-state. If FALSE, internal PU/PD res is enabled
-  bool                  setPDRes;       // If TRUE, then internal PU/PD is cfg'd as pull-down resistor. If FALSE, pull-up res. (Note: disablePUPDRes must be FALSE for this to take affect)        
-  bool                  initState;      // If TRUE, pin is set HIGH, set LOW if FALSE. (NOTE: Only valid when "output" struct member is TRUE)
-}gpioConfig_t;
-
-typedef struct osalCbEvt_def
-{
-  uint8            taskId;
-  uint16           evt;
-}osalCbEvt_t;
-
-typedef struct muJoeGPIO_intMgr_def
-{
-  osalCbEvt_t           osalCbEvt;
-  
-}muJoeGPIO_intMgr_t;
-
 typedef struct gpioIntSrc_def
 {
-  uint8         p0Ints;
-  uint8         p1Ints;
-  uint8         p2Ints;
+  uint8         pxInts[3];      // Index 0 = Port 0, Index 1 = Port 1, Index 2 = Port 2
   
 }gpioIntSrc_t;
 
@@ -93,7 +44,8 @@ typedef struct gpioIntSrc_def
 // API FUNCTION PROTOS 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool muJoeGPIO_initGPIOS( void );
-bool muJoeGPIO_writePin( mujoe_gpioid_t gpioid, bool state );
+bool muJoeGPIO_writePin( mujoegpio_pinid_t pinId, bool high );
+bool muJoeGPIO_cfgInternalResistor( uint8 port, bool pullDown );
+bool mujoeGPIO_initHardware( gpioPin_t *gpioPinTbl, uint8 numPins );
 
-#endif
+#endif // MUJOEGPIO_H

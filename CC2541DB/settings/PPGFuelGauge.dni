@@ -38,7 +38,7 @@ ShowSource=1
 [Simulator]
 Freq=50000000
 [DebugChecksum]
-Checksum=283140444
+Checksum=1384854872
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -55,11 +55,14 @@ Fmt7=sensorDatColl_t-sensorState	3	0
 [array_types]
 Fmt0=uint16 [8]	4	0
 Fmt1=uint8 [20]	4	0
+Fmt2=uint8 [2]	4	0
 [watch_formats]
 Fmt0={W}1:crc	4	0
 Fmt1={W}1:crcTest	4	0
-Fmt2={W}1:rxBuff	4	0
-Fmt3={W}1:rxByte	4	0
+Fmt2={W}1:myP0DIR	4	0
+Fmt3={W}1:myP2DIR	4	0
+Fmt4={W}1:rxBuff	4	0
+Fmt5={W}1:rxByte	4	0
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
