@@ -39,6 +39,7 @@ typedef enum
   PINID_PS_HOLD = 0,
   PINID_STATUS_LED,
   PINID_CHG_LED,
+  PINID_PB_INTn,
   PINID_NUMGPIOS,
   
 }mujoegpio_pinid_t;
@@ -53,5 +54,11 @@ typedef struct gpioPin_def
   pinIntCb_t    IntCb;
   
 }gpioPin_t;
+
+////////////////////////////////////////////////////////////////////////////////
+// EXTERN VARS
+////////////////////////////////////////////////////////////////////////////////
+
+extern gpioPin_t       gpioPinTable[PINID_NUMGPIOS];
 
 #endif // MUJOEBOARDCONFIG_H

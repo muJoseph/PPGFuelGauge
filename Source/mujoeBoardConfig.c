@@ -17,7 +17,7 @@
 // LOCAL VARS
 ////////////////////////////////////////////////////////////////////////////////
 
-static gpioPin_t       gpioPinTable[PINID_NUMGPIOS] = 
+gpioPin_t       gpioPinTable[PINID_NUMGPIOS] = 
 {
   // PS_HOLD
   {
@@ -40,6 +40,14 @@ static gpioPin_t       gpioPinTable[PINID_NUMGPIOS] =
      .port = 2,
      .pin = 0,
      .cfg = PINCFG_OUTPUT + PINCFG_INIT_HIGH,    // LED = OFF (active low) 
+     .IntCb = NULL,
+  },
+  
+  // PS_INTn
+  {
+     .port = 1,
+     .pin = 5,
+     .cfg = PINCFG_INPUT + PINCFG_ENABLE_PUPDRES,
      .IntCb = NULL,
   },
 };

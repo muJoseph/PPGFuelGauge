@@ -17,33 +17,6 @@
 // LOCAL VARS
 ////////////////////////////////////////////////////////////////////////////////
 
-static gpioPin_t       gpioPinTable[PINID_NUMGPIOS] = 
-{
-  // PS_HOLD
-  {
-     .port = 0,
-     .pin = 3,
-     .cfg = PINCFG_OUTPUT + PINCFG_INIT_HIGH,
-     .IntCb = NULL,
-  },
-  
-  // STAT_LEDn (GLED)
-  {
-     .port = 1,
-     .pin = 0,
-     .cfg = PINCFG_OUTPUT + PINCFG_INIT_LOW,    // LED = ON (active low) 
-     .IntCb = NULL,
-  },
-  
-  // CHG_LEDn (RLED)
-  {
-     .port = 2,
-     .pin = 0,
-     .cfg = PINCFG_OUTPUT + PINCFG_INIT_HIGH,    // LED = OFF (active low) 
-     .IntCb = NULL,
-  },
-};
-
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL FUNCTION PROTOS
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,13 +28,23 @@ static gpioPin_t       gpioPinTable[PINID_NUMGPIOS] =
 bool mujoeBSD_initBoard( void )
 {
     bool retVal = TRUE;
+    
     // Init GPIOs 
     retVal = mujoeGPIO_initHardware( gpioPinTable, PINID_NUMGPIOS );
-    muJoeGPIO_cfgInternalResistor( 0, FALSE );       // Cfg interal Port 0 resistors as Pull-up
-    muJoeGPIO_cfgInternalResistor( 1, FALSE );       // Cfg interal Port 1 resistors as Pull-up
-    muJoeGPIO_cfgInternalResistor( 2, FALSE );       // Cfg interal Port 2 resistors as Pull-up
+    muJoeGPIO_cfgInternalResistor( 0, FALSE );       // Cfg interal Port 0 resistors as Pull-up (if enabled)
+    muJoeGPIO_cfgInternalResistor( 1, FALSE );       // Cfg interal Port 1 resistors as Pull-up (if enabled)
+    muJoeGPIO_cfgInternalResistor( 2, FALSE );       // Cfg interal Port 2 resistors as Pull-up (if enabled)
+    
+    triggerFallEdgeP0();                             // Set All Port 0 pins for falling edge interrupt trigger (if unmasked)   
+    triggerFallEdgeP1Low();                          // Set All Port 1 pins for falling edge interrupt trigger (if unmasked)      
+    triggerFallEdgeP1High();
+    
+    enablePort0Interrupts();                         // Enable Port 0 Interrupts   
+    enablePort1Interrupts();                         // Enable Port 1 Interrupts
+    
     // Init I2C Hardware
-    mujoeI2C_initHardware( i2cClock_267KHZ );        
+    mujoeI2C_initHardware( i2cClock_267KHZ ); 
+    
     return retVal;
     
 } // mujoeBSD_initBoard

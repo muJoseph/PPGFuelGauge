@@ -58,6 +58,12 @@
  * TYPEDEFS
  */
 
+typedef struct 
+{
+  uint32        lengthOfAdvert;
+  
+}mainTask_t;
+
 /*********************************************************************
  * GLOBAL VARIABLES
  */
@@ -74,8 +80,13 @@
  * LOCAL VARIABLES
  */
 
-static uint16 rspBuffer;         // TEST
-static uint8  asyncBulkBuff[20]; // TEST
+static mainTask_t       mainTask =
+{
+  .lengthOfAdvert = 30000,          // ms
+};
+
+static uint16           rspBuffer;         // TEST
+static uint8            asyncBulkBuff[20]; // TEST
 
 // HipScience characteristic notification control identifiers
 static uint8                            mainTask_TaskID;             // Task ID for internal task/event processing
@@ -151,6 +162,9 @@ static void muJoeGenProfileChangeCB( uint8 paramID );
 static void muJoeDataProfileReadCB( uint8 paramID );
 
 static void mainTask_initMuJoeGenMgrDriver( void );
+static void mainTask_beginAdvert( uint32 timeToAdvert );
+static void mainTask_endAdvert( void );
+static void mainTask_pbIntHdlr( void );
 
 /*********************************************************************
  * PROFILE CALLBACKS
@@ -228,7 +242,7 @@ void mainTask_Init( uint8 task_id )
   // Setup the GAP Peripheral Role Profile
   {
     // For other hardware platforms, device starts advertising upon initialization
-    uint8 initial_advertising_enable = TRUE;
+    uint8 initial_advertising_enable = FALSE;// TRUE;
 
     // By setting this to zero, the device will go into the waiting state after
     // being discoverable for 30.72 second, and will not being advertising again
@@ -326,7 +340,11 @@ void mainTask_Init( uint8 task_id )
 #endif
 
   bool initBoardstatus = mujoeBSD_initBoard();                   // Init board
-  while( !initBoardstatus );                                     // Trap MCU if init failed        
+  while( !initBoardstatus );                                     // Trap MCU if init failed
+  // Assign the OSAL evt in which muJoeGPIO_interruptMgr is called
+  muJoeGPIO_assignIntMgrOSALEvt( mainTask_TaskID, MAIN_GPIOINTMGR_EVT );
+  bool stat = muJoeGPIO_registerIntCallback( PINID_PB_INTn, mainTask_pbIntHdlr );
+  while( !stat );                                               // Trap MCU
 
 #if defined( MUJOE_GEN_PROFILE )
   // Register callback with muJoeGenericProfile
@@ -441,6 +459,13 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
      return ( events ^ MAIN_ASYNCBULK_EVT );
   }
   
+  // GPIO Interrupt Manager event
+  if ( events & MAIN_GPIOINTMGR_EVT )
+  {
+    muJoeGPIO_interruptMgr();
+    return (events ^ MAIN_GPIOINTMGR_EVT);
+  }
+
   if ( events & MAIN_PERIODIC_EVT )
   {
     // Restart timer
@@ -454,10 +479,51 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
 
     return (events ^ MAIN_PERIODIC_EVT);
   }
-
+  
+  // Start BLE Advertisement event
+  if ( events & MAIN_ADVBEGIN_EVT )
+  {
+    mainTask_beginAdvert( mainTask.lengthOfAdvert );
+    return (events ^ MAIN_ADVBEGIN_EVT);
+  }
+  
+  // Stop BLE Advertisement event
+  if ( events & MAIN_ADVEND_EVT )
+  {
+     mainTask_endAdvert();
+     return (events ^ MAIN_ADVEND_EVT);
+  }
+  
   // Discard unknown events
   return 0;
 }
+
+static void mainTask_pbIntHdlr( void )
+{
+  P2 ^= 0x01;   // TEST: Toggle RLED (2.0)
+  osal_set_event( mainTask_TaskID, MAIN_ADVBEGIN_EVT ); 
+  
+} // mainTask_pbIntHdlr
+
+static void mainTask_endAdvert( void )
+{
+   uint8 advertEnable = FALSE;
+   if( GAPRole_SetParameter( GAPROLE_ADVERT_ENABLED, sizeof( uint8 ), &advertEnable ) != SUCCESS )
+     osal_set_event( mainTask_TaskID, MAIN_ADVEND_EVT );  
+   
+} // mainTask_endAdvert
+
+// timeToAdvert = How long to advertise in ms. Will advertise indefinately if zero
+static void mainTask_beginAdvert( uint32 timeToAdvert )
+{
+   uint8 advertEnable = TRUE;
+   if( GAPRole_SetParameter( GAPROLE_ADVERT_ENABLED, sizeof( uint8 ), &advertEnable ) == SUCCESS )
+     if( timeToAdvert )
+       osal_start_timerEx( mainTask_TaskID, MAIN_ADVEND_EVT, timeToAdvert );
+   else
+     osal_set_event( mainTask_TaskID, MAIN_ADVBEGIN_EVT );
+   
+} // mainTask_beginAdvert
 
 static void mainTask_initMuJoeGenMgrDriver( void )
 {
@@ -471,6 +537,7 @@ static void mainTask_initMuJoeGenMgrDriver( void )
   muJoeGenMgr_initDriver( muJoeGenMgr );
   
 } // mainTask_initMuJoeGenMgrDriver
+
 /*********************************************************************
  * @fn      mainTask_ProcessOSALMsg
  *
@@ -505,14 +572,16 @@ static void mainTask_ProcessSensorMgrMsg( msg_t *msg )
   switch( sensorMgrTask_msg )
   {
     case SENSORMGR_HWINIT_DONE:
-      //muJoeGPIO_writePin(MUJOE_PINID_CHG_LED,FALSE);    // TEST: Turn on RLED
       muJoeGPIO_writePin( PINID_CHG_LED, FALSE );
+      enableP1PinInterrupt(0x20);       // TEST: Unmask P1.5 interrupt
+      //osal_set_event( mainTask_TaskID, MAIN_ADVBEGIN_EVT );  
       break;
     default:
       break;
   }
   
 }//mainTask_ProcessSensorMgrMsg
+
 /*********************************************************************
  * @fn      mainTask_ProcessGATTMsg
  *

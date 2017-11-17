@@ -49,11 +49,14 @@ extern "C"
  */
 
 // Simple BLE Peripheral Task Events
-#define MAIN_START_DEVICE_EVT                              0x0001
+#define MAIN_START_DEVICE_EVT                             0x0001
 #define MAIN_CMD_WRITE_EVT                                0x0002
 #define MAIN_RSP_NOTI_EVT                                 0x0004
 #define MAIN_ASYNCBULK_EVT                                0x0008
-#define MAIN_PERIODIC_EVT                                  0x0010
+#define MAIN_PERIODIC_EVT                                 0x0010
+#define MAIN_ADVBEGIN_EVT                                 0x0020
+#define MAIN_ADVEND_EVT                                   0x0040
+#define MAIN_GPIOINTMGR_EVT                               0x0080
 
 /*********************************************************************
  * MACROS
