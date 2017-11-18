@@ -40,6 +40,12 @@ typedef enum
   PINID_STATUS_LED,
   PINID_CHG_LED,
   PINID_PB_INTn,
+  PINID_PB_OUTn,
+  PINID_ACCEL_INT1,
+  PINID_ACCEL_INT2,
+  PINID_MSP_INT,
+  PINID_CHGn,
+  PINID_VCC_LOn,
   PINID_NUMGPIOS,
   
 }mujoegpio_pinid_t;

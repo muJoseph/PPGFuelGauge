@@ -84,7 +84,9 @@
 void muJoeGPIO_assignIntMgrOSALEvt( uint8 taskId, uint16 event );
 bool muJoeGPIO_registerIntCallback( mujoegpio_pinid_t pinId, pinIntCb_t cb );
 void muJoeGPIO_interruptMgr( void );
+bool muJoeGPIO_togglePin( mujoegpio_pinid_t pinId );
 bool muJoeGPIO_writePin( mujoegpio_pinid_t pinId, bool high );
+int8 muJoeGPIO_readPin( mujoegpio_pinid_t pinId );
 bool muJoeGPIO_cfgInternalResistor( uint8 port, bool pullDown );
 bool mujoeGPIO_initHardware( gpioPin_t *gpioPinTbl, uint8 numPins );
 

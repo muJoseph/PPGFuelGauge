@@ -30,6 +30,7 @@ typedef struct gpioIntSrc_def
 ////////////////////////////////////////////////////////////////////////////////
 
 static bool muJoeGPIO_pinWrite( gpioPin_t gpioPin, bool high );
+static int8 muJoeGPIO_pinRead( gpioPin_t gpioPin );
 static bool muJoeGPIO_cfgPin( gpioPin_t gpioPin );
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,6 +79,16 @@ bool muJoeGPIO_registerIntCallback( mujoegpio_pinid_t pinId, pinIntCb_t cb )
   
 } // muJoeGPIO_registerIntCallback
 
+bool muJoeGPIO_togglePin( mujoegpio_pinid_t pinId )
+{
+  int8 oldState = muJoeGPIO_readPin( pinId );
+  if( oldState != -1 )
+    return muJoeGPIO_writePin( pinId, ( (bool)oldState ) ^ TRUE );
+  else
+    return FALSE;
+  
+} // muJoeGPIO_togglePin
+
 bool muJoeGPIO_writePin( mujoegpio_pinid_t pinId, bool high )
 {
   // Driver uninitialized or pinId invalid, abort
@@ -87,6 +98,16 @@ bool muJoeGPIO_writePin( mujoegpio_pinid_t pinId, bool high )
   return muJoeGPIO_pinWrite(  mueJoeGPIO.pGpioPinTbl[pinId], high );
 
 } // muJoeGPIO_writePin
+
+int8 muJoeGPIO_readPin( mujoegpio_pinid_t pinId )
+{
+  // Driver uninitialized or pinId invalid, abort
+  if( ( mueJoeGPIO.pGpioPinTbl == NULL ) || ( pinId >= PINID_NUMGPIOS ) )
+     return -1;
+  
+  return muJoeGPIO_pinRead( mueJoeGPIO.pGpioPinTbl[pinId] );
+
+} // muJoeGPIO_readPin
 
 bool muJoeGPIO_cfgInternalResistor( uint8 port, bool pullDown )
 {
@@ -157,8 +178,35 @@ void muJoeGPIO_interruptMgr( void )
 // STATIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
+static int8 muJoeGPIO_pinRead( gpioPin_t gpioPin )
+{
+    int8 retVal = -1;
+    
+    switch( gpioPin.port )
+    {
+      case 0:
+        retVal = ( P0 & ( 0x01 << gpioPin.pin ) ) ? TRUE : FALSE;
+        break;
+      case 1:
+        retVal = ( P1 & ( 0x01 << gpioPin.pin ) ) ? TRUE : FALSE;
+        break;
+      case 2:
+        retVal = ( P2 & ( 0x01 << gpioPin.pin ) ) ? TRUE : FALSE;
+        break;
+      default:
+        break;
+    }
+    
+    return retVal;
+    
+} // muJoeGPIO_pinRead
+
 static bool muJoeGPIO_pinWrite( gpioPin_t gpioPin, bool high )
 {
+  // Pin not configured as output, abort
+  if( !( ( gpioPin.cfg & PINCFG_OUTPUT ) ==  PINCFG_OUTPUT ) )
+    return FALSE;
+    
   switch( gpioPin.port )
   {
     case 0:

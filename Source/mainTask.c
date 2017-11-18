@@ -58,7 +58,16 @@
  * TYPEDEFS
  */
 
-typedef struct 
+typedef enum
+{
+  STATLED_OFF = 0,
+  STATLED_ON,
+  STATLED_FASTBLINK,
+  STATLED_SLOWBLINK,
+  
+}statLedState_t;
+
+typedef struct mainTask_def
 {
   uint32        lengthOfAdvert;
   
@@ -79,6 +88,8 @@ typedef struct
 /*********************************************************************
  * LOCAL VARIABLES
  */
+
+static statLedState_t   statLedState = STATLED_OFF;
 
 static mainTask_t       mainTask =
 {
@@ -157,7 +168,6 @@ static void mainTask_ProcessGATTMsg( gattMsgEvent_t *pMsg );
 static void mainTask_ProcessSensorMgrMsg( msg_t *msg );
 
 static void peripheralStateNotificationCB( gaprole_States_t newState );
-static void performPeriodicTask( void );
 static void muJoeGenProfileChangeCB( uint8 paramID );
 static void muJoeDataProfileReadCB( uint8 paramID );
 
@@ -165,6 +175,8 @@ static void mainTask_initMuJoeGenMgrDriver( void );
 static void mainTask_beginAdvert( uint32 timeToAdvert );
 static void mainTask_endAdvert( void );
 static void mainTask_pbIntHdlr( void );
+static void mainTask_brdLedMgr( void );
+static void mainTask_setStatLEDState( statLedState_t newState );
 
 /*********************************************************************
  * PROFILE CALLBACKS
@@ -242,7 +254,8 @@ void mainTask_Init( uint8 task_id )
   // Setup the GAP Peripheral Role Profile
   {
     // For other hardware platforms, device starts advertising upon initialization
-    uint8 initial_advertising_enable = FALSE;// TRUE;
+    uint8 initial_advertising_enable = FALSE;
+    //uint8 initial_advertising_enable = TRUE;
 
     // By setting this to zero, the device will go into the waiting state after
     // being discoverable for 30.72 second, and will not being advertising again
@@ -394,23 +407,19 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
 
   VOID task_id; // OSAL required parameter that isn't used in this function
 
+  // OSAL Message Received event
   if ( events & SYS_EVENT_MSG )
   {
     uint8 *pMsg;
-
     if ( (pMsg = osal_msg_receive( mainTask_TaskID )) != NULL )
     {
-      mainTask_ProcessOSALMsg( (osal_event_hdr_t *)pMsg );    // DEFAULT
-      //mainTask_ProcessMsg( (taskMsgrMsg_t *)pMsg ); // TEST
-
-      // Release the OSAL message
-      VOID osal_msg_deallocate( pMsg );
+      mainTask_ProcessOSALMsg( (osal_event_hdr_t *)pMsg ); 
+      VOID osal_msg_deallocate( pMsg );                  // Release the OSAL message
     }
-
-    // return unprocessed events
-    return (events ^ SYS_EVENT_MSG);
+    return (events ^ SYS_EVENT_MSG);                     // return unprocessed events
   }
 
+  // Start Device Event 
   if ( events & MAIN_START_DEVICE_EVT )
   {
     // Start the Device
@@ -418,9 +427,6 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
 
     // Start Bond Manager
     VOID GAPBondMgr_Register( &mainTask_BondMgrCBs );
-
-    // Set timer for first periodic event
-    osal_start_timerEx( mainTask_TaskID, MAIN_PERIODIC_EVT, SBP_PERIODIC_EVT_PERIOD );
 
     // Set timer for Initializing onboard sensors
     osal_start_timerEx( sensorMgrTask_getTaskId(), SENSORMGR_INIT_SENSORS_EVT, 200 );
@@ -466,20 +472,6 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
     return (events ^ MAIN_GPIOINTMGR_EVT);
   }
 
-  if ( events & MAIN_PERIODIC_EVT )
-  {
-    // Restart timer
-    if ( SBP_PERIODIC_EVT_PERIOD )
-    {
-      osal_start_timerEx( mainTask_TaskID, MAIN_PERIODIC_EVT, SBP_PERIODIC_EVT_PERIOD );
-    }
-
-    // Perform periodic application task
-    performPeriodicTask();
-
-    return (events ^ MAIN_PERIODIC_EVT);
-  }
-  
   // Start BLE Advertisement event
   if ( events & MAIN_ADVBEGIN_EVT )
   {
@@ -494,13 +486,59 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
      return (events ^ MAIN_ADVEND_EVT);
   }
   
+  // Board LED Manager event
+  if ( events & MAIN_BRD_LEDMGR_EVT )
+  {
+    mainTask_brdLedMgr();
+    return (events ^ MAIN_BRD_LEDMGR_EVT);
+  }
+  
   // Discard unknown events
   return 0;
 }
 
+// TODO: Abstract this further so multiple LED states and periods can
+//       be tracked and managed simultaneously
+static void mainTask_brdLedMgr( void )
+{
+  uint32 ledPeriod = 0;
+  
+  switch( statLedState )
+  {
+    case STATLED_OFF:
+      muJoeGPIO_writePin( PINID_STATUS_LED, TRUE );
+      break;
+    case STATLED_ON:
+      muJoeGPIO_writePin( PINID_STATUS_LED, FALSE );
+      break;
+    case STATLED_FASTBLINK:
+      muJoeGPIO_togglePin( PINID_STATUS_LED );
+      ledPeriod = 250;
+      break;
+    case STATLED_SLOWBLINK:
+      muJoeGPIO_togglePin( PINID_STATUS_LED );
+      ledPeriod = 500;
+      break;
+    default:
+      break;
+  }
+  
+  if( ledPeriod )
+    osal_start_timerEx( mainTask_TaskID, MAIN_BRD_LEDMGR_EVT, ledPeriod );
+  
+}// mainTask_brdLedMgr
+
+static void mainTask_setStatLEDState( statLedState_t newState )
+{
+  statLedState = newState;
+  osal_stop_timerEx( mainTask_TaskID, MAIN_BRD_LEDMGR_EVT );
+  osal_set_event( mainTask_TaskID, MAIN_BRD_LEDMGR_EVT );
+  
+} // mainTask_setStatLEDState
+
 static void mainTask_pbIntHdlr( void )
 {
-  P2 ^= 0x01;   // TEST: Toggle RLED (2.0)
+  muJoeGPIO_togglePin( PINID_CHG_LED );
   osal_set_event( mainTask_TaskID, MAIN_ADVBEGIN_EVT ); 
   
 } // mainTask_pbIntHdlr
@@ -574,7 +612,6 @@ static void mainTask_ProcessSensorMgrMsg( msg_t *msg )
     case SENSORMGR_HWINIT_DONE:
       muJoeGPIO_writePin( PINID_CHG_LED, FALSE );
       enableP1PinInterrupt(0x20);       // TEST: Unmask P1.5 interrupt
-      //osal_set_event( mainTask_TaskID, MAIN_ADVBEGIN_EVT );  
       break;
     default:
       break;
@@ -632,12 +669,19 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
       }
       break;
     case GAPROLE_ADVERTISING:
+      mainTask_setStatLEDState( STATLED_FASTBLINK ); 
       break;       
     case GAPROLE_CONNECTED:  
+      mainTask_setStatLEDState( STATLED_ON );        
       break;
     case GAPROLE_CONNECTED_ADV:
       break;      
     case GAPROLE_WAITING:
+      // If last GAPROLE state was Connected, then a disconnect occurred, therefore:
+      // Suppress re-start of advertisement
+      if( gapProfileState == GAPROLE_CONNECTED )
+        mainTask_endAdvert();    
+      mainTask_setStatLEDState( STATLED_ON ); 
       break;
     case GAPROLE_WAITING_AFTER_TIMEOUT:
       break;
@@ -652,47 +696,6 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
 #if !defined( CC2540_MINIDK )
   VOID gapProfileState;     // added to prevent compiler warning with
                             // "CC2540 Slave" configurations
-#endif
-}
-
-/*********************************************************************
- * @fn      performPeriodicTask
- *
- * @brief   Perform a periodic application task. This function gets
- *          called every five seconds as a result of the SBP_PERIODIC_EVT
- *          OSAL event. In this example, the value of the third
- *          characteristic in the SimpleGATTProfile service is retrieved
- *          from the profile, and then copied into the value of the
- *          the fourth characteristic.
- *
- * @param   none
- *
- * @return  none
- */
-static void performPeriodicTask( void )
-{
-#if defined ( MUJOE_GEN_PROFILE )
-  /*uint16 cmdValue;
-  if( muJoeGenProfile_readCommand( &cmdValue ) == SUCCESS )
-     muJoeGenProfile_writeResponse( cmdValue );
-  */
-#else
-  uint8 valueToCopy;
-  uint8 stat;
-
-  // Call to retrieve the value of the third characteristic in the profile
-  stat = SimpleProfile_GetParameter( SIMPLEPROFILE_CHAR3, &valueToCopy);
-
-  if( stat == SUCCESS )
-  {
-    /*
-     * Call to set that value of the fourth characteristic in the profile. Note
-     * that if notifications of the fourth characteristic have been enabled by
-     * a GATT client device, then a notification will be sent every time this
-     * function is called.
-     */
-    SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR4, sizeof(uint8), &valueToCopy);
-  }
 #endif
 }
 

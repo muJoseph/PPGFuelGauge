@@ -43,10 +43,58 @@ gpioPin_t       gpioPinTable[PINID_NUMGPIOS] =
      .IntCb = NULL,
   },
   
-  // PS_INTn
+  // PB_INTn
   {
      .port = 1,
      .pin = 5,
+     .cfg = PINCFG_INPUT + PINCFG_ENABLE_PUPDRES,
+     .IntCb = NULL,
+  },
+  
+  // PB_OUTn
+  {
+     .port = 1,
+     .pin = 4,
+     .cfg = PINCFG_INPUT + PINCFG_ENABLE_PUPDRES,
+     .IntCb = NULL,
+  },
+  
+  // ACCEL_INT1
+  {
+     .port = 1,
+     .pin = 2,
+     .cfg = PINCFG_INPUT + PINCFG_ENABLE_PUPDRES,
+     .IntCb = NULL,
+  },
+  
+  // ACCEL_INT2
+  {
+     .port = 0,
+     .pin = 7,
+     .cfg = PINCFG_INPUT + PINCFG_ENABLE_PUPDRES,
+     .IntCb = NULL,
+  },
+  
+  // MSP_INT
+  {
+     .port = 0,
+     .pin = 6,
+     .cfg = PINCFG_INPUT + PINCFG_ENABLE_PUPDRES,
+     .IntCb = NULL,
+  },
+  
+  // CHGn
+  {
+     .port = 1,
+     .pin = 7,
+     .cfg = PINCFG_INPUT + PINCFG_ENABLE_PUPDRES,
+     .IntCb = NULL,
+  },
+  
+  // VCC_LOn
+  {
+     .port = 1,
+     .pin = 6,
      .cfg = PINCFG_INPUT + PINCFG_ENABLE_PUPDRES,
      .IntCb = NULL,
   },
