@@ -298,12 +298,14 @@
           <state>OSAL_CBTIMER_NUM_TASKS=1</state>
           <state>HAL_AES_DMA=TRUE</state>
           <state>HAL_DMA=TRUE</state>
-          <state>POWER_SAVING</state>
+          <state>xPOWER_SAVING</state>
           <state>xPLUS_BROADCASTER</state>
           <state>HAL_LCD=FALSE</state>
-          <state>HAL_LED=TRUE</state>
-          <state>HAL_KEY=TRUE</state>
-          <state>CC2540_MINIDK</state>
+          <state>HAL_LED=FALSE</state>
+          <state>HAL_KEY=FALSE</state>
+          <state>xCC2540_MINIDK</state>
+          <state>MUJOE_GEN_PROFILE</state>
+          <state>xASSET_TAG_BLE</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -384,7 +386,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>11111</state>
+          <state>00000</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -523,7 +525,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>3</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -532,7 +534,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>3</state>
+          <state>0</state>
         </option>
         <option>
           <name>CompilerMisraRules04</name>
@@ -1435,11 +1437,13 @@
           <state>OSAL_CBTIMER_NUM_TASKS=1</state>
           <state>HAL_AES_DMA=TRUE</state>
           <state>HAL_DMA=TRUE</state>
-          <state>POWER_SAVING</state>
+          <state>xPOWER_SAVING</state>
           <state>xPLUS_BROADCASTER</state>
-          <state>HAL_LCD=TRUE</state>
+          <state>HAL_LCD=FALSE</state>
           <state>HAL_LED=FALSE</state>
-          <state>HAL_KEY=TRUE</state>
+          <state>HAL_KEY=FALSE</state>
+          <state>MUJOE_GEN_PROFILE</state>
+          <state>xASSET_TAG_BLE</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1520,7 +1524,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>11111</state>
+          <state>00000</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1659,7 +1663,7 @@
         </option>
         <option>
           <name>CCOptLevel</name>
-          <state>3</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptStrategy</name>
@@ -1668,7 +1672,7 @@
         </option>
         <option>
           <name>CCOptLevelSlave</name>
-          <state>3</state>
+          <state>0</state>
         </option>
         <option>
           <name>CompilerMisraRules04</name>
@@ -6844,13 +6848,16 @@
   <group>
     <name>APP</name>
     <file>
+      <name>$PROJ_DIR$\..\Source\mainTask.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeTaskMsgr.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\Source\OSAL_SimpleBLEPeripheral.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\Source\simpleBLEPeripheral.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\Source\simpleBLEPeripheral.h</name>
+      <name>$PROJ_DIR$\..\Source\sensorMgrTask.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\Source\SimpleBLEPeripheral_Main.c</name>
@@ -7026,6 +7033,69 @@
     <file>
       <name>$PROJ_DIR$\..\..\Libraries\Common\bin\CC254x_BLE_HCI_TL_None.lib</name>
     </file>
+  </group>
+  <group>
+    <name>MUJOE</name>
+    <group>
+      <name>BLE PROFILES</name>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeDataProfile.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeGenericProfile.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeGenericProfileMgr.c</name>
+      </file>
+    </group>
+    <group>
+      <name>CC254X DRIVERS</name>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeADC.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeGPIO.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeI2C.c</name>
+      </file>
+    </group>
+    <group>
+      <name>COMMON</name>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeBoardConfig.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeBoardSettings.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeBoardSpecificDrivers.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeEvtMsgr.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\mujoeToolBox.c</name>
+      </file>
+    </group>
+    <group>
+      <name>DEVICE DRIVERS</name>
+      <file>
+        <name>$PROJ_DIR$\..\Source\CAT24C512.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\MMA8453Q.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\MMA8453QMgr.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\MS560702.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\MSPFuelGauge.c</name>
+      </file>
+    </group>
   </group>
   <group>
     <name>NPI</name>

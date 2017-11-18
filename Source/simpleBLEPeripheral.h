@@ -65,7 +65,10 @@ extern "C"
 
 // Simple BLE Peripheral Task Events
 #define SBP_START_DEVICE_EVT                              0x0001
-#define SBP_PERIODIC_EVT                                  0x0002
+#define MAIN_CMD_WRITE_EVT                                0x0002
+#define MAIN_RSP_NOTI_EVT                                 0x0004
+#define MAIN_ASYNCBULK_EVT                                0x0008
+#define SBP_PERIODIC_EVT                                  0x0010
 
 /*********************************************************************
  * MACROS
@@ -75,6 +78,7 @@ extern "C"
  * FUNCTIONS
  */
 
+uint8 SimpleBLEPeripheral_getTaskId( void );
 /*
  * Task Initialization for the BLE Application
  */

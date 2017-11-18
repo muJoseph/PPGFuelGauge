@@ -1,2 +1,6 @@
 [MainWindow]
+<<<<<<< HEAD
 WindowPlacement=_ 343 89 1495 682 3
+=======
+WindowPlacement=_ -6 -6 1236 668 3
+>>>>>>> remotes/origin/Feature_AssetTagBLETest

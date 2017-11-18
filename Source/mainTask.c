@@ -7,35 +7,9 @@
  * INCLUDES
  */
 
-#include "bcomdef.h"
-#include "OSAL.h"
-#include "OSAL_PwrMgr.h"
 
-#include "OnBoard.h"
-#include "hal_adc.h"
-#include "hal_led.h"
-#include "hal_key.h"
-#include "hal_lcd.h"
+#include "mainTask.h"
 
-#include "gatt.h"
-
-#include "hci.h"
-
-#include "gapgattserver.h"
-#include "gattservapp.h"
-#include "devinfoservice.h"
-#include "simpleGATTprofile.h"
-#include "mujoeGenericProfile.h"
-#include "mujoeDataProfile.h"
-
-#include "peripheral.h"
-#include "gapbondmgr.h"
-#include "simpleBLEPeripheral.h"
-
-#include "mujoeGenericProfileMgr.h"
-#include "mujoeBoardConfig.h"
-#include "mujoeBoardSettings.h"
-   
 /*********************************************************************
  * MACROS
  */
@@ -84,6 +58,21 @@
  * TYPEDEFS
  */
 
+typedef enum
+{
+  STATLED_OFF = 0,
+  STATLED_ON,
+  STATLED_FASTBLINK,
+  STATLED_SLOWBLINK,
+  
+}statLedState_t;
+
+typedef struct mainTask_def
+{
+  uint32        lengthOfAdvert;
+  
+}mainTask_t;
+
 /*********************************************************************
  * GLOBAL VARIABLES
  */
@@ -100,11 +89,18 @@
  * LOCAL VARIABLES
  */
 
-static uint16 rspBuffer;         // TEST
-static uint8  asyncBulkBuff[20]; // TEST
+static statLedState_t   statLedState = STATLED_OFF;
+
+static mainTask_t       mainTask =
+{
+  .lengthOfAdvert = 30000,          // ms
+};
+
+static uint16           rspBuffer;         // TEST
+static uint8            asyncBulkBuff[20]; // TEST
 
 // HipScience characteristic notification control identifiers
-static uint8                            simpleBLEPeripheral_TaskID;             // Task ID for internal task/event processing
+static uint8                            mainTask_TaskID;             // Task ID for internal task/event processing
 static gaprole_States_t                 gapProfileState = GAPROLE_INIT;
 
 // GAP - SCAN RSP data (max size = 31 bytes)
@@ -167,26 +163,34 @@ static uint8 attDeviceName[GAP_DEVICE_NAME_LEN] = "PPGFuelGauge";
 /*********************************************************************
  * LOCAL FUNCTIONS
  */
-static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg );
-static void simpleBLEPeripheral_ProcessGATTMsg( gattMsgEvent_t *pMsg );
+static void mainTask_ProcessOSALMsg( osal_event_hdr_t *pMsg );
+static void mainTask_ProcessGATTMsg( gattMsgEvent_t *pMsg );
+static void mainTask_ProcessSensorMgrMsg( msg_t *msg );
+
 static void peripheralStateNotificationCB( gaprole_States_t newState );
-static void performPeriodicTask( void );
 static void muJoeGenProfileChangeCB( uint8 paramID );
 static void muJoeDataProfileReadCB( uint8 paramID );
+
+static void mainTask_initMuJoeGenMgrDriver( void );
+static void mainTask_beginAdvert( uint32 timeToAdvert );
+static void mainTask_endAdvert( void );
+static void mainTask_pbIntHdlr( void );
+static void mainTask_brdLedMgr( void );
+static void mainTask_setStatLEDState( statLedState_t newState );
 
 /*********************************************************************
  * PROFILE CALLBACKS
  */
 
 // GAP Role Callbacks
-static gapRolesCBs_t simpleBLEPeripheral_PeripheralCBs =
+static gapRolesCBs_t mainTask_PeripheralCBs =
 {
   peripheralStateNotificationCB,  // Profile State Change Callbacks
   NULL                            // When a valid RSSI is read from controller (not used by application)
 };
 
 // GAP Bond Manager Callbacks
-static gapBondCBs_t simpleBLEPeripheral_BondMgrCBs =
+static gapBondCBs_t mainTask_BondMgrCBs =
 {
   NULL,                     // Passcode callback (not used by application)
   NULL                      // Pairing / Bonding state Callback (not used by application)
@@ -195,12 +199,12 @@ static gapBondCBs_t simpleBLEPeripheral_BondMgrCBs =
 #if defined( MUJOE_GEN_PROFILE )
 
 // muJoe Generic GATT Profile Callbacks
-static muJoeGenProfileCBs_t simpleBLEPeripheral_muJoeGenProfileCBs =
+static muJoeGenProfileCBs_t mainTask_muJoeGenProfileCBs =
 {
   muJoeGenProfileChangeCB    // Charactersitic value change callback
 };
 
-static muJoeDataProfileCBs_t simpleBLEPeripheral_muJoeDataProfileCBs = 
+static muJoeDataProfileCBs_t mainTask_muJoeDataProfileCBs = 
 {
   NULL,                         // Characteristic value change callback
   muJoeDataProfileReadCB        // Called when a characteristic is read by central
@@ -209,7 +213,7 @@ static muJoeDataProfileCBs_t simpleBLEPeripheral_muJoeDataProfileCBs =
 #else
 
 // Simple GATT Profile Callbacks
-static simpleProfileCBs_t simpleBLEPeripheral_SimpleProfileCBs =
+static simpleProfileCBs_t mainTask_SimpleProfileCBs =
 {
   simpleProfileChangeCB    // Charactersitic value change callback
 };
@@ -220,14 +224,14 @@ static simpleProfileCBs_t simpleBLEPeripheral_SimpleProfileCBs =
  * PUBLIC FUNCTIONS
  */
 
-uint8 SimpleBLEPeripheral_getTaskId( void )
+uint8 mainTask_getTaskId( void )
 {
-  return simpleBLEPeripheral_TaskID;
+  return mainTask_TaskID;
   
-} // SimpleBLEPeripheral_getTaskId
+} // mainTask_getTaskId
 
 /*********************************************************************
- * @fn      SimpleBLEPeripheral_Init
+ * @fn      mainTask_Init
  *
  * @brief   Initialization function for the Simple BLE Peripheral App Task.
  *          This is called during initialization and should contain
@@ -240,9 +244,9 @@ uint8 SimpleBLEPeripheral_getTaskId( void )
  *
  * @return  none
  */
-void SimpleBLEPeripheral_Init( uint8 task_id )
+void mainTask_Init( uint8 task_id )
 {
-  simpleBLEPeripheral_TaskID = task_id;
+  mainTask_TaskID = task_id;
 
   // Setup the GAP
   VOID GAP_SetParamValue( TGAP_CONN_PAUSE_PERIPHERAL, DEFAULT_CONN_PAUSE_PERIPHERAL );
@@ -250,7 +254,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   // Setup the GAP Peripheral Role Profile
   {
     // For other hardware platforms, device starts advertising upon initialization
-    uint8 initial_advertising_enable = TRUE;
+    uint8 initial_advertising_enable = FALSE;
+    //uint8 initial_advertising_enable = TRUE;
 
     // By setting this to zero, the device will go into the waiting state after
     // being discoverable for 30.72 second, and will not being advertising again
@@ -325,14 +330,6 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
    muJoeGenProfile_writeCommand( 0x0000 );
    muJoeGenProfile_writeResponse( 0x0000 );
    muJoeGenProfile_writeDeviceInfo( 0xAAAA, 0xBBBB );
-   
-   /*uint8 mailboxBuff[20];
-   for( uint8 i = 0; i < 20; i++ )
-   {
-     mailboxBuff[i] = i;
-   }
-   muJoeGenProfile_writeMailbox( mailboxBuff, 20 );
-   */
    muJoeGenProfile_clearMailbox();
    
    // Init muJoe Data Service Characteristic Values
@@ -355,17 +352,21 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
   }
 #endif
 
-  bool initBoardstatus = mujoeBoardConfig_initBoard();           // Init board
-  while( !initBoardstatus );                                     // Trap MCU if init failed        
+  bool initBoardstatus = mujoeBSD_initBoard();                   // Init board
+  while( !initBoardstatus );                                     // Trap MCU if init failed
+  // Assign the OSAL evt in which muJoeGPIO_interruptMgr is called
+  muJoeGPIO_assignIntMgrOSALEvt( mainTask_TaskID, MAIN_GPIOINTMGR_EVT );
+  bool stat = muJoeGPIO_registerIntCallback( PINID_PB_INTn, mainTask_pbIntHdlr );
+  while( !stat );                                               // Trap MCU
 
 #if defined( MUJOE_GEN_PROFILE )
   // Register callback with muJoeGenericProfile
-  VOID muJoeGenProfile_RegisterAppCBs( &simpleBLEPeripheral_muJoeGenProfileCBs );
+  VOID muJoeGenProfile_RegisterAppCBs( &mainTask_muJoeGenProfileCBs );
   // Register callback with muJoeDataProfile
-  VOID muJoeDataProfile_RegisterAppCBs( &simpleBLEPeripheral_muJoeDataProfileCBs );
+  VOID muJoeDataProfile_RegisterAppCBs( &mainTask_muJoeDataProfileCBs );
 #else
   // Register callback with SimpleGATTprofile
-  VOID SimpleProfile_RegisterAppCBs( &simpleBLEPeripheral_SimpleProfileCBs );
+  VOID SimpleProfile_RegisterAppCBs( &mainTask_SimpleProfileCBs );
 #endif
 
   // Enable clock divide on halt
@@ -380,13 +381,16 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 
 #endif // defined ( DC_DC_P0_7 )
 
+  // Init App level drivers
+  mainTask_initMuJoeGenMgrDriver();     // TEST
+  
   // Setup a delayed profile startup
-  osal_set_event( simpleBLEPeripheral_TaskID, SBP_START_DEVICE_EVT );
+  osal_set_event( mainTask_TaskID, MAIN_START_DEVICE_EVT );
 
 }
 
 /*********************************************************************
- * @fn      SimpleBLEPeripheral_ProcessEvent
+ * @fn      mainTask_ProcessEvent
  *
  * @brief   Simple BLE Peripheral Application Task event processor.  This function
  *          is called to process all events for the task.  Events
@@ -398,49 +402,36 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
  *
  * @return  events not processed
  */
-uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
+uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
 {
 
   VOID task_id; // OSAL required parameter that isn't used in this function
 
+  // OSAL Message Received event
   if ( events & SYS_EVENT_MSG )
   {
     uint8 *pMsg;
-
-    if ( (pMsg = osal_msg_receive( simpleBLEPeripheral_TaskID )) != NULL )
+    if ( (pMsg = osal_msg_receive( mainTask_TaskID )) != NULL )
     {
-      simpleBLEPeripheral_ProcessOSALMsg( (osal_event_hdr_t *)pMsg );
-
-      // Release the OSAL message
-      VOID osal_msg_deallocate( pMsg );
+      mainTask_ProcessOSALMsg( (osal_event_hdr_t *)pMsg ); 
+      VOID osal_msg_deallocate( pMsg );                  // Release the OSAL message
     }
-
-    // return unprocessed events
-    return (events ^ SYS_EVENT_MSG);
+    return (events ^ SYS_EVENT_MSG);                     // return unprocessed events
   }
 
-  if ( events & SBP_START_DEVICE_EVT )
+  // Start Device Event 
+  if ( events & MAIN_START_DEVICE_EVT )
   {
     // Start the Device
-    VOID GAPRole_StartDevice( &simpleBLEPeripheral_PeripheralCBs );
+    VOID GAPRole_StartDevice( &mainTask_PeripheralCBs );
 
     // Start Bond Manager
-    VOID GAPBondMgr_Register( &simpleBLEPeripheral_BondMgrCBs );
+    VOID GAPBondMgr_Register( &mainTask_BondMgrCBs );
 
-    // Set timer for first periodic event
-    osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT, SBP_PERIODIC_EVT_PERIOD );
-
-    // BEGIN TEST
-    muJoeGenMgr_t muJoeGenMgr;
-    muJoeGenMgr.asyncBulkCb.evtFlg = MAIN_ASYNCBULK_EVT;
-    muJoeGenMgr.asyncBulkCb.tskId = SimpleBLEPeripheral_getTaskId();
-    muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.tskId = SimpleBLEPeripheral_getTaskId();
-    muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.evtFlg = MAIN_RSP_NOTI_EVT;
-    muJoeGenMgr.muJoeGenMgr_rspHdlrCb.pRspBuff = &rspBuffer;
-    muJoeGenMgr_initDriver( muJoeGenMgr );
-    // END TEST
+    // Set timer for Initializing onboard sensors
+    osal_start_timerEx( sensorMgrTask_getTaskId(), SENSORMGR_INIT_SENSORS_EVT, 200 );
     
-    return ( events ^ SBP_START_DEVICE_EVT );
+    return ( events ^ MAIN_START_DEVICE_EVT );
   }
 
   // Command Characteristic Write Handler Event 
@@ -462,7 +453,7 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
   {
      // Restart timer
      if ( SBP_PERIODIC_EVT_PERIOD )
-        osal_start_timerEx( simpleBLEPeripheral_TaskID, 
+        osal_start_timerEx( mainTask_TaskID, 
                             MAIN_ASYNCBULK_EVT, 
                             mujoeBrdSettings.asyncBulkSampPeriod );
      
@@ -474,26 +465,119 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
      return ( events ^ MAIN_ASYNCBULK_EVT );
   }
   
-  if ( events & SBP_PERIODIC_EVT )
+  // GPIO Interrupt Manager event
+  if ( events & MAIN_GPIOINTMGR_EVT )
   {
-    // Restart timer
-    if ( SBP_PERIODIC_EVT_PERIOD )
-    {
-      osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT, SBP_PERIODIC_EVT_PERIOD );
-    }
-
-    // Perform periodic application task
-    performPeriodicTask();
-
-    return (events ^ SBP_PERIODIC_EVT);
+    muJoeGPIO_interruptMgr();
+    return (events ^ MAIN_GPIOINTMGR_EVT);
   }
 
+  // Start BLE Advertisement event
+  if ( events & MAIN_ADVBEGIN_EVT )
+  {
+    mainTask_beginAdvert( mainTask.lengthOfAdvert );
+    return (events ^ MAIN_ADVBEGIN_EVT);
+  }
+  
+  // Stop BLE Advertisement event
+  if ( events & MAIN_ADVEND_EVT )
+  {
+     mainTask_endAdvert();
+     return (events ^ MAIN_ADVEND_EVT);
+  }
+  
+  // Board LED Manager event
+  if ( events & MAIN_BRD_LEDMGR_EVT )
+  {
+    mainTask_brdLedMgr();
+    return (events ^ MAIN_BRD_LEDMGR_EVT);
+  }
+  
   // Discard unknown events
   return 0;
 }
 
+// TODO: Abstract this further so multiple LED states and periods can
+//       be tracked and managed simultaneously
+static void mainTask_brdLedMgr( void )
+{
+  uint32 ledPeriod = 0;
+  
+  switch( statLedState )
+  {
+    case STATLED_OFF:
+      muJoeGPIO_writePin( PINID_STATUS_LED, TRUE );
+      break;
+    case STATLED_ON:
+      muJoeGPIO_writePin( PINID_STATUS_LED, FALSE );
+      break;
+    case STATLED_FASTBLINK:
+      muJoeGPIO_togglePin( PINID_STATUS_LED );
+      ledPeriod = 250;
+      break;
+    case STATLED_SLOWBLINK:
+      muJoeGPIO_togglePin( PINID_STATUS_LED );
+      ledPeriod = 500;
+      break;
+    default:
+      break;
+  }
+  
+  if( ledPeriod )
+    osal_start_timerEx( mainTask_TaskID, MAIN_BRD_LEDMGR_EVT, ledPeriod );
+  
+}// mainTask_brdLedMgr
+
+static void mainTask_setStatLEDState( statLedState_t newState )
+{
+  statLedState = newState;
+  osal_stop_timerEx( mainTask_TaskID, MAIN_BRD_LEDMGR_EVT );
+  osal_set_event( mainTask_TaskID, MAIN_BRD_LEDMGR_EVT );
+  
+} // mainTask_setStatLEDState
+
+static void mainTask_pbIntHdlr( void )
+{
+  muJoeGPIO_togglePin( PINID_CHG_LED );
+  osal_set_event( mainTask_TaskID, MAIN_ADVBEGIN_EVT ); 
+  
+} // mainTask_pbIntHdlr
+
+static void mainTask_endAdvert( void )
+{
+   uint8 advertEnable = FALSE;
+   if( GAPRole_SetParameter( GAPROLE_ADVERT_ENABLED, sizeof( uint8 ), &advertEnable ) != SUCCESS )
+     osal_set_event( mainTask_TaskID, MAIN_ADVEND_EVT );  
+   
+} // mainTask_endAdvert
+
+// timeToAdvert = How long to advertise in ms. Will advertise indefinately if zero
+static void mainTask_beginAdvert( uint32 timeToAdvert )
+{
+   uint8 advertEnable = TRUE;
+   if( GAPRole_SetParameter( GAPROLE_ADVERT_ENABLED, sizeof( uint8 ), &advertEnable ) == SUCCESS )
+     if( timeToAdvert )
+       osal_start_timerEx( mainTask_TaskID, MAIN_ADVEND_EVT, timeToAdvert );
+   else
+     osal_set_event( mainTask_TaskID, MAIN_ADVBEGIN_EVT );
+   
+} // mainTask_beginAdvert
+
+static void mainTask_initMuJoeGenMgrDriver( void )
+{
+  muJoeGenMgr_t muJoeGenMgr;
+  muJoeGenMgr.asyncBulkCb.evtFlg = MAIN_ASYNCBULK_EVT;
+  muJoeGenMgr.asyncBulkCb.tskId = mainTask_getTaskId();
+  muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.tskId = mainTask_getTaskId();
+  muJoeGenMgr.muJoeGenMgr_rspHdlrCb.rspHdlrCb.evtFlg = MAIN_RSP_NOTI_EVT;
+  muJoeGenMgr.muJoeGenMgr_rspHdlrCb.pRspBuff = &rspBuffer;
+  
+  muJoeGenMgr_initDriver( muJoeGenMgr );
+  
+} // mainTask_initMuJoeGenMgrDriver
+
 /*********************************************************************
- * @fn      simpleBLEPeripheral_ProcessOSALMsg
+ * @fn      mainTask_ProcessOSALMsg
  *
  * @brief   Process an incoming task message.
  *
@@ -501,36 +585,48 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
  *
  * @return  none
  */
-static void simpleBLEPeripheral_ProcessOSALMsg( osal_event_hdr_t *pMsg )
+static void mainTask_ProcessOSALMsg( osal_event_hdr_t *pMsg )
 {
   switch ( pMsg->event )
-  {     
-  #if defined( CC2540_MINIDK )
-    case KEY_CHANGE:
-      simpleBLEPeripheral_HandleKeys( ((keyChange_t *)pMsg)->state, 
-                                      ((keyChange_t *)pMsg)->keys );
-      break;
-  #endif // #if defined( CC2540_MINIDK )
- 
+  {    
     case GATT_MSG_EVENT:
       // Process GATT message
-      simpleBLEPeripheral_ProcessGATTMsg( (gattMsgEvent_t *)pMsg );
+      mainTask_ProcessGATTMsg( (gattMsgEvent_t *)pMsg );
       break;
-      
+    // Process Messages from SensorManager Task
+    case SENSORMGRTASK:
+      mainTask_ProcessSensorMgrMsg( (msg_t *)pMsg );
+      break;
     default:
       // do nothing
       break;
   }
-}
+} // mainTask_ProcessOSALMsg
+
+static void mainTask_ProcessSensorMgrMsg( msg_t *msg )
+{
+  sensorMgrTask_msg_t sensorMgrTask_msg = msg->sensorMgrTask;
+  
+  switch( sensorMgrTask_msg )
+  {
+    case SENSORMGR_HWINIT_DONE:
+      muJoeGPIO_writePin( PINID_CHG_LED, FALSE );
+      enableP1PinInterrupt(0x20);       // TEST: Unmask P1.5 interrupt
+      break;
+    default:
+      break;
+  }
+  
+}//mainTask_ProcessSensorMgrMsg
 
 /*********************************************************************
- * @fn      simpleBLEPeripheral_ProcessGATTMsg
+ * @fn      mainTask_ProcessGATTMsg
  *
  * @brief   Process GATT messages
  *
  * @return  none
  */
-static void simpleBLEPeripheral_ProcessGATTMsg( gattMsgEvent_t *pMsg )
+static void mainTask_ProcessGATTMsg( gattMsgEvent_t *pMsg )
 {  
   GATT_bm_free( &pMsg->msg, pMsg->method );
 }
@@ -573,12 +669,19 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
       }
       break;
     case GAPROLE_ADVERTISING:
+      mainTask_setStatLEDState( STATLED_FASTBLINK ); 
       break;       
     case GAPROLE_CONNECTED:  
+      mainTask_setStatLEDState( STATLED_ON );        
       break;
     case GAPROLE_CONNECTED_ADV:
       break;      
     case GAPROLE_WAITING:
+      // If last GAPROLE state was Connected, then a disconnect occurred, therefore:
+      // Suppress re-start of advertisement
+      if( gapProfileState == GAPROLE_CONNECTED )
+        mainTask_endAdvert();    
+      mainTask_setStatLEDState( STATLED_ON ); 
       break;
     case GAPROLE_WAITING_AFTER_TIMEOUT:
       break;
@@ -597,75 +700,6 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
 }
 
 /*********************************************************************
- * @fn      performPeriodicTask
- *
- * @brief   Perform a periodic application task. This function gets
- *          called every five seconds as a result of the SBP_PERIODIC_EVT
- *          OSAL event. In this example, the value of the third
- *          characteristic in the SimpleGATTProfile service is retrieved
- *          from the profile, and then copied into the value of the
- *          the fourth characteristic.
- *
- * @param   none
- *
- * @return  none
- */
-static void performPeriodicTask( void )
-{
-#if defined ( MUJOE_GEN_PROFILE )
-  /*uint16 cmdValue;
-  if( muJoeGenProfile_readCommand( &cmdValue ) == SUCCESS )
-     muJoeGenProfile_writeResponse( cmdValue );
-  */
-#else
-  uint8 valueToCopy;
-  uint8 stat;
-
-  // Call to retrieve the value of the third characteristic in the profile
-  stat = SimpleProfile_GetParameter( SIMPLEPROFILE_CHAR3, &valueToCopy);
-
-  if( stat == SUCCESS )
-  {
-    /*
-     * Call to set that value of the fourth characteristic in the profile. Note
-     * that if notifications of the fourth characteristic have been enabled by
-     * a GATT client device, then a notification will be sent every time this
-     * function is called.
-     */
-    SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR4, sizeof(uint8), &valueToCopy);
-  }
-#endif
-}
-
-/*********************************************************************
- * @fn      simpleProfileChangeCB
- *
- * @brief   Callback from SimpleBLEProfile indicating a value change
- *
- * @param   paramID - parameter ID of the value that was changed.
- *
- * @return  none
- */
-static void simpleProfileChangeCB( uint8 paramID )
-{
-  uint8 newValue;
-
-  switch( paramID )
-  {
-    case SIMPLEPROFILE_CHAR1:
-      SimpleProfile_GetParameter( SIMPLEPROFILE_CHAR1, &newValue );
-      break;
-
-    case SIMPLEPROFILE_CHAR3:
-      SimpleProfile_GetParameter( SIMPLEPROFILE_CHAR3, &newValue );
-      break;
-    default:
-      // should not reach here!
-      break;
-  }
-}
-
-/*********************************************************************
  * @fn      muJoeGenProfileChangeCB
  *
  * @brief   Callback from muJoeGenericProfile indicating a value change
@@ -679,7 +713,7 @@ static void muJoeGenProfileChangeCB( uint8 paramID )
   switch( paramID )
   {
     case MUJOEGENERICPROFILE_COMMAND:
-      osal_set_event( simpleBLEPeripheral_TaskID, MAIN_CMD_WRITE_EVT );
+      osal_set_event( mainTask_TaskID, MAIN_CMD_WRITE_EVT );
       break;
     case MUJOEGENERICPROFILE_MAILBOX:
       break;

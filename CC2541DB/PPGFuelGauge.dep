@@ -2,50 +2,11 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>1727624471</fileChecksum>
+  <fileChecksum>3572356294</fileChecksum>
   <configuration>
     <name>CC2541</name>
-    <outputs/>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>XLINK</tool>
-    </forcedrebuild>
-  </configuration>
-  <configuration>
-    <name>CC2541-OAD-Encrypted-ImgA</name>
-    <outputs/>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>XLINK</tool>
-    </forcedrebuild>
-  </configuration>
-  <configuration>
-    <name>CC2541-OAD-Encrypted-ImgB</name>
-    <outputs/>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>XLINK</tool>
-    </forcedrebuild>
-  </configuration>
-  <configuration>
-    <name>CC2541-OAD-ImgA</name>
-    <outputs/>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>XLINK</tool>
-    </forcedrebuild>
-  </configuration>
-  <configuration>
-    <name>CC2541-OAD-ImgB</name>
-    <outputs/>
-    <forcedrebuild>
-      <name>[MULTI_TOOL]</name>
-      <tool>XLINK</tool>
-    </forcedrebuild>
-  </configuration>
-  <configuration>
-    <name>CC2541DK-MINI Keyfob</name>
     <outputs>
+<<<<<<< HEAD
       <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_dma.r51</file>
       <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\SimpleBLEPeripheral_Main.__cstat.et</file>
       <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_startup.r51</file>
@@ -264,24 +225,2534 @@
         <tool>
           <name>__cstat</name>
           <file> 130</file>
+=======
+      <file>$PROJ_DIR$\..\Source\mujoeTaskMsgr.c</file>
+      <file>$PROJ_DIR$\..\Source\mainTask.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_assert.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_key.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_lcd.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_led.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_adc.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_crc.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_sleep.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_defs.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_key.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_led.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_dma.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_startup.c</file>
+      <file>$PROJ_DIR$\..\Source\sensorMgrTask.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_board.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_drivers.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_flash.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_uart.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\common\hal_drivers.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_lcd.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_board_cfg.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_aes.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_sleep.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_flash.c</file>
+      <file>$PROJ_DIR$\..\Source\OSAL_SimpleBLEPeripheral.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_adc.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\services\saddr\saddr.h</file>
+      <file>$PROJ_DIR$\..\Source\SimpleBLEPeripheral_Main.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_timer.h</file>
+      <file>$PROJ_DIR$\..\..\Libraries\CC2541DB\bin\CC2541_BLE_peri.lib</file>
+      <file>$PROJ_DIR$\..\..\Libraries\Common\bin\CC254x_BLE_HCI_TL_None.lib</file>
+      <file>$PROJ_DIR$\..\Source\mujoeADC.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardConfig.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeGenericProfile.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeEvtMsgr.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeGenericProfileMgr.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\att.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\hci.h</file>
+      <file>$PROJ_DIR$\..\..\common\npi\npi_np\npi.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeGPIO.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_crc.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeI2C.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardSpecificDrivers.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\l2cap.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\gap.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_timer.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeToolBox.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\sm.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardSettings.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_aes.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_uart.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_mcu.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\gatt.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\host\linkdb.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\controller\CC254x\include\ll.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeDataProfile.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_dma.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_types.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\gatt_uuid.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\osal_cbtimer.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_Timers.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Roles\gapbondmgr.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\DevInfo\devinfoservice.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\osal_bufmgr.c</file>
+      <file>$PROJ_DIR$\..\..\Include\gapgattserver.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\GATT\gattservapp_util.c</file>
+      <file>$PROJ_DIR$\..\..\common\npi\npi_np\npi.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\bcomdef.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\host\gatt_uuid.c</file>
+      <file>$PROJ_DIR$\..\..\Include\gattservapp.h</file>
+      <file>$PROJ_DIR$\..\Source\MMA8453QMgr.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_PwrMgr.c</file>
+      <file>$PROJ_DIR$\..\Source\MMA8453Q.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Roles\CC254x\peripheral.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\mcu\cc2540\osal_snv.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_ClockBLE.c</file>
+      <file>$PROJ_DIR$\..\Source\MS560702.c</file>
+      <file>$PROJ_DIR$\..\Source\CAT24C512.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_Memory.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\DevInfo\devinfoservice.h</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Roles\gap.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Roles\gapbondmgr.h</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Roles\CC254x\peripheral.c</file>
+      <file>$PROJ_DIR$\buildConfig.cfg</file>
+      <file>$PROJ_DIR$\..\Source\mujoeADC.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\sysmac.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\simplekeys.pbi</file>
+      <file>$PROJ_DIR$\..\Source\CAT24C512.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gap.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_Timers.pbi</file>
+      <file>$PROJ_DIR$\..\..\config\buildComponents.cfg</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardSettings.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gapbondmgr.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\clib\string.h</file>
+      <file>$PROJ_DIR$\..\..\common\cc2540\OnBoard.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\SimpleProfile\CC254x\simpleGATTprofile.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Keys\simplekeys.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeGenericProfile.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_timer.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_led.r51</file>
+      <file>$PROJ_DIR$\..\..\Profiles\SimpleProfile\simpleGATTprofile.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\osal_snv.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL_PwrMgr.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_timer.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\CAT24C512.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\MMA8453Q.r51</file>
+      <file>$PROJ_DIR$\..\..\common\cc2540\OnBoard.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_startup.pbi</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Keys\CC254x\simplekeys.c</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_flash.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OnBoard.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_PwrMgr.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\osal_bufmgr.__cstat.et</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\controller\CC254x\include\ll_timer2.h</file>
+      <file>$PROJ_DIR$\..\Source\muJoeGenericProfileMgr.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeToolBox.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_Memory.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_startup.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gatt_uuid.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_SimpleBLEPeripheral.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeToolBox.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_uart.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_flash.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\MS560702.__cstat.et</file>
+      <file>$PROJ_DIR$\..\Source\MMA8453QMgr.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\MMA8453QMgr.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeBoardSpecificDrivers.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\osal_bufmgr.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gatt_uuid.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\sensorMgrTask.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_adc.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeI2C.__cstat.et</file>
+      <file>$PROJ_DIR$\..\Source\mujoeDataProfile.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeEvtMsgr.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_led.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\osal_cbtimer.r51</file>
+      <file>$PROJ_DIR$\..\Source\MS560702.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_ClockBLE.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gap.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\SimpleBLEPeripheral_Main.r51</file>
+      <file>$PROJ_DIR$\..\Source\muJoeGPIO.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeEvtMsgr.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeBoardSettings.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_lcd.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mainTask.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OnBoard.r51</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL_Tasks.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeTaskMsgr.pbi</file>
+      <file>$PROJ_DIR$\..\..\Include\gatt_profile_uuid.h</file>
+      <file>$PROJ_DIR$\CC2541\List\SimpleBLEPeripheral.map</file>
+      <file>$PROJ_DIR$\CC2541\Obj\osal_cbtimer.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\hci\hci_data.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeEvtMsgr.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL_Timers.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_adc.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\simplekeys.__cstat.et</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\hci\hci_tl.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gatt_uuid.pbi</file>
+      <file>$PROJ_DIR$\..\Source\sensorMgrTask.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeGenericProfile.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeGenericProfile.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_Timers.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeDataProfile.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeDataProfile.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mainTask.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_dma.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\devinfoservice.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\MMA8453Q.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeEvtMsgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_PwrMgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_sleep.pbi</file>
+      <file>$PROJ_DIR$\..\..\common\cc2540\ti_51ew_cc2540b.xcl</file>
+      <file>$PROJ_DIR$\CC2541\Obj\peripheral.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_aes.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeBoardSettings.r51</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\controller\CC254x\include\ll_sleep.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mainTask.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeGPIO.r51</file>
+      <file>$PROJ_DIR$\..\Source\MMA8453Q.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\stdlib.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeGPIO.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_flash.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_Timers.__cstat.et</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeBoardConfig.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\devinfoservice.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\MS560702.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_drivers.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeADC.__cstat.et</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardConfig.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_aes.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeBoardSpecificDrivers.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_Memory.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\MMA8453Q.__cstat.et</file>
+      <file>$PROJ_DIR$\..\Source\mujoeI2C.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gap.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_crc.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeTaskMsgr.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_adc.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_drivers.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeADC.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\MMA8453QMgr.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeBoardSpecificDrivers.__cstat.et</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\controller\CC254x\include\ll_math.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\sensorMgrTask.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_Memory.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_uart.r51</file>
+      <file>$PROJ_DIR$\..\Source\mujoeTaskMsgr.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_startup.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\MS560702.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_dma.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_aes.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\osal_cbtimer.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\peripheral.r51</file>
+      <file>$PROJ_DIR$\..\Source\mainTask.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeGenericProfileMgr.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\SimpleBLEPeripheral_Main.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeBoardConfig.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_ClockBLE.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\CAT24C512.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\osal_snv.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_key.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeADC.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\npi.r51</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_bufmgr.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\hci\hci_event.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\simpleGATTprofile.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\simplekeys.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\simpleGATTprofile.r51</file>
+      <file>$TOOLKIT_DIR$\inc\clib\limits.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\peripheral.__cstat.et</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_snv.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_ClockBLE.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_uart.__cstat.et</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_cbtimer.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeGenericProfileMgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\osal_snv.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\simpleGATTprofile.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_sleep.r51</file>
+      <file>$PROJ_DIR$\CC2541\Exe\SimpleBLEPeripheral.d51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeBoardConfig.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gattservapp_util.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_key.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL.r51</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardSpecificDrivers.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeToolBox.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\npi.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeDataProfile.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeTaskMsgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gapbondmgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeGenericProfileMgr.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gapbondmgr.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\osal_bufmgr.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_sleep.__cstat.et</file>
+      <file>$TOOLKIT_DIR$\lib\clib\cl-pli-blxd-1e16x01.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\SimpleBLEPeripheral_Main.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_led.__cstat.et</file>
+      <file>$TOOLKIT_DIR$\inc\ioCC2541.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\sensorMgrTask.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_dma.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeGPIO.pbi</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\comdef.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL_Memory.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_SimpleBLEPeripheral.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeI2C.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_lcd.r51</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL_Clock.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gattservapp_util.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\MMA8453QMgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeGenericProfile.r51</file>
+      <file>$PROJ_DIR$\..\Source\mujoeToolBox.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\CAT24C512.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_lcd.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_timer.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\gattservapp_util.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_SimpleBLEPeripheral.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_crc.r51</file>
+      <file>$PROJ_DIR$\..\Source\simpleBLEPeripheral.h</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OnBoard.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\npi.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Exe\SimpleBLEPeripheral.hex</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeI2C.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_crc.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\devinfoservice.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_key.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541\Obj\hal_drivers.pbi</file>
+      <file>$PROJ_DIR$\CC2541\Obj\OSAL_PwrMgr.r51</file>
+      <file>$PROJ_DIR$\CC2541\Obj\mujoeBoardSettings.pbi</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 151 284 243</file>
         </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeTaskMsgr.c</name>
+      <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 9</file>
+          <file> 149</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 201</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 252</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 266 186 233 87 265 58 95 155 211 9</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 211 58 186 233 87 265 9 266 155 95</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mainTask.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 179</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 146</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 166</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 261 193 10 44 161 186 266 52 104 65 211 55 69 54 53 95 26 81 75 116 9 71 87 58 138 198 108 11 20 38 102 134 83 160 248 265 233 23 21 181 93 274 218 155 15 37 2 59 45 48 89 142 86</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 218 69 265 58 9 186 233 87 266 155 104 108 52 261 23 26 15 21 11 10 20 53 37 44 38 55 2 65 71 81 102 161 95 54 59 83 45 48 134 75 211 160 138 198 89 181 116 93 248 193 142 274 86</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_key.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 246</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 288</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 261 15 26 58 186 9 266 87 16 10 21 52 233 265 155</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 52 9 58 261 16 26 15 21 10 186 233 87 265 266 155</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_lcd.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 276</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 269</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 145</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21 2 58 186 52 261 155 20 108 15 9 265 233 266 87 23</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 58 20 15 21 52 9 261 186 233 87 265 266 155 108 23 2</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_led.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 136</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 101</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 260</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58 233 11 261 21 15 52 87 9 16 186 266 265 155</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 52 9 58 261 16 11 15 21 186 233 87 265 266 155</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_adc.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 156</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 202</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 132</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 261 52 58 21 9 15 26</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 26 58 15 21 52 9 261</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_crc.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 200</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 280</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 286</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9 21 52 58 261 15 41</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 15 21 52 9 58 261 41</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_sleep.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 173</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 242</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 257</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 148 11 178 9 266 15 186 16 207 52 23 10 155 104 2 115 58 261 233 87 265 21 69</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 58 52 9 261 15 21 23 11 10 186 233 87 265 266 155 148 104 16 2 178 69 115 207</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_dma.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 167</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 214</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 263</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9 58 52 18 15 21 261 57</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 57 15 21 52 9 58 261 18</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_startup.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 109</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 212</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 119</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9 21 52 58 261 15</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 15 21 52 9 58 261</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\sensorMgrTask.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 131</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 262</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 208</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 45 104 93 69 38 53 142 218 265 186 83 59 261 89 266 87 11 102 248 9 52 58 95 211 138 181 233 44 55 108 20 71 134 160 23 21 54 48 37 86 274 26 198 155 2 10 65 81 161 75 116 15 193</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 160 69 265 58 9 186 233 87 266 155 104 53 37 44 38 55 2 211 95 218 108 52 261 23 26 15 21 11 10 20 65 71 81 102 161 54 59 83 45 48 134 75 116 93 248 193 142 274 198 86 138 89 181</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\common\hal_drivers.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 289</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 191</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 203</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58 21 50 20 16 23 186 15 52 266 87 9 57 10 11 29 18 233 26 261 265 155</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 26 58 15 21 52 9 261 50 57 16 10 20 11 23 29 18 186 233 87 265 266 155</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_aes.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 194</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 215</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 176</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 265 21 58 57 155 52 261 50 233 266 87 9 15 186</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 186 233 87 265 58 9 266 155 50 57 15 21 52 261</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_flash.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 124</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 184</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 111</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 52 261 58 17 21 57 9 15</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 21 52 9 58 261 57 15 17</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\OSAL_SimpleBLEPeripheral.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 121</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 267</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 279</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 198 69 75 186 281 229 158 44 265 9 53 38 55 266 26 81 116 23 59 89 93 148 65 233 87 18 2 15 48 104 10 161 211 58 95 37 83 218 261 274 16 238 45 71 160 155 153 21 52 108 11 20 102 134 248 54 138 181 193 142 86</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 58 186 233 87 265 9 266 155 148 16 55 69 158 38 2 18 15 21 52 261 153 229 238 44 45 48 65 83 53 37 71 75 218 104 108 23 26 11 10 20 81 102 161 95 54 59 134 211 160 138 198 89 181 116 93 248 193 142 274 86 281</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\SimpleBLEPeripheral_Main.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 220</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 141</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 259</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 265 235 11 9 29 148 15 10 16 186 104 108 21 52 58 261 155 23 233 266 87</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 58 10 15 21 52 9 261 29 16 11 186 233 87 265 266 155 148 104 235 108 23</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeADC.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 204</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 226</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 192</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 155 26 265 15 9 186 233 266 58 86 87 21 52 261</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 86 186 233 87 265 58 9 266 155 26 15 21 52 261</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeBoardConfig.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 187</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 244</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 221</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 193 58</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 193 58</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeGenericProfile.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 162</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 273</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 99</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9 37 87 69 95 83 265 233 48 186 59 266 45 54 53 71 58 155 44 161</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 161 95 87 69 265 58 9 186 233 266 155 54 37 44 53 59 71 83 45 48</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeEvtMsgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 154</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 135</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 171</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 143</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 143</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeGenericProfileMgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 254</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 219</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 239</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 59 45 69 93 186 266 95 37 83 265 9 233 87 48 161 155 54 53 71 58 44 116</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 116 161 95 87 69 265 58 9 186 233 266 155 54 37 44 53 59 71 83 45 48 93</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeGPIO.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 264</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 180</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 183</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 155 193 261 58 186 265 87 52 274 233 266 142 9</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 142 186 233 87 265 58 9 266 155 52 261 193 274</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeI2C.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 285</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 268</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 133</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 261 58 198</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 198 58 261</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeBoardSpecificDrivers.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 195</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 128</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 206</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58 9 186 87 142 265 26 86 193 155 261 15 198 52 274 233 266 21 248</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 248 193 58 142 186 233 87 265 9 266 155 52 261 274 198 86 26 15 21</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_timer.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 277</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 105</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 100</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+          <file> 92 85</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeToolBox.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 249</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 117</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 122</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 274 58</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 274 58</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeBoardSettings.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 291</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 177</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 144</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 93 58</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 93 58</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_uart.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 123</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 210</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 237</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18 16 9 58 15 21 52 261</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 21 52 9 58 261 16 18 15</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeDataProfile.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 251</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 165</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 164</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 44 37 58 155 186 95 83 265 59 87 69 54 53 71 9 233 266 45 48 134</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 134 95 87 69 265 58 9 186 233 266 155 54 37 44 53 59 71 83 45 48</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\osal_cbtimer.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 152</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 137</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 216</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 87 266 265 9 52 233 148 238 155 186 58 261 69</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 186 233 87 265 58 9 266 155 148 52 261 238 69</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_Timers.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 91</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 163</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 185</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58 29 9 186 23 265 21 108 155 52 261 15 233 266 87</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 265 58 9 108 52 261 23 186 233 87 266 155 29 15 21</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Profiles\Roles\gapbondmgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 94</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 255</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 253</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58 69 265 155 2 53 186 65 48 45 38 37 235 54 59 71 83 9 233 266 87 44 55</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 69 265 58 9 186 233 87 266 155 235 45 48 54 53 37 44 59 38 55 2 71 65 83</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Profiles\DevInfo\devinfoservice.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 188</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 287</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 169</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 265 233 59 9 87 186 69 37 71 266 53 150 81 58 155 44</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 69 265 58 9 186 233 87 266 155 37 44 53 59 150 71 81</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\osal_bufmgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 129</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 256</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 114</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58 233 228 266 23 108 265 155 87 9 186 52 261</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 186 233 87 265 58 9 266 155 108 52 261 23 228</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 168</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 247</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 190</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108 9 148 15 104 266 58 265 186 270 16 87 233 23 95 21 52 261 155</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 95 87 265 58 9 15 21 52 261 186 233 266 155 148 104 270 108 23 16</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Profiles\GATT\gattservapp_util.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 245</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 278</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 271</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58 186 266 69 53 233 87 54 71 265 9 37 155 44</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 69 265 58 9 54 53 186 233 87 266 155 37 44 71</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\common\npi\npi_np\npi.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 283</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 227</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 250</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58 21 39 9 15 18 52 261</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 58 15 21 52 9 261 39 18</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\ble\host\gatt_uuid.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 159</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 130</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 120</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58 155 265 69 53 37 186 59 9 233 266 87 44</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 265 58 9 186 233 87 266 155 53 69 37 44 59</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\MMA8453QMgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 127</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 205</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 272</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58 95 181 265 261 198 87 266 9 126</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 126 58 198 261 181 266 265 9 95 87</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_PwrMgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 113</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 290</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 172</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 265 155 186 108 148 104 9 52 58 261 23 233 266 87</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 265 58 9 108 52 261 23 186 233 87 266 155 148 104</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\MMA8453Q.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 170</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 107</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 197</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 266 87 58 265 198 95 261 9 181</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 181 58 198 261 266 265 9 95 87</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\mcu\cc2540\osal_snv.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 103</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 240</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 224</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 186 9 265 58 2 17 235 27 15 21 52 261 155 26 233 266 87</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 26 58 15 21 52 9 261 17 265 186 233 87 266 155 235 2 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_ClockBLE.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 139</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 222</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 236</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 87 186 23 233 108 270 58 9 266 265 52 261 155</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 265 58 9 108 52 261 23 186 233 87 266 155 270</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\MS560702.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 189</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 213</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 125</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58 198 261 138</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 138 58 198 261</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\CAT24C512.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 223</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 275</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 106</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 266 265 58 261 198 95 9 89 87</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 89 58 198 261 266 265 9 95 87</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_Memory.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 196</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 209</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 118</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108 265 186 2 58 155 52 261 266 87 9 233 23 182</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 182 87 265 58 9 186 233 266 155 108 52 261 23 2</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Profiles\Roles\gap.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 140</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 90</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 199</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 266 186 48 58 45 265 9 69 233 87 155</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 69 265 58 9 45 186 233 87 266 155 48</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Profiles\Roles\CC254x\peripheral.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 175</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 217</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 234</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 186 235 45 265 55 158 37 83 58 155 153 69 9 44 54 53 75 233 266 87 38 18 229 2 15 21 52 261 48</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 69 265 58 9 186 233 87 266 155 158 38 55 2 18 15 21 52 261 153 229 44 45 48 54 37 53 235 75 83</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\common\cc2540\OnBoard.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 112</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 147</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 282</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23 11 9 186 58 265 108 10 52 261 155 15 69 233 266 87 21</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 69 265 58 9 108 52 261 23 186 233 87 266 155 11 15 21 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Profiles\SimpleProfile\CC254x\simpleGATTprofile.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 241</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 232</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 230</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 45 69 83 37 266 186 59 265 9 233 87 48 54 53 71 102 58 155 44 95</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 95 87 69 265 58 9 186 233 266 155 54 37 44 53 59 71 83 45 48 102</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Profiles\Keys\CC254x\simplekeys.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 88</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 231</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 157</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 186 98 53 69 54 71 265 266 45 37 59 83 9 233 87 48 58 155 44</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92 85 69 265 58 9 186 233 87 266 155 54 37 44 53 59 71 83 45 48 98</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\CC2541\Exe\SimpleBLEPeripheral.d51</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 151 284</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 174 275 30 31 287 90 255 130 278 202 215 280 214 191 184 225 269 101 242 212 105 210 146 107 205 213 226 244 177 128 165 135 273 219 180 268 201 117 227 147 247 256 137 222 209 290 267 240 163 217 262 141 232 231 258</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>CC2541-OAD-Encrypted-ImgA</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>CC2541-OAD-Encrypted-ImgB</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>CC2541-OAD-ImgA</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>CC2541-OAD-ImgB</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>CC2541DK-MINI Keyfob</name>
+    <outputs>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeDataProfile.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_SimpleBLEPeripheral.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OnBoard.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeBoardConfig.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mainTask.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeBoardSpecificDrivers.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\devinfoservice.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\CAT24C512.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gatt_uuid.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MMA8453QMgr.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\SimpleBLEPeripheral_Main.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\sensorMgrTask.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeGPIO.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gattservapp_util.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\npi.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeBoardSpecificDrivers.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\osal_snv.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mainTask.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\simpleGATTprofile.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gattservapp_util.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_SimpleBLEPeripheral.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeToolBox.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_Timers.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gap.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\devinfoservice.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeTaskMsgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_startup.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_adc.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeGenericProfile.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gap.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gapbondmgr.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\osal_cbtimer.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_timer.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\osal_bufmgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_startup.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OnBoard.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\osal_cbtimer.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\simplekeys.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_adc.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeToolBox.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeGenericProfileMgr.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_sleep.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_SimpleBLEPeripheral.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeToolBox.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeBoardSettings.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gapbondmgr.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeBoardSettings.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_sleep.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MS560702.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeBoardSpecificDrivers.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MMA8453Q.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\osal_snv.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MS560702.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_dma.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeDataProfile.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gatt_uuid.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_key.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeGenericProfile.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeTaskMsgr.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeBoardConfig.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\peripheral.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_dma.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gattservapp_util.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_startup.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_timer.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_PwrMgr.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MMA8453Q.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_drivers.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_Timers.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_aes.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\peripheral.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_Memory.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_Memory.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\osal_cbtimer.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_aes.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MMA8453QMgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\simpleGATTprofile.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_uart.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_drivers.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\npi.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_crc.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_flash.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_Timers.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_flash.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\devinfoservice.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_lcd.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\PPGFuelGauge.pbd</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeI2C.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeADC.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_ClockBLE.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_led.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeBoardSettings.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeDataProfile.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_crc.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_lcd.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\simplekeys.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_flash.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\osal_bufmgr.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_key.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MMA8453Q.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\npi.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeGPIO.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MSPFuelGauge.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\simpleGATTprofile.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeEvtMsgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeGenericProfileMgr.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Exe\SimpleBLEPeripheral.hex</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MS560702.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_Memory.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Exe\SimpleBLEPeripheral.d51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_timer.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_ClockBLE.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeGPIO.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_PwrMgr.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_dma.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_sleep.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_uart.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\sensorMgrTask.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\List\SimpleBLEPeripheral.map</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OnBoard.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gapbondmgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_drivers.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_ClockBLE.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeTaskMsgr.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gap.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeEvtMsgr.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeADC.r51</file>
+      <file>$PROJ_DIR$\..\Source\MSPFuelGauge.h</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MSPFuelGauge.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeBoardConfig.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeGenericProfileMgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeADC.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_led.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\osal_snv.pbi</file>
+      <file>$PROJ_DIR$\..\Source\mujoeTaskMsgr.c</file>
+      <file>$PROJ_DIR$\..\Source\mainTask.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_assert.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_key.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_lcd.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_led.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_adc.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_crc.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_sleep.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_defs.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_key.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_led.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_dma.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_startup.c</file>
+      <file>$PROJ_DIR$\..\Source\sensorMgrTask.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_board.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_drivers.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_flash.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_uart.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\common\hal_drivers.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_lcd.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_board_cfg.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_aes.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_sleep.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_flash.c</file>
+      <file>$PROJ_DIR$\..\Source\OSAL_SimpleBLEPeripheral.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_adc.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\services\saddr\saddr.h</file>
+      <file>$PROJ_DIR$\..\Source\SimpleBLEPeripheral_Main.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\include\hal_timer.h</file>
+      <file>$PROJ_DIR$\..\..\Libraries\CC2541DB\bin\CC2541_BLE_peri.lib</file>
+      <file>$PROJ_DIR$\..\..\Libraries\Common\bin\CC254x_BLE_HCI_TL_None.lib</file>
+      <file>$PROJ_DIR$\..\Source\mujoeADC.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardConfig.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeGenericProfile.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeEvtMsgr.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeGenericProfileMgr.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\att.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\hci.h</file>
+      <file>$PROJ_DIR$\..\..\common\npi\npi_np\npi.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeGPIO.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_crc.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeI2C.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardSpecificDrivers.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\l2cap.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\gap.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_timer.c</file>
+      <file>$PROJ_DIR$\..\Source\mujoeToolBox.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\sm.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardSettings.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_aes.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_uart.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_mcu.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\gatt.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\host\linkdb.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\controller\CC254x\include\ll.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeDataProfile.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_dma.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_types.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\gatt_uuid.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\osal_cbtimer.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_Timers.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Roles\gapbondmgr.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\DevInfo\devinfoservice.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\osal_bufmgr.c</file>
+      <file>$PROJ_DIR$\..\..\Include\gapgattserver.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\GATT\gattservapp_util.c</file>
+      <file>$PROJ_DIR$\..\..\common\npi\npi_np\npi.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\include\bcomdef.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\host\gatt_uuid.c</file>
+      <file>$PROJ_DIR$\..\..\Include\gattservapp.h</file>
+      <file>$PROJ_DIR$\..\Source\MMA8453QMgr.c</file>
+      <file>$PROJ_DIR$\..\Source\MSPFuelGauge.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_PwrMgr.c</file>
+      <file>$PROJ_DIR$\..\Source\MMA8453Q.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Roles\CC254x\peripheral.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\mcu\cc2540\osal_snv.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_ClockBLE.c</file>
+      <file>$PROJ_DIR$\..\Source\MS560702.c</file>
+      <file>$PROJ_DIR$\..\Source\CAT24C512.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_Memory.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\DevInfo\devinfoservice.h</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Roles\gap.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Roles\gapbondmgr.h</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Roles\CC254x\peripheral.c</file>
+      <file>$PROJ_DIR$\buildConfig.cfg</file>
+      <file>$PROJ_DIR$\..\Source\mujoeADC.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\sysmac.h</file>
+      <file>$PROJ_DIR$\..\Source\CAT24C512.h</file>
+      <file>$PROJ_DIR$\..\..\config\buildComponents.cfg</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardSettings.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\string.h</file>
+      <file>$PROJ_DIR$\..\..\common\cc2540\OnBoard.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\SimpleProfile\CC254x\simpleGATTprofile.c</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Keys\simplekeys.h</file>
+      <file>$PROJ_DIR$\..\..\Profiles\SimpleProfile\simpleGATTprofile.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL_PwrMgr.h</file>
+      <file>$PROJ_DIR$\..\..\common\cc2540\OnBoard.h</file>
+      <file>$PROJ_DIR$\..\..\Profiles\Keys\CC254x\simplekeys.c</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\controller\CC254x\include\ll_timer2.h</file>
+      <file>$PROJ_DIR$\..\Source\muJoeGenericProfileMgr.h</file>
+      <file>$PROJ_DIR$\..\Source\MMA8453QMgr.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeDataProfile.h</file>
+      <file>$PROJ_DIR$\..\Source\MS560702.h</file>
+      <file>$PROJ_DIR$\..\Source\muJoeGPIO.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeEvtMsgr.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL_Tasks.h</file>
+      <file>$PROJ_DIR$\..\..\Include\gatt_profile_uuid.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\hci\hci_data.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL_Timers.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\hci\hci_tl.h</file>
+      <file>$PROJ_DIR$\..\Source\sensorMgrTask.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeGenericProfile.h</file>
+      <file>$PROJ_DIR$\..\..\common\cc2540\ti_51ew_cc2540b.xcl</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\controller\CC254x\include\ll_sleep.h</file>
+      <file>$PROJ_DIR$\..\Source\MMA8453Q.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\stdlib.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardConfig.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeI2C.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\controller\CC254x\include\ll_math.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeTaskMsgr.h</file>
+      <file>$PROJ_DIR$\..\Source\mainTask.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_bufmgr.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\ble\hci\hci_event.h</file>
+      <file>$TOOLKIT_DIR$\inc\clib\limits.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_snv.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\osal_cbtimer.h</file>
+      <file>$PROJ_DIR$\..\Source\mujoeBoardSpecificDrivers.h</file>
+      <file>$TOOLKIT_DIR$\lib\clib\cl-pli-blxd-1e16x01.r51</file>
+      <file>$TOOLKIT_DIR$\inc\ioCC2541.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\comdef.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL_Memory.h</file>
+      <file>$PROJ_DIR$\..\..\..\..\Components\osal\include\OSAL_Clock.h</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\sensorMgrTask.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL.r51</file>
+      <file>$PROJ_DIR$\..\Source\mujoeToolBox.h</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_lcd.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeEvtMsgr.pbi</file>
+      <file>$PROJ_DIR$\..\Source\simpleBLEPeripheral.h</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_crc.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mainTask.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeI2C.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MMA8453QMgr.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\osal_bufmgr.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\gatt_uuid.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_aes.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeGenericProfile.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\SimpleBLEPeripheral_Main.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\CAT24C512.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\OSAL_PwrMgr.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\CAT24C512.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_uart.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\simplekeys.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_adc.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\SimpleBLEPeripheral_Main.__cstat.et</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_led.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\peripheral.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\mujoeI2C.r51</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\hal_key.pbi</file>
+      <file>$PROJ_DIR$\CC2541DK-MINI Keyfob\Obj\MSPFuelGauge.__cstat.et</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 110 119 107</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\CC2541DK-MINI Keyfob\Exe\SimpleBLEPeripheral.d51</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 119 107</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 249 286 165 166 84 125 45 8 62 38 74 80 53 78 97 56 273 293 41 34 111 77 277 50 9 52 129 127 130 92 15 54 126 57 40 113 295 58 21 14 2 271 281 31 123 72 114 20 51 68 60 118 10 104 37 265</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeTaskMsgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 124</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 58</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 268 253 261 223 267 193 227 245 257 144</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 257 193 253 261 223 267 144 268 245 227</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mainTask.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 277</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 172 227 219 158 254 253 173 137 187 146 231 264 267 261 204 266 268 233 155 206 238 247 144 223 180 194 224 255 193 161 232 145 188 200 217 248 211 257 236 150 183 258 128 226 272 245 156 179 190 189 239 251 240 222</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 258 204 267 193 144 253 261 223 268 245 232 233 187 266 158 161 150 156 146 145 155 188 172 179 173 190 137 200 206 217 231 248 227 189 194 219 180 183 238 211 257 247 239 255 224 251 128 236 226 264 254 240 272 222</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_key.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 296</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 56</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 99</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 266 150 161 193 253 144 268 223 151 145 156 187 261 267 245</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 187 144 193 266 151 161 150 156 145 253 261 223 267 268 245</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_lcd.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 95</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 273</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 86</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 156 137 193 253 187 266 245 155 233 150 144 267 261 268 223 158</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 193 155 150 156 187 144 266 253 261 223 267 268 245 233 158 137</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_led.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 91</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 293</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 133</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 193 261 146 266 156 150 187 223 144 151 253 268 267 245</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 187 144 193 266 151 146 150 156 253 261 223 267 268 245</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_adc.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 291</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 38</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 27</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 266 187 193 156 144 150 161</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 161 193 150 156 187 144 266</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_crc.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 94</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 80</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 276</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 144 156 187 193 266 150 176</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 150 156 187 144 193 266 176</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_sleep.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 47</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 41</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 116</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 242 146 250 144 268 150 253 151 256 187 158 145 245 232 137 235 193 266 261 223 267 156 204</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 193 187 144 266 150 156 158 146 145 253 261 223 267 268 245 242 232 151 137 250 204 235 256</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_dma.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 61</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 53</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 115</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 144 193 187 153 150 156 266 192</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 192 150 156 187 144 193 266 153</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_startup.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 63</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 34</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 26</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 144 156 187 193 266 150</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 150 156 187 144 193 266</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\sensorMgrTask.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 270</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 118</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 253 266 232 190 194 233 128 204 247 258 261 179 206 158 188 180 226 240 173 224 144 223 155 238 187 193 227 268 257 239 251 267 146 231 219 264 156 189 183 172 222 272 161 255 245 137 145 200 217 248 211 236 150 254</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 247 204 267 193 144 253 261 223 268 245 232 188 172 179 173 190 137 257 227 258 233 187 266 158 161 150 156 146 145 155 200 206 217 231 248 189 194 219 180 183 238 211 236 226 264 254 240 272 255 222 239 224 251 128</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\common\hal_drivers.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 67</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 78</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 122</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 193 156 185 155 151 158 253 150 187 268 223 144 192 145 146 164 153 261 161 266 267 245</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 161 193 150 156 187 144 266 185 192 151 145 155 146 158 164 153 253 261 223 267 268 245</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_aes.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 283</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 74</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 69</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 267 156 193 192 245 187 266 185 261 268 223 144 150 253</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 253 261 223 267 193 144 268 245 185 192 150 156 187 266</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_flash.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 81</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 97</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 83</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 187 266 193 152 156 192 144 150</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 156 187 144 193 266 192 150 152</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\OSAL_SimpleBLEPeripheral.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 1</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 20</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 42</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 253 183 257 193 172 275 204 260 232 255 179 267 144 200 224 190 188 268 173 145 248 227 219 226 242 211 261 223 153 137 150 246 161 217 236 158 194 266 272 151 263 180 206 258 247 245 244 156 187 233 146 155 231 238 264 189 128 254 239 251 240 222</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 193 253 261 223 267 144 268 245 242 151 190 204 246 173 137 153 150 156 187 266 244 260 263 179 180 183 200 219 188 172 206 211 258 232 233 158 161 146 145 155 217 231 248 227 189 194 238 257 247 239 255 224 251 128 236 226 264 254 240 272 222 275</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\SimpleBLEPeripheral_Main.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 285</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 10</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 292</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 267 262 146 144 164 242 150 145 151 253 232 233 156 187 193 266 245 158 261 268 223</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 193 145 150 156 187 144 266 164 151 146 253 261 223 267 268 245 242 232 262 233 158</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\mujoeADC.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 89</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 127</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 132</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+<<<<<<< HEAD
+          <file> 9</file>
+=======
+          <file> 245 161 267 150 144 253 261 268 193 222 223 156 187 266</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 175 195 202 111 182 185 144 107 193 198 194 200 205 199 81 46 160 192 180</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 200 160 199 107 111 185 81 182 202 198 46 180 144 194 195 192 175 193 205</file>
+=======
+          <file> 225 221 222 253 261 223 267 193 144 268 245 161 150 156 187 266</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\osal\mcu\cc2540\osal_snv.c</name>
       <outputs>
         <tool>
@@ -291,24 +2762,48 @@
         <tool>
           <name>__cstat</name>
           <file> 162</file>
+=======
+      <name>$PROJ_DIR$\..\Source\mujoeBoardConfig.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 59</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 130</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 3</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 47</file>
+=======
+          <file> 254 193</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 178 111 185 144 107 182 193 186 202 198 194 195 200 205 76 188 143</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 111 198 182 193 202 188 186 76 143 185 144 107 205 178 194 200 195</file>
+=======
+          <file> 225 221 254 193</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\Profiles\Roles\gapbondmgr.c</name>
       <outputs>
         <tool>
@@ -318,24 +2813,48 @@
         <tool>
           <name>__cstat</name>
           <file> 157</file>
+=======
+      <name>$PROJ_DIR$\..\Source\mujoeGenericProfile.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 284</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 57</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 28</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 146</file>
+=======
+          <file> 144 172 223 204 227 219 267 261 183 253 194 268 180 189 188 206 193 245 179 248</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 24 202 111 182 198 194 195 200 205 76 88 92 89 105 98 86 96 85 99 188 34 33 37</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 111 24 202 205 188 105 198 33 92 88 85 98 76 89 96 34 37 182 194 200 195 86 99</file>
+=======
+          <file> 225 221 248 227 223 204 267 193 144 253 261 268 245 189 172 179 188 194 206 219 180 183</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\common\npi\npi_np\npi.c</name>
       <outputs>
         <tool>
@@ -345,24 +2864,48 @@
         <tool>
           <name>__cstat</name>
           <file> 8</file>
+=======
+      <name>$PROJ_DIR$\..\Source\mujoeEvtMsgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 274</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 126</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 105</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 74</file>
+=======
+          <file> 241</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 111 185 144 107 182 193 90 142</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 111 90 185 182 193 142 144 107</file>
+=======
+          <file> 225 221 241</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\osal_cbtimer.c</name>
       <outputs>
         <tool>
@@ -372,24 +2915,48 @@
         <tool>
           <name>__cstat</name>
           <file> 140</file>
+=======
+      <name>$PROJ_DIR$\..\Source\mujoeGenericProfileMgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 106</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 40</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 131</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 16</file>
+=======
+          <file> 194 180 204 226 253 268 227 172 219 267 144 261 223 183 248 245 189 188 206 193 179 236</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 198 194 195 202 111 182 200 205 199 107 193 201 24</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 200 202 107 194 182 199 201 205 195 198 111 193 24</file>
+=======
+          <file> 225 221 236 248 227 223 204 267 193 144 253 261 268 245 189 172 179 188 194 206 219 180 183 226</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\Profiles\SimpleProfile\CC254x\simpleGATTprofile.c</name>
       <outputs>
         <tool>
@@ -399,24 +2966,48 @@
         <tool>
           <name>__cstat</name>
           <file> 114</file>
+=======
+      <name>$PROJ_DIR$\..\Source\mujoeGPIO.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 102</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 113</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 12</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 170</file>
+=======
+          <file> 245 254 266 193 253 267 223 187 272 261 268 240 144</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 175 195 24 202 111 182 198 194 200 205 89 98 86 105 96 34 37 88 92 30</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 88 24 37 98 200 198 96 202 182 194 195 92 89 105 34 30 111 205 86 175</file>
+=======
+          <file> 225 221 240 253 261 223 267 193 144 268 245 187 266 254 272</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\Profiles\Keys\CC254x\simplekeys.c</name>
       <outputs>
         <tool>
@@ -426,24 +3017,48 @@
         <tool>
           <name>__cstat</name>
           <file> 51</file>
+=======
+      <name>$PROJ_DIR$\..\Source\mujoeI2C.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 88</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 295</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 278</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 124</file>
+=======
+          <file> 266 193 255</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 24 202 111 182 198 194 195 200 205 89 98 86 105 96 34 37 88 92 147</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 198 147 105 24 89 34 202 200 88 98 96 37 182 194 195 92 111 205 86</file>
+=======
+          <file> 225 221 255 193 266</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_Timers.c</name>
       <outputs>
         <tool>
@@ -453,24 +3068,48 @@
         <tool>
           <name>__cstat</name>
           <file> 165</file>
+=======
+      <name>$PROJ_DIR$\..\Source\mujoeBoardSpecificDrivers.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 49</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 15</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 5</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 156</file>
+=======
+          <file> 193 144 253 223 240 267 161 222 254 245 266 150 255 187 272 261 268 156 264</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 202 111 182 160 107 193 192 198 194 195 200 205 145 185 144</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 107 193 145 182 111 198 200 160 205 192 194 195 202 185 144</file>
+=======
+          <file> 225 221 264 254 193 240 253 261 223 267 144 268 245 187 266 272 255 222 161 150 156</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\Profiles\DevInfo\devinfoservice.c</name>
       <outputs>
         <tool>
@@ -480,8 +3119,24 @@
         <tool>
           <name>__cstat</name>
           <file> 61</file>
+=======
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_timer.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 64</file>
         </tool>
         <tool>
+          <name>ICC8051</name>
+          <file> 111</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 32</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+        <tool>
+<<<<<<< HEAD
           <name>BICOMP</name>
           <file> 166</file>
         </tool>
@@ -494,10 +3149,15 @@
         <tool>
           <name>BICOMP</name>
           <file> 202 194 96 182 195 198 24 98 34 200 105 77 43 111 205 86</file>
+=======
+          <name>ICC8051</name>
+          <file> 225 221</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\ble\host\gatt_uuid.c</name>
       <outputs>
         <tool>
@@ -507,24 +3167,48 @@
         <tool>
           <name>__cstat</name>
           <file> 75</file>
+=======
+      <name>$PROJ_DIR$\..\Source\mujoeToolBox.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 43</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 21</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 39</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 57</file>
+=======
+          <file> 272 193</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 202 111 182 198 194 195 200 205 105 24 98 86 96</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 111 205 202 24 105 98 198 96 182 194 200 195 86</file>
+=======
+          <file> 225 221 272 193</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_Memory.c</name>
       <outputs>
         <tool>
@@ -534,24 +3218,48 @@
         <tool>
           <name>__cstat</name>
           <file> 129</file>
+=======
+      <name>$PROJ_DIR$\..\Source\mujoeBoardSettings.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 46</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 92</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 44</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 112</file>
+=======
+          <file> 226 193</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 197 195 202 111 182 198 194 200 205 160 107 193 192 188</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 160 202 198 188 111 205 107 193 200 195 182 194 192 197</file>
+=======
+          <file> 225 221 226 193</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\Profiles\Roles\CC254x\peripheral.c</name>
       <outputs>
         <tool>
@@ -561,24 +3269,48 @@
         <tool>
           <name>__cstat</name>
           <file> 120</file>
+=======
+      <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_uart.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 117</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 77</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 289</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 159</file>
+=======
+          <file> 153 151 144 193 150 156 187 266</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 24 202 111 182 198 194 195 200 205 203 85 99 188 142 185 144 107 193 196 204 86 88 92 89 98 105 76 26 37</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 198 76 24 111 88 202 99 203 98 37 205 196 144 86 89 105 26 182 194 200 195 85 142 204 188 107 185 193 92</file>
+=======
+          <file> 225 221 156 187 144 193 266 151 153 150</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\osal_bufmgr.c</name>
       <outputs>
         <tool>
@@ -588,24 +3320,48 @@
         <tool>
           <name>__cstat</name>
           <file> 20</file>
+=======
+      <name>$PROJ_DIR$\..\Source\mujoeDataProfile.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 93</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 54</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 0</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 53</file>
+=======
+          <file> 179 172 193 245 253 227 219 267 194 223 204 189 188 206 144 261 268 180 183 238</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 198 194 195 202 111 182 200 205 160 107 193 192 206</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 111 182 194 206 200 160 202 205 195 192 198 107 193</file>
+=======
+          <file> 225 221 238 227 223 204 267 193 144 253 261 268 245 189 172 179 188 194 206 219 180 183</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_ClockBLE.c</name>
       <outputs>
         <tool>
@@ -615,35 +3371,73 @@
         <tool>
           <name>__cstat</name>
           <file> 119</file>
+=======
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\osal_cbtimer.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 73</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 31</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 36</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 148</file>
+=======
+          <file> 223 268 267 144 187 261 242 263 245 253 193 266 204</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 202 111 182 160 107 193 192 198 194 195 200 205 46</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 195 192 198 194 160 111 182 200 202 46 107 193 205</file>
+=======
+          <file> 225 221 253 261 223 267 193 144 268 245 242 187 266 263 204</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_PwrMgr.c</name>
       <outputs>
         <tool>
+=======
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_Timers.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 22</file>
+        </tool>
+        <tool>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
           <name>ICC8051</name>
           <file> 174</file>
         </tool>
         <tool>
           <name>__cstat</name>
+<<<<<<< HEAD
           <file> 128</file>
+=======
+          <file> 82</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
+<<<<<<< HEAD
           <name>BICOMP</name>
           <file> 73</file>
         </tool>
@@ -656,10 +3450,15 @@
         <tool>
           <name>BICOMP</name>
           <file> 202 81 198 160 199 182 107 111 193 205 192 194 200 195</file>
+=======
+          <name>ICC8051</name>
+          <file> 225 221 267 193 144 233 187 266 158 253 261 223 268 245 164 150 156</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\Profiles\Roles\gap.c</name>
       <outputs>
         <tool>
@@ -669,8 +3468,24 @@
         <tool>
           <name>__cstat</name>
           <file> 15</file>
+=======
+      <name>$PROJ_DIR$\..\..\Profiles\Roles\gapbondmgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 30</file>
         </tool>
         <tool>
+          <name>ICC8051</name>
+          <file> 45</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 121</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+        <tool>
+<<<<<<< HEAD
           <name>BICOMP</name>
           <file> 167</file>
         </tool>
@@ -683,10 +3498,15 @@
         <tool>
           <name>BICOMP</name>
           <file> 200 198 92 111 88 202 182 24 194 195 205</file>
+=======
+          <name>ICC8051</name>
+          <file> 225 221 204 267 193 144 253 261 223 268 245 262 180 183 189 188 172 179 194 173 190 137 206 200 219</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\Profiles\GATT\gattservapp_util.c</name>
       <outputs>
         <tool>
@@ -696,8 +3516,24 @@
         <tool>
           <name>__cstat</name>
           <file> 118</file>
+=======
+      <name>$PROJ_DIR$\..\..\Profiles\DevInfo\devinfoservice.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 6</file>
         </tool>
         <tool>
+          <name>ICC8051</name>
+          <file> 84</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 24</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+        <tool>
+<<<<<<< HEAD
           <name>BICOMP</name>
           <file> 161</file>
         </tool>
@@ -710,10 +3546,15 @@
         <tool>
           <name>BICOMP</name>
           <file> 111 198 200 24 105 194 195 89 34 202 182 98 205 86</file>
+=======
+          <name>ICC8051</name>
+          <file> 225 221 204 267 193 144 253 261 223 268 245 172 179 188 194 243 206 217</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_key.c</name>
       <outputs>
         <tool>
@@ -723,24 +3564,48 @@
         <tool>
           <name>__cstat</name>
           <file> 138</file>
+=======
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\osal_bufmgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 98</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 281</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 33</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 72</file>
+=======
+          <file> 193 261 259 268 158 233 267 245 223 144 253 187 266</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 107 182 111 193 180 178 185 144 189 198 194 195 202 200 205</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 185 193 194 178 111 198 107 195 182 180 189 144 200 202 205</file>
+=======
+          <file> 225 221 253 261 223 267 193 144 268 245 233 187 266 158 259</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_timer.c</name>
       <outputs>
         <tool>
@@ -750,20 +3615,44 @@
         <tool>
           <name>__cstat</name>
           <file> 125</file>
+=======
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 85</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 271</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 279</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 152</file>
+=======
+          <file> 233 144 242 150 232 268 193 267 253 269 151 223 261 158 227 156 187 266 245</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168</file>
+=======
+          <file> 225 221 227 223 267 193 144 150 156 187 266 253 261 268 245 242 232 269 233 158 151</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_flash.c</name>
       <outputs>
         <tool>
@@ -777,16 +3666,35 @@
         <tool>
           <name>BICOMP</name>
           <file> 131</file>
+=======
+      <name>$PROJ_DIR$\..\..\Profiles\GATT\gattservapp_util.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 62</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 13</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 144 107 182 111 193 106 185 186</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 107 182 186 111 144 106 193 185</file>
+=======
+          <file> 225 221 204 267 193 144 189 188 253 261 223 268 245 172 179 206</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
@@ -794,30 +3702,52 @@
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_lcd.c</name>
       <outputs>
         <tool>
+<<<<<<< HEAD
           <name>ICC8051</name>
           <file> 163</file>
         </tool>
         <tool>
           <name>__cstat</name>
           <file> 58</file>
+=======
+          <name>BICOMP</name>
+          <file> 79</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 14</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 101</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 136</file>
+=======
+          <file> 193 156 174 144 150 153 187 266</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 111 190 185 144 107 182 193 198 194 195 202 200 205 160 192 188</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 144 188 111 198 107 182 205 190 160 185 193 202 194 200 195 192</file>
+=======
+          <file> 225 221 193 150 156 187 144 266 174 153</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_led.c</name>
       <outputs>
         <tool>
@@ -827,8 +3757,24 @@
         <tool>
           <name>__cstat</name>
           <file> 121</file>
+=======
+      <name>$PROJ_DIR$\..\..\..\..\Components\ble\host\gatt_uuid.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 55</file>
         </tool>
         <tool>
+          <name>ICC8051</name>
+          <file> 8</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 282</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+        <tool>
+<<<<<<< HEAD
           <name>BICOMP</name>
           <file> 127</file>
         </tool>
@@ -841,10 +3787,15 @@
         <tool>
           <name>BICOMP</name>
           <file> 194 191 111 185 193 107 195 182 180 198 144 200 202 205</file>
+=======
+          <name>ICC8051</name>
+          <file> 225 221 267 193 144 253 261 223 268 245 188 204 172 179 194</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_dma.c</name>
       <outputs>
         <tool>
@@ -854,24 +3805,48 @@
         <tool>
           <name>__cstat</name>
           <file> 49</file>
+=======
+      <name>$PROJ_DIR$\..\Source\MMA8453QMgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 280</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 9</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 75</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 70</file>
+=======
+          <file> 193 227 251 267 266 255 223 268 144 237</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 106 185 144 107 182 111 193 142</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 182 193 111 107 142 185 144 106</file>
+=======
+          <file> 225 221 237 193 255 266 251 268 267 144 227 223</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_sleep.c</name>
       <outputs>
         <tool>
@@ -881,24 +3856,48 @@
         <tool>
           <name>__cstat</name>
           <file> 4</file>
+=======
+      <name>$PROJ_DIR$\..\Source\MSPFuelGauge.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 103</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 129</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 297</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 132</file>
+=======
+          <file> 193 266 255 128</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 111 107 182 193 185 144 192 191 189 198 194 195 202 200 205 199 81 180 188 79 24 78 80</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 111 199 191 79 182 185 198 180 80 144 200 107 192 189 205 81 188 78 193 194 195 202 24</file>
+=======
+          <file> 225 221 128 193 255 266</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_startup.c</name>
       <outputs>
         <tool>
@@ -908,8 +3907,24 @@
         <tool>
           <name>__cstat</name>
           <file> 19</file>
+=======
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_PwrMgr.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 65</file>
         </tool>
         <tool>
+          <name>ICC8051</name>
+          <file> 114</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 287</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+        <tool>
+<<<<<<< HEAD
           <name>BICOMP</name>
           <file> 69</file>
         </tool>
@@ -922,10 +3937,15 @@
         <tool>
           <name>BICOMP</name>
           <file> 182 144 107 111 193 185</file>
+=======
+          <name>ICC8051</name>
+          <file> 225 221 267 193 144 233 187 266 158 253 261 223 268 245 242 232</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_crc.c</name>
       <outputs>
         <tool>
@@ -935,35 +3955,71 @@
         <tool>
           <name>__cstat</name>
           <file> 67</file>
+=======
+      <name>$PROJ_DIR$\..\Source\MMA8453Q.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 100</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 50</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 66</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 139</file>
+=======
+          <file> 268 223 193 267 255 227 266 144 251</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 185 144 107 182 111 193 101</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 182 144 107 111 193 185 101</file>
+=======
+          <file> 225 221 251 193 255 266 268 267 144 227 223</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_uart.c</name>
       <outputs>
         <tool>
           <name>ICC8051</name>
           <file> 115</file>
+=======
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\mcu\cc2540\osal_snv.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 134</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 51</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>__cstat</name>
-          <file> 14</file>
+          <file> 16</file>
         </tool>
         <tool>
+<<<<<<< HEAD
           <name>BICOMP</name>
           <file> 6</file>
         </tool>
@@ -976,6 +4032,10 @@
         <tool>
           <name>BICOMP</name>
           <file> 185 205 142 180 198 182 111 193 202 81 107 144 194 200 195</file>
+=======
+          <name>ICC8051</name>
+          <file> 225 221 161 193 150 156 187 144 266 152 267 253 261 223 268 245 262 137 162</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
@@ -983,6 +4043,7 @@
       <name>$PROJ_DIR$\CC2541DK-MINI Keyfob\Exe\SimpleBLEPeripheral.d51</name>
       <outputs>
         <tool>
+<<<<<<< HEAD
           <name>XLINK</name>
           <file> 84 82</file>
         </tool>
@@ -991,6 +4052,10 @@
         <tool>
           <name>XLINK</name>
           <file> 176 95 100 66 60 116 123 10 155 7 54 0 68 154 63 163 133 55 2 150 115 164 172 65 158 169 64 48 174 122 149 17 117 21 126 59 135 83</file>
+=======
+          <name>BICOMP</name>
+          <file> 112</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
@@ -999,13 +4064,22 @@
       <outputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 7</file>
         </tool>
         <tool>
           <name>__cstat</name>
           <file> 11</file>
+=======
+          <file> 123</file>
         </tool>
         <tool>
+          <name>__cstat</name>
+          <file> 90</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+        <tool>
+<<<<<<< HEAD
           <name>BICOMP</name>
           <file> 171</file>
         </tool>
@@ -1018,10 +4092,15 @@
         <tool>
           <name>BICOMP</name>
           <file> 202 144 111 106 205 107 182 104 194 200 195 185 193 198</file>
+=======
+          <name>ICC8051</name>
+          <file> 225 221 267 193 144 233 187 266 158 253 261 223 268 245 269</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\common\cc2540\OnBoard.c</name>
       <outputs>
         <tool>
@@ -1031,24 +4110,48 @@
         <tool>
           <name>__cstat</name>
           <file> 52</file>
+=======
+      <name>$PROJ_DIR$\..\Source\MS560702.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 48</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 52</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 108</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 113</file>
+=======
+          <file> 193 255 266 239</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 24 202 111 182 160 107 193 192 198 194 195 200 205 191 185 144 189</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 192 191 111 198 182 200 144 160 189 202 107 193 194 195 185 24 205</file>
+=======
+          <file> 225 221 239 193 255 266</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_adc.c</name>
       <outputs>
         <tool>
@@ -1058,24 +4161,48 @@
         <tool>
           <name>__cstat</name>
           <file> 137</file>
+=======
+      <name>$PROJ_DIR$\..\Source\CAT24C512.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 288</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 286</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 7</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 173</file>
+=======
+          <file> 268 267 193 266 255 227 144 224 223</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 178 111 185 144 107 182 193</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 107 182 111 144 185 193 178</file>
+=======
+          <file> 225 221 224 193 255 266 268 267 144 227 223</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\Source\simpleBLEPeripheral.c</name>
       <outputs>
         <tool>
@@ -1085,8 +4212,24 @@
         <tool>
           <name>__cstat</name>
           <file> 13</file>
+=======
+      <name>$PROJ_DIR$\..\..\..\..\Components\osal\common\OSAL_Memory.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 109</file>
         </tool>
         <tool>
+          <name>ICC8051</name>
+          <file> 72</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 71</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+        <tool>
+<<<<<<< HEAD
           <name>BICOMP</name>
           <file> 56</file>
         </tool>
@@ -1099,10 +4242,15 @@
         <tool>
           <name>BICOMP</name>
           <file> 26 105 107 193 178 43 111 205 202 24 81 189 33 181 198 185 160 191 190 85 34 30 147 37 182 194 200 195 192 86 99 88 92 144 98 188</file>
+=======
+          <name>ICC8051</name>
+          <file> 225 221 252 223 267 193 144 253 261 268 245 233 187 266 158 137</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\Source\SimpleBLEPeripheral_Main.c</name>
       <outputs>
         <tool>
@@ -1112,8 +4260,24 @@
         <tool>
           <name>__cstat</name>
           <file> 1</file>
+=======
+      <name>$PROJ_DIR$\..\..\Profiles\Roles\gap.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23</file>
         </tool>
         <tool>
+          <name>ICC8051</name>
+          <file> 125</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 29</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+        <tool>
+<<<<<<< HEAD
           <name>BICOMP</name>
           <file> 18</file>
         </tool>
@@ -1126,10 +4290,15 @@
         <tool>
           <name>BICOMP</name>
           <file> 202 76 191 185 145 199 182 111 193 189 180 198 81 160 144 107 205 192 194 200 195</file>
+=======
+          <name>ICC8051</name>
+          <file> 225 221 204 267 193 144 180 253 261 223 268 245 183</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\..\..\..\Components\hal\common\hal_drivers.c</name>
       <outputs>
         <tool>
@@ -1139,24 +4308,67 @@
         <tool>
           <name>__cstat</name>
           <file> 50</file>
-        </tool>
+=======
+      <name>$PROJ_DIR$\..\..\Profiles\Roles\CC254x\peripheral.c</name>
+      <outputs>
         <tool>
           <name>BICOMP</name>
+          <file> 294</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 60</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 70</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 204 267 193 144 253 261 223 268 245 246 173 190 137 153 150 156 187 266 244 260 179 180 183 189 172 188 262 211 219</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\common\cc2540\OnBoard.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 12</file>
+=======
+          <file> 120</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 178 111 185 144 107 182 193 104 106 180 189 190 191 192 145 142 198 194 195 202 200 205 81</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 111 205 104 190 81 185 107 193 180 192 198 144 202 106 189 191 145 142 182 178 194 200 195</file>
+=======
+          <file> 2</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 35</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 204 267 193 144 233 187 266 158 253 261 223 268 245 146 150 156 145</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
     <file>
+<<<<<<< HEAD
       <name>$PROJ_DIR$\..\Source\OSAL_SimpleBLEPeripheral.c</name>
       <outputs>
         <tool>
@@ -1166,20 +4378,60 @@
         <tool>
           <name>__cstat</name>
           <file> 5</file>
-        </tool>
+=======
+      <name>$PROJ_DIR$\..\..\Profiles\SimpleProfile\CC254x\simpleGATTprofile.c</name>
+      <outputs>
         <tool>
           <name>BICOMP</name>
+          <file> 76</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 104</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 18</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 225 221 227 223 204 267 193 144 253 261 268 245 189 172 179 188 194 206 219 180 183 231</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\Profiles\Keys\CC254x\simplekeys.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 62</file>
+=======
+          <file> 290</file>
+        </tool>
+        <tool>
+          <name>ICC8051</name>
+          <file> 37</file>
+        </tool>
+        <tool>
+          <name>__cstat</name>
+          <file> 96</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICC8051</name>
+<<<<<<< HEAD
           <file> 151 168 111 198 194 195 202 182 200 205 199 180 99 24 203 85 188 142 185 144 107 193 196 204 201 86 88 92 33 37 105 98 34 26 181</file>
         </tool>
         <tool>
           <name>BICOMP</name>
           <file> 86 24 194 188 99 105 195 182 185 198 199 33 26 200 142 92 180 203 201 88 37 34 181 202 205 111 85 204 193 196 144 107 98</file>
+=======
+          <file> 225 221 204 267 193 144 253 261 223 268 245 189 172 179 188 194 206 219 180 183 230</file>
+>>>>>>> remotes/origin/Feature_AssetTagBLETest
         </tool>
       </inputs>
     </file>
