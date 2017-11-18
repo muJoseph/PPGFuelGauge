@@ -7092,6 +7092,9 @@
       <file>
         <name>$PROJ_DIR$\..\Source\MS560702.c</name>
       </file>
+      <file>
+        <name>$PROJ_DIR$\..\Source\MSPFuelGauge.c</name>
+      </file>
     </group>
   </group>
   <group>

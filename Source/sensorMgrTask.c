@@ -20,9 +20,7 @@ boardSensorData_t               brdSensorDat;
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef struct evtCallback_def
-{
-    //uint8          taskId;
-    //uint16         evtFlg;     
+{    
     uint32         delay;
     
 }evtCallback_t;

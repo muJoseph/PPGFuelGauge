@@ -29,6 +29,7 @@ extern "C"
 #include "MS560702.h"
 #include "CAT24C512.h"
 #include "MMA8453Q.h"
+#include "MSPFuelGauge.h"
   
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINES
