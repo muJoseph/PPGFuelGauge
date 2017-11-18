@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.3\common\bin\cspybat" -f "C:\Texas Instruments\BLE-CC254x-1.4.2.2\Projects\ble\PPGFuelGaugeMaster\CC2541DB\settings\PPGFuelGauge.CC2541DK-MINI Keyfob.general.xcl" --backend -f "C:\Texas Instruments\BLE-CC254x-1.4.2.2\Projects\ble\PPGFuelGaugeMaster\CC2541DB\settings\PPGFuelGauge.CC2541DK-MINI Keyfob.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.3\common\bin\cspybat" -f "C:\Texas Instruments\BLE-CC254x-1.4.2.2\Projects\ble\PPGFuelGauge_master\CC2541DB\settings\PPGFuelGauge.CC2541DK-MINI Keyfob.general.xcl" --backend -f "C:\Texas Instruments\BLE-CC254x-1.4.2.2\Projects\ble\PPGFuelGauge_master\CC2541DB\settings\PPGFuelGauge.CC2541DK-MINI Keyfob.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.3\common\bin\cspybat" -f "C:\Texas Instruments\BLE-CC254x-1.4.2.2\Projects\ble\PPGFuelGaugeMaster\CC2541DB\settings\PPGFuelGauge.CC2541DK-MINI Keyfob.general.xcl" "--debug_file=%~1" --backend -f "C:\Texas Instruments\BLE-CC254x-1.4.2.2\Projects\ble\PPGFuelGaugeMaster\CC2541DB\settings\PPGFuelGauge.CC2541DK-MINI Keyfob.driver.xcl" 
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.3\common\bin\cspybat" -f "C:\Texas Instruments\BLE-CC254x-1.4.2.2\Projects\ble\PPGFuelGauge_master\CC2541DB\settings\PPGFuelGauge.CC2541DK-MINI Keyfob.general.xcl" "--debug_file=%~1" --backend -f "C:\Texas Instruments\BLE-CC254x-1.4.2.2\Projects\ble\PPGFuelGauge_master\CC2541DB\settings\PPGFuelGauge.CC2541DK-MINI Keyfob.driver.xcl" 
 
 @echo off 
 :end

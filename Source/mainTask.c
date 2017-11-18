@@ -254,8 +254,8 @@ void mainTask_Init( uint8 task_id )
   // Setup the GAP Peripheral Role Profile
   {
     // For other hardware platforms, device starts advertising upon initialization
-    uint8 initial_advertising_enable = FALSE;
-    //uint8 initial_advertising_enable = TRUE;
+    //uint8 initial_advertising_enable = FALSE;
+    uint8 initial_advertising_enable = TRUE;
 
     // By setting this to zero, the device will go into the waiting state after
     // being discoverable for 30.72 second, and will not being advertising again
@@ -679,8 +679,8 @@ static void peripheralStateNotificationCB( gaprole_States_t newState )
     case GAPROLE_WAITING:
       // If last GAPROLE state was Connected, then a disconnect occurred, therefore:
       // Suppress re-start of advertisement
-      if( gapProfileState == GAPROLE_CONNECTED )
-        mainTask_endAdvert();    
+      //if( gapProfileState == GAPROLE_CONNECTED )
+      //  mainTask_endAdvert();    
       mainTask_setStatLEDState( STATLED_ON ); 
       break;
     case GAPROLE_WAITING_AFTER_TIMEOUT:
