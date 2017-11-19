@@ -17,7 +17,8 @@
 // DEFINES
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MSPFG_DEFAULT_I2C_ADDR          0xF1    // MSPFuelGauge Default I2C Address
+//#define MSPFG_DEFAULT_I2C_ADDR          0x48    // MSPFuelGauge Default I2C Address (DIDNT WORK)
+#define MSPFG_DEFAULT_I2C_ADDR          (0x48<<1)   // MSPFuelGauge Default I2C Address (WORKS KINDA)
 
 #define MSPFG_CMD_ST_CONT_DATA          0x81    // Start Continous Data colleciton
 #define MSPFG_CMD_SP_CONT_DATA          0x82    // Stop Continous Data colleciton
@@ -55,6 +56,8 @@ typedef struct mspfg_def
 // API FUNCTION PROTOS
 ////////////////////////////////////////////////////////////////////////////////
 
+bool mspfg_ping( void );
 bool mspfg_sendCommand( uint8 cmd );
+bool mspfg_commTest( void );
 
 #endif // MSPFUELGAUGE_H
