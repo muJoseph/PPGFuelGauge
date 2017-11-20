@@ -15,6 +15,10 @@
 #include "OSAL_Timers.h"
 #include "OSAL.h"
 
+// BEGIN FOR DEBUG
+#include "mujoeI2C.h"
+// END FOR DEBUG
+
 ////////////////////////////////////////////////////////////////////////////////
 // DEFINES
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,12 +29,17 @@
 // Command Groups
 #define MUJOE_CMD_GRP_SYS                   0x01
 #define MUJOE_CMD_GRP_DAT                   0x02
+#define MUJOE_CMD_GRP_MSPDBG                0x03    
 
 // Command IDs for Command Group "System"
 #define MUJOE_GRP_SYS_ID_PWRDWN             0x01
 
 // Command IDs for Command Group "Data"
 #define MUJOE_GRP_DAT_ID_STASYNCBULK        0x01    // Start data collection and post to Async Bulk
+
+// Command IDs for Command Group "MSP Debug"
+#define MUJOE_GRP_MSPDBG_ID_I2CWRITE        0x01
+#define MUJOE_GRP_MSPDBG_ID_I2CREAD         0x02           
 
 // Solicited Response Codes
 #define MUJOE_RSP_SUCCESS                   0x0001      // Command successful

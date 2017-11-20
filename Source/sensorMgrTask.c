@@ -106,13 +106,14 @@ void sensorMgrTask_Init( uint8 task_id )
   while( !stat );               // TRAP MCU if init failed
   
   // BEGIN TEST
-  uint8 breakVal;
+  /*uint8 breakVal;
   //stat = mspfg_ping();
   stat = mspfg_commTest();
   if( stat )
     breakVal = 100;
   else
     breakVal = 200;
+  */
   // END TEST
 
 } // sensorMgrTask_Init
