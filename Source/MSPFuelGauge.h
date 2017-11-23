@@ -42,6 +42,7 @@ typedef enum
   MSPFG_CAP_RAW_MSB,                    // Raw Capacitance Reading MSByte
   MSPFG_FUEL_LVL_CRIT_THRESH,           // Critical Fuel Level Threshold (0 to 100%)
   MSPFG_FUEL_LVL,                       // Current Fuel Level (0 to 100%)
+  MSPFG_NUM_REGISTERS                   // Number of MSPFuelGauge Registers        
   
 }mspfg_regAddr_t;
 

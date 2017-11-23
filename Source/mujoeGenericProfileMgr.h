@@ -12,6 +12,7 @@
 
 #include "muJoeGenericProfile.h"
 #include "mujoeBoardSettings.h"
+#include "MSPFuelGauge.h"
 #include "OSAL_Timers.h"
 #include "OSAL.h"
 
@@ -39,7 +40,8 @@
 
 // Command IDs for Command Group "MSP Debug"
 #define MUJOE_GRP_MSPDBG_ID_I2CWRITE        0x01
-#define MUJOE_GRP_MSPDBG_ID_I2CREAD         0x02           
+#define MUJOE_GRP_MSPDBG_ID_I2CREAD         0x02
+#define MUJOE_GRP_MSPDBG_ID_I2CREADREG      0x03
 
 // Solicited Response Codes
 #define MUJOE_RSP_SUCCESS                   0x0001      // Command successful

@@ -26,6 +26,8 @@ static uint16 cmdGroup_mspDbgGrp( uint8 cmd_id );
 
 static bStatus_t getAsyncSamplePeriod( uint32 *pSampPeriod );
 static bStatus_t getI2cWritePayload( uint8 *pTxData, uint8 *pNumBytes );
+static bStatus_t getI2cNumRxBytes( uint8 *pNumBytes );
+static bStatus_t getMailboxByteField( uint8 *pBuff, uint8 buffSize, uint8 stIndex, uint8 spIndex );
 
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTIONS
@@ -114,7 +116,7 @@ static uint16 cmdGroup_mspDbgGrp( uint8 cmd_id )
   
   switch(cmd_id)
   {
-    // I2C Write
+    // I2C Write Bulk
     case MUJOE_GRP_MSPDBG_ID_I2CWRITE:
     {
       uint8 i2cTxData[19] = {0};
@@ -124,10 +126,37 @@ static uint16 cmdGroup_mspDbgGrp( uint8 cmd_id )
         rspVal = MUJOE_RSP_FAILURE;
       break;
     }
-    // I2C Read
+    // I2C Read Bulk
     case MUJOE_GRP_MSPDBG_ID_I2CREAD:
     {
-      
+      uint8 i2cRxData[20] = {0};
+      uint8 i2cRxNumBytes = 0;
+      getI2cNumRxBytes(&i2cRxNumBytes);
+      // RX bytes from MSPFuelGauge, and write data to Mailbox characteristic
+      if( mujoeI2C_read( (0x48<<1), i2cRxNumBytes, i2cRxData ) == i2cRxNumBytes )
+        muJoeGenProfile_writeMailbox( i2cRxData, 20 );
+      else
+        rspVal = MUJOE_RSP_FAILURE;
+      break;
+    }
+    // I2C Read Register
+    case MUJOE_GRP_MSPDBG_ID_I2CREADREG:
+    {
+      uint8 mspfgRegAddr = 0;
+      getMailboxByteField( &mspfgRegAddr, 1, 0, 0 );
+      if( mspfgRegAddr < MSPFG_NUM_REGISTERS )
+      {
+        if( mujoeI2C_write( (0x48<<1), 1, &mspfgRegAddr, STOP_CMD ) )
+        {
+          uint8 i2cRxData[20] = {0};
+          if( mujoeI2C_read( (0x48<<1), 1, i2cRxData ) )
+             muJoeGenProfile_writeMailbox( i2cRxData, 20 );
+          else
+            rspVal = MUJOE_RSP_FAILURE;
+        }
+        else
+         rspVal = MUJOE_RSP_FAILURE;
+      }
       break;
     }
     // Unsupported Command ID for this Command Group
@@ -179,6 +208,62 @@ static bStatus_t getAsyncSamplePeriod( uint32 *pSampPeriod )
   }
   return bStatus;
 } // getAsyncSamplePeriod
+
+static bStatus_t getMailboxByteField( uint8 *pBuff, uint8 buffSize, uint8 stIndex, uint8 spIndex )
+{
+  bStatus_t bStatus = SUCCESS;
+  
+  // Start OR Stop index is/are out of bounds, abort
+  if( stIndex >= 20 || spIndex >= 20 )
+    return FAILURE;
+  
+  uint8 numBytes = 0;
+  // Compute number of bytes to read from Mailbox Characteristic
+  if( stIndex < spIndex )
+    numBytes = spIndex - stIndex + 1;
+  else if( stIndex == stIndex )
+    numBytes = 1;
+  // Stop index is less than start index, abort
+  else
+    return FAILURE;
+  
+  // Output buffer size insufficient, abort
+  if( buffSize < numBytes )
+    return FAILURE;
+  
+  // Read Mailbox Characteristic
+  uint8 mailBoxBuff[20] = {0};
+  bStatus = muJoeGenProfile_readMailbox( mailBoxBuff, 20 );
+  
+  if( bStatus == SUCCESS )
+  {
+    // Copy data into output buffer
+    for( uint8 i = stIndex; i <= spIndex; i++ )
+    {
+      pBuff[i - stIndex] = mailBoxBuff[i];
+    }
+  }
+  return bStatus;
+  
+} // getMailboxByteField
+
+static bStatus_t getI2cNumRxBytes( uint8 *pNumBytes )
+{
+  bStatus_t bStatus = SUCCESS;
+  uint8 mailBoxBuff[20] = {0};
+  bStatus = muJoeGenProfile_readMailbox( mailBoxBuff, 20 );
+  
+  if( bStatus == SUCCESS )
+  {
+     // Parse out the number of bytes to RX
+     *pNumBytes = mailBoxBuff[0];
+     // Clamp number of bytes to RX to a max of 20
+     if( *pNumBytes > 20 ){*pNumBytes = 20;}
+     muJoeGenProfile_clearMailbox();
+  }
+  return bStatus;
+  
+} // getI2cNumRxBytes
 
 static bStatus_t getI2cWritePayload( uint8 *pTxData, uint8 *pNumBytes )
 {
