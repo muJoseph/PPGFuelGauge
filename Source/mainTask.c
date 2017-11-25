@@ -175,6 +175,7 @@ static void mainTask_initMuJoeGenMgrDriver( void );
 static void mainTask_beginAdvert( uint32 timeToAdvert );
 static void mainTask_endAdvert( void );
 static void mainTask_pbIntHdlr( void );
+static void mainTask_mspIntHdlr( void );
 static void mainTask_brdLedMgr( void );
 static void mainTask_setStatLEDState( statLedState_t newState );
 
@@ -357,6 +358,8 @@ void mainTask_Init( uint8 task_id )
   // Assign the OSAL evt in which muJoeGPIO_interruptMgr is called
   muJoeGPIO_assignIntMgrOSALEvt( mainTask_TaskID, MAIN_GPIOINTMGR_EVT );
   bool stat = muJoeGPIO_registerIntCallback( PINID_PB_INTn, mainTask_pbIntHdlr );
+  while( !stat );                                               // Trap MCU
+  stat = muJoeGPIO_registerIntCallback( PINID_MSP_INT, mainTask_mspIntHdlr );
   while( !stat );                                               // Trap MCU
 
 #if defined( MUJOE_GEN_PROFILE )
@@ -542,6 +545,12 @@ static void mainTask_pbIntHdlr( void )
   osal_set_event( mainTask_TaskID, MAIN_ADVBEGIN_EVT ); 
   
 } // mainTask_pbIntHdlr
+
+static void mainTask_mspIntHdlr( void )
+{
+  //muJoeGPIO_togglePin( PINID_CHG_LED );
+  
+} // mainTask_mspIntHdlr
 
 static void mainTask_endAdvert( void )
 {

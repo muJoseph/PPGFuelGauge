@@ -295,6 +295,77 @@ static bool muJoeGPIO_cfgPin( gpioPin_t gpioPin )
 // INTERRUPT SERVICE ROUTINES
 ////////////////////////////////////////////////////////////////////////////////
 
+// PORT 0 ISR //////////////////////////////////////////////////////////////////
+HAL_ISR_FUNCTION( PORT0_ISR , P0INT_VECTOR )  
+{
+  HAL_ENTER_ISR();
+  
+  // P0.0
+  if( P0IFG & 0x01 )                        
+  { 
+     gpioIntSrc.pxInts[0] |= 0x01;
+     P0IFG = ~0x01;            // Clear P1.0 Source Interrupt Flag. Note register has R/W0 access , i.e. writing ones to bits does not do anything                          
+  }
+  
+  // P0.0
+  if( P0IFG & 0x02 )
+  {
+     gpioIntSrc.pxInts[0] |= 0x02;
+     P0IFG = ~0x02; 
+  }
+  
+  // P0.2
+  if( P0IFG & 0x04 )
+  {
+     gpioIntSrc.pxInts[0] |= 0x04;
+     P0IFG = ~0x04; 
+  }
+  
+  // P0.3
+  if( P0IFG & 0x08 )
+  {
+     gpioIntSrc.pxInts[0] |= 0x08;
+     P0IFG = ~0x08; 
+  }
+  
+  // P0.4
+  if( P0IFG & 0x10 )
+  {
+     gpioIntSrc.pxInts[0] |= 0x10;
+     P0IFG = ~0x10; 
+  }
+  
+  // P0.5
+  if( P0IFG & 0x20 )
+  {
+     gpioIntSrc.pxInts[0] |= 0x20;
+     P0IFG = ~0x20; 
+  }
+  
+  // P0.6
+  if( P0IFG & 0x40 )
+  {
+     gpioIntSrc.pxInts[0] |= 0x40;
+     P0IFG = ~0x40; 
+  }
+  
+  // P0.7
+  if( P0IFG & 0x80 )
+  {
+     gpioIntSrc.pxInts[0] |= 0x80;
+     P0IFG = ~0x80; 
+  }
+  
+  // Notify app of interrupt
+  if( mueJoeGPIO.intMgrEvt.taskId )
+    osal_set_event( mueJoeGPIO.intMgrEvt.taskId, mueJoeGPIO.intMgrEvt.event );
+  
+  P0IF = 0;                                                                     // Clear Port 1 flag in Interrupt Flags 5 SFR
+  //IRCON2 &= ~IRCON2_P1IF;                                                     // Clear Port 1 flag in Interrupt Flags 5 SFR
+  HAL_EXIT_ISR();
+  return;
+} // PORT 0 ISR
+
 // PORT 1 ISR //////////////////////////////////////////////////////////////////
 HAL_ISR_FUNCTION( PORT1_ISR , P1INT_VECTOR )    // TEST
 //HAL_ISR_FUNCTION( PORT1_ISR , PORT1_VECTOR )  // DEFAULT

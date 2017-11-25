@@ -14,6 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 static muJoeGenMgr_t           muJoeGenMgr;
+static uint8                   i2cRxData[20];
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL FUNCTION PROTOS
@@ -148,7 +149,8 @@ static uint16 cmdGroup_mspDbgGrp( uint8 cmd_id )
       {
         if( mujoeI2C_write( (0x48<<1), 1, &mspfgRegAddr, STOP_CMD ) )
         {
-          uint8 i2cRxData[20] = {0};
+          // Clear RX buffer
+          VOID memset( i2cRxData, 0, 20 );
           if( mujoeI2C_read( (0x48<<1), 1, i2cRxData ) )
              muJoeGenProfile_writeMailbox( i2cRxData, 20 );
           else
