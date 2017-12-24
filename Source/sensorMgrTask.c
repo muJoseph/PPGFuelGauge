@@ -48,6 +48,8 @@ static bool sensorMgrTask_initSensors( void );
 
 static void MS560702_dataCollector( p_sensorDatColl_t sdc );
 static void MMA8453_dataCollector( p_sensorDatColl_t sdc );
+static void MSPFuelGauge_dataCollector( p_sensorDatColl_t sdc );
+
 static void sensorMgrTask_dataCollector( void );
 static bool sensorMgrTask_SendOSALMsg( uint8 destTaskID, sensorMgrTask_msg_t msg );
 
@@ -68,7 +70,8 @@ static sensorDatColl_t             sensorDatColl =
 sensorDatCollFncTbl_t       sensorDatCollFncTbl[SENSORMGR_MAX_NUM_SENSORS] = 
 {
   MS560702_dataCollector,
-  MMA8453_dataCollector
+  MMA8453_dataCollector,
+  MSPFuelGauge_dataCollector
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -249,6 +252,42 @@ static void MMA8453_dataCollector( p_sensorDatColl_t sdc )
   // Add data colleciton state machine
   
 } // MMA8453_dataCollector
+
+static void MSPFuelGauge_dataCollector( p_sensorDatColl_t sdc )
+{
+   switch( sdc->sensorState )
+   {
+     // Trigger Single-shot Measurement 
+     case 0:
+       if( mspfg_sendCommand( MSPFG_CMD_SINGLESHOT_DATA ) )
+         sdc->sensorState = 1;
+       else                             // Command not sent, try again
+       {
+         sdc->evtCb.delay = 100;
+         sdc->sensorState = 0;
+       }
+       break;
+     // Read Conversion data
+     case 1:
+     {
+        mspfg_data_t     mspfg_data;
+        if( mspfg_getAllData( &mspfg_data ) )
+        {
+          sdc->sensorState = 0;
+          sdc->nextSensor = TRUE;
+        }
+        else                            // Unable to read data, try again...
+        {
+          sdc->evtCb.delay = 100;
+          sdc->sensorState = 1;
+        }
+        break;
+     }
+     default:
+        break;
+   }
+  
+} // MSPFuelGauge_dataCollector
 
 static bool sensorMgrTask_initSensors( void )
 {

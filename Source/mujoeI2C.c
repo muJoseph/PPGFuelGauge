@@ -17,7 +17,7 @@
 // LOCAL VAR
 ////////////////////////////////////////////////////////////////////////////////
 
-static i2cClock_t SCL_CLK_FREQ_BUFFER;
+static i2cClock_t i2cClock = i2cClock_33KHZ;
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL FUNCTION PROTOS                           
@@ -31,6 +31,17 @@ static void disableI2C( void );
 // API FUNCTIONS                             
 ////////////////////////////////////////////////////////////////////////////////
 
+i2cClock_t mujoeI2C_getSclFreq( void )
+{
+  return i2cClock;
+  
+} // mujoeI2C_getSclFreq
+
+void mujoeI2C_setSclFreq( i2cClock_t clockRate )
+{
+  i2cClock = clockRate;              // Store Clock Rate
+  
+} // mujoeI2C_setSclFreq
 
 ////////////////////////////////////////////////////////////////////////////////
 // @fn          mujoeI2C_initHardware
@@ -51,7 +62,7 @@ static void disableI2C( void );
 ////////////////////////////////////////////////////////////////////////////////
 void mujoeI2C_initHardware( i2cClock_t clockRate )
 {
-  SCL_CLK_FREQ_BUFFER = clockRate;  // Store Clock Rate
+  // SCL_CLK_FREQ_BUFFER = clockRate;  // Store Clock Rate
   I2CWC = 0x00;                     // I2CWC.OVR = 0, I2C functionality enabled on pins 2 and 3 of CC2541 (wrapper disabled)         
   I2CADDR = 0;                      // No multi-master support at this time
   
@@ -61,7 +72,6 @@ void mujoeI2C_initHardware( i2cClock_t clockRate )
   I2CCFG |= I2C_ENS1;               // Enable the I2C module
   
 } // mujoeI2C_initHardware
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -210,7 +220,7 @@ bool mujoeI2C_i2cPingSlave( uint8 slaWriteAddr )
 static uint8 masterStartI2C( uint8 addr, uint8 R_Wn )
 {
  
-  mujoeI2C_initHardware( SCL_CLK_FREQ_BUFFER );  // I2C Settings are not recalled after returning from sleep, must restore via SW
+  mujoeI2C_initHardware( i2cClock );         // I2C Settings are not recalled after returning from sleep, must restore via SW
   
   {
      I2CCFG = (I2CCFG & ~I2C_SI) | I2C_STA;  // Clear any pending I2C interrupt flag and set START flag

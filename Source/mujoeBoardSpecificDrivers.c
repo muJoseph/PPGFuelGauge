@@ -43,6 +43,7 @@ bool mujoeBSD_initBoard( void )
     enablePort1Interrupts();                         // Enable Port 1 Interrupts
     
     // Init I2C Hardware
+    mujoeI2C_setSclFreq( i2cClock_267KHZ );
     mujoeI2C_initHardware( i2cClock_267KHZ ); 
     
     return retVal;

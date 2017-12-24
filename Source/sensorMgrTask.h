@@ -40,7 +40,7 @@ extern "C"
 #define SENSORMGR_DATA_COLLECTOR_EVT                            0x0002
   
 // Max number of onboard sensors
-#define SENSORMGR_MAX_NUM_SENSORS                               2
+#define SENSORMGR_MAX_NUM_SENSORS                               3
 
 ////////////////////////////////////////////////////////////////////////////////
 // TYPEDEFS

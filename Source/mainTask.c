@@ -549,6 +549,7 @@ static void mainTask_pbIntHdlr( void )
 static void mainTask_mspIntHdlr( void )
 {
   //muJoeGPIO_togglePin( PINID_CHG_LED );
+  putBreakPointHere();
   
 } // mainTask_mspIntHdlr
 
@@ -620,7 +621,8 @@ static void mainTask_ProcessSensorMgrMsg( msg_t *msg )
   {
     case SENSORMGR_HWINIT_DONE:
       muJoeGPIO_writePin( PINID_CHG_LED, FALSE );
-      enableP1PinInterrupt(0x20);       // TEST: Unmask P1.5 interrupt
+      enableP1PinInterrupt(0x20);       // TEST: Unmask P1.5 (PB_INTn) interrupt
+      enableP0PinInterrupt(0x40);       // TEST: Unmask P0.6 (MSP_INTn) interrupt
       break;
     default:
       break;

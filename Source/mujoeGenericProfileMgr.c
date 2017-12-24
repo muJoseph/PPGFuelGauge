@@ -115,6 +115,10 @@ static uint16 cmdGroup_mspDbgGrp( uint8 cmd_id )
 {
   uint16 rspVal = MUJOE_RSP_SUCCESS;
   
+  // Save Current I2C frequency
+  i2cClock_t i2cClockCtxSave = mujoeI2C_getSclFreq();
+  mujoeI2C_setSclFreq( i2cClock_33KHZ );
+  
   switch(cmd_id)
   {
     // I2C Write Bulk
@@ -166,6 +170,9 @@ static uint16 cmdGroup_mspDbgGrp( uint8 cmd_id )
       rspVal = MUJOE_RSP_INV_CMD_ID;
       break;
   }
+  
+  // Restore I2C SCL frequency
+  mujoeI2C_setSclFreq( i2cClockCtxSave );
   
   return rspVal;
   

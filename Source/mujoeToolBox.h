@@ -42,7 +42,14 @@ typedef struct osalEvt_def
 // MACROS 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define SFRIO(x)   (*(volatile unsigned char *)(x))
+// Used for accessing certain SFRs directly via memory (to read/write)
+#define SFRIO(x)                                (*(volatile unsigned char *)(x))
+
+// Concatenates two bytes into an unsigned 16-bit word
+#define MAKE_UINT16(MSB,LSB)                    ( ( ( (uint16)(MSB) ) << 8 ) + (LSB) )
+
+// Used for setting breakpoints during debug
+#define putBreakPointHere()                     asm("nop")
 
 ////////////////////////////////////////////////////////////////////////////////
 // FUNCTION PROTOS

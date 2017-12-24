@@ -92,6 +92,8 @@ typedef enum
 // API FUNCTION PROTOS
 ////////////////////////////////////////////////////////////////////////////////
 
+i2cClock_t mujoeI2C_getSclFreq( void );
+void mujoeI2C_setSclFreq( i2cClock_t clockRate );
 void mujoeI2C_initHardware( i2cClock_t clockRate );
 bool mujoeI2C_i2cPingSlave( uint8 slaWriteAddr );
 uint8 mujoeI2C_read( uint8 addr, uint8 len, uint8 *pBuf );

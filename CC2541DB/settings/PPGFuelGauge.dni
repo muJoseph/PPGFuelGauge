@@ -38,7 +38,7 @@ ShowSource=1
 [Simulator]
 Freq=50000000
 [DebugChecksum]
-Checksum=-1060933025
+Checksum=-2140003338
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -74,7 +74,7 @@ Category=_ 0
 LoggingEnabled=_ 0
 LogFile=_ ""
 [Breakpoints]
-Bp0=_ "STD_CODE" "{$PROJ_DIR$\..\Source\mujoeGenericProfileMgr.c}.155.14" 0 0 0 0 "" 0 ""
+Bp0=_ "STD_LOG" "{$PROJ_DIR$\..\Source\mainTask.c}.552.3" 1 0 0 0 "" 0 "MSP_INTn" 0
 Count=1
 [ChipconEmu]
 Stop timers on halt=0
