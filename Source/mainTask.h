@@ -42,6 +42,7 @@ extern "C"
 #include "mujoeTaskMsgr.h"
 #include "sensorMgrTask.h"
 #include "mujoeGenericProfileMgr.h"
+#include "mujoeGenericProfileManager.h"
 #include "muJoeBoardSpecificDrivers.h"  
   
 /*********************************************************************

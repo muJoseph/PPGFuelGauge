@@ -34,26 +34,6 @@
 // TYPEDEFS
 ////////////////////////////////////////////////////////////////////////////////
 
-/* 
-// Outdated Version
-typedef enum
-{
-  MSPFG_WHO_AM_I                = 0x00, // Who Am I Register
-  MSPFG_DEV_INFO,                       // Device Info Register
-  MSPFG_CFG,                            // Configuration Register
-  MSPFG_CAP_FULL_LSB,                   // Capacitance value when tank full LSByte
-  MSPFG_CAP_FULL_MSB,                   // Capacitance value when tank full MSByte
-  MSPFG_CAP_ALGO_LSB,                   // Tracking Algo Capacitance Reading LSByte
-  MSPFG_CAP_ALGO_MSB,                   // Tracking Algo Capacitance Reading MSByte
-  MSPFG_CAP_RAW_LSB,                    // Raw Capacitance Reading LSByte
-  MSPFG_CAP_RAW_MSB,                    // Raw Capacitance Reading MSByte
-  MSPFG_FUEL_LVL_CRIT_THRESH,           // Critical Fuel Level Threshold (0 to 100%)
-  MSPFG_FUEL_LVL,                       // Current Fuel Level (0 to 100%)
-  MSPFG_NUM_REGISTERS                   // Number of MSPFuelGauge Registers        
-  
-}mspfg_regAddr_t;
-*/
-
 // MSPFuelGauge Register Addresses
 typedef enum
 {

@@ -38,7 +38,7 @@ ShowSource=1
 [Simulator]
 Freq=50000000
 [DebugChecksum]
-Checksum=-2140003338
+Checksum=244519892
 [CallStack]
 ShowArgs=0
 [Disassembly]
@@ -74,8 +74,10 @@ Category=_ 0
 LoggingEnabled=_ 0
 LogFile=_ ""
 [Breakpoints]
-Bp0=_ "STD_LOG" "{$PROJ_DIR$\..\Source\mainTask.c}.552.3" 1 0 0 0 "" 0 "MSP_INTn" 0
-Count=1
+Bp0=_ "STD_LOG" "{$PROJ_DIR$\..\Source\mainTask.c}.592.3" 1 0 0 0 "" 0 "MSP_INTn" 0
+Bp1=_ "STD_LOG" "{$PROJ_DIR$\..\Source\sensorMgrTask.c}.359.13" 1 0 0 0 "" 0 "MSPFG Data RXd" 0
+Bp2=_ "STD_CODE" "{$PROJ_DIR$\..\Source\mainTask.c}.882.3" 1 0 0 0 "" 0 ""
+Count=3
 [ChipconEmu]
 Stop timers on halt=0
 Leave target running=1

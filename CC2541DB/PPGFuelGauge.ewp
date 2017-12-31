@@ -7045,6 +7045,9 @@
         <name>$PROJ_DIR$\..\Source\mujoeGenericProfile.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\Source\mujoeGenericProfileManager.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\Source\mujoeGenericProfileMgr.c</name>
       </file>
     </group>

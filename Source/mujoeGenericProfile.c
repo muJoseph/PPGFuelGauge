@@ -695,12 +695,10 @@ bStatus_t muJoeGenProfile_readMailbox( uint8 *pMailboxBuff, uint8 buffSize )
 
 bStatus_t muJoeGenProfile_writeMailbox( uint8 *pMailboxBuff, uint8 buffSize )
 {
-  if( buffSize == MUJOEGENERICPROFILE_MBOX_LEN )
-    return muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_MAILBOX, 
-                                         MUJOEGENERICPROFILE_MBOX_LEN, 
-                                         pMailboxBuff );
-  else
-    return FAILURE;
+  return muJoeGenProfile_SetParameter( MUJOEGENERICPROFILE_MAILBOX, 
+                                       buffSize, 
+                                       pMailboxBuff );
+
   
 } // muJoeGenProfile_writeMailbox
 

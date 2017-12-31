@@ -172,12 +172,23 @@ static void muJoeGenProfileChangeCB( uint8 paramID );
 static void muJoeDataProfileReadCB( uint8 paramID );
 
 static void mainTask_initMuJoeGenMgrDriver( void );
+static void mainTask_initMuJoeGenManagerDriver( void );
 static void mainTask_beginAdvert( uint32 timeToAdvert );
 static void mainTask_endAdvert( void );
 static void mainTask_pbIntHdlr( void );
 static void mainTask_mspIntHdlr( void );
 static void mainTask_brdLedMgr( void );
 static void mainTask_setStatLEDState( statLedState_t newState );
+
+static rspCodeSol_t sys_powerDown( void );
+
+static rspCodeSol_t dat_startAsyncBulk( void );
+static rspCodeSol_t dat_startAllDataCollection( void );
+static rspCodeSol_t dat_stopAllDataCollection( void );
+
+static rspCodeSol_t mspDbg_i2cWrite( void );
+static rspCodeSol_t mspDbg_i2cRead( void );
+static rspCodeSol_t mspDbg_i2cReadReg( void );
 
 /*********************************************************************
  * PROFILE CALLBACKS
@@ -209,6 +220,26 @@ static muJoeDataProfileCBs_t mainTask_muJoeDataProfileCBs =
 {
   NULL,                         // Characteristic value change callback
   muJoeDataProfileReadCB        // Called when a characteristic is read by central
+};
+
+
+static cmdIdCallBack_t sys_cmdGrp[ SYS_NUMID ] =
+{
+  sys_powerDown,
+};
+
+static cmdIdCallBack_t dat_cmdGrp[ DAT_NUMID ] =
+{
+  dat_startAsyncBulk,
+  dat_startAllDataCollection,
+  dat_stopAllDataCollection
+};
+
+static cmdIdCallBack_t  mspDbg_cmdGrp[ MSPDBG_NUMID ] =
+{
+  mspDbg_i2cWrite,
+  mspDbg_i2cRead,
+  mspDbg_i2cReadReg
 };
 
 #else
@@ -385,7 +416,15 @@ void mainTask_Init( uint8 task_id )
 #endif // defined ( DC_DC_P0_7 )
 
   // Init App level drivers
-  mainTask_initMuJoeGenMgrDriver();     // TEST
+  //mainTask_initMuJoeGenMgrDriver();     // DEFAULT
+  mainTask_initMuJoeGenManagerDriver();   // TEST
+  // Register Command Group Callback Tables
+  stat = muJoeGenManager_registerCmdIdHandlerTbl( CMDGRPID_SYS, sys_cmdGrp, SYS_NUMID );
+  while(!stat); // TRAP MCU
+  stat = muJoeGenManager_registerCmdIdHandlerTbl( CMDGRPID_DAT, dat_cmdGrp, DAT_NUMID );
+  while(!stat); // TRAP MCU
+  stat = muJoeGenManager_registerCmdIdHandlerTbl( CMDGRPID_MSPDBG, mspDbg_cmdGrp, MSPDBG_NUMID );
+  while(!stat); // TRAP MCU
   
   // Setup a delayed profile startup
   osal_set_event( mainTask_TaskID, MAIN_START_DEVICE_EVT );
@@ -440,14 +479,16 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
   // Command Characteristic Write Handler Event 
   if( events & MAIN_CMD_WRITE_EVT )
   {
-     muJoeGenMgr_cmdWriteHandler();
+     //muJoeGenMgr_cmdWriteHandler();     // DEFAULT
+     muJoeGenManager_rxCmdHandler();    // TEST
      return ( events ^ MAIN_CMD_WRITE_EVT );
   }
   
   // Response Characteristic Noti Handler Event 
   if( events & MAIN_RSP_NOTI_EVT )
   {
-     muJoeGenProfile_writeResponse( rspBuffer );
+     //muJoeGenProfile_writeResponse( rspBuffer );        // DEFAULT
+     muJoeGenManager_txRspHandler();                    // TEST
      return ( events ^ MAIN_RSP_NOTI_EVT );
   }
   
@@ -548,8 +589,8 @@ static void mainTask_pbIntHdlr( void )
 
 static void mainTask_mspIntHdlr( void )
 {
-  //muJoeGPIO_togglePin( PINID_CHG_LED );
-  putBreakPointHere();
+  osal_set_event( sensorMgrTask_getTaskId(), SENSORMGR_DATA_COLLECTOR_EVT );
+  //putBreakPointHere();
   
 } // mainTask_mspIntHdlr
 
@@ -585,6 +626,20 @@ static void mainTask_initMuJoeGenMgrDriver( void )
   muJoeGenMgr_initDriver( muJoeGenMgr );
   
 } // mainTask_initMuJoeGenMgrDriver
+
+static void mainTask_initMuJoeGenManagerDriver( void )
+{
+  genProfileMgrCfg_t cfg;
+  cfg.rxCmdEvt.taskId = mainTask_getTaskId();
+  cfg.rxCmdEvt.event = MAIN_CMD_WRITE_EVT;
+  
+  cfg.txRspEvt.taskId = mainTask_getTaskId();
+  cfg.txRspEvt.event = MAIN_RSP_NOTI_EVT;
+  cfg.txRspEvt.delay = 0;
+  
+  muJoeGenManager_initDriver( cfg );
+  
+} // mainTask_initMuJoeGenManagerDriver
 
 /*********************************************************************
  * @fn      mainTask_ProcessOSALMsg
@@ -756,6 +811,144 @@ static void muJoeDataProfileReadCB( uint8 paramID )
   }
   
 } // muJoeDataProfileReadCB
+
+
+static rspCodeSol_t sys_powerDown( void )
+{
+  rspCodeSol_t rspCodeSol = RSPCODE_SUCCESS;
+  
+  // Add code to power down board
+  
+  return rspCodeSol;
+} // sys_powerDown
+
+static rspCodeSol_t dat_startAsyncBulk( void )
+{
+  rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
+  
+  uint8 mbBuff[4] = {0};
+  if( muJoeGenManager_readMailbox( sizeof(mbBuff), mbBuff ) == SUCCESS )
+  {
+    uint32 newSampPeriod = MAKE_UINT32(mbBuff[0],mbBuff[1],mbBuff[2],mbBuff[3]);
+    
+    // Clamp the Async Bulk sample period to a minimum of 100 ms
+    if( newSampPeriod < 100 )
+      newSampPeriod = 100;
+    
+    mujoeBrdSettings.asyncBulkSampPeriod = newSampPeriod;
+    
+    if( osal_set_event( mainTask_getTaskId(),MAIN_ASYNCBULK_EVT ) == SUCCESS )
+      rspCodeSol = RSPCODE_SUCCESS;
+  }
+  
+  return rspCodeSol;
+  
+} // dat_startAsyncBulk
+
+static rspCodeSol_t dat_startAllDataCollection( void )
+{
+  rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
+  
+  uint8 mbBuff[4] = {0};
+  if( muJoeGenManager_readMailbox( sizeof(mbBuff), mbBuff ) == SUCCESS )
+  {
+    uint32 newSampPeriod = MAKE_UINT32(mbBuff[0],mbBuff[1],mbBuff[2],mbBuff[3]);
+    
+    // Clamp the Async Bulk sample period to a minimum of 100 ms
+    if( newSampPeriod < 100 )
+      newSampPeriod = 100;
+    
+    mujoeBrdSettings.asyncBulkSampPeriod = newSampPeriod;
+    
+    if( osal_set_event( sensorMgrTask_getTaskId(), SENSORMGR_DATA_COLLECTOR_EVT ) == SUCCESS )
+      if( osal_start_timerEx( mainTask_getTaskId(), MAIN_ASYNCBULK_EVT, 1000 ) == SUCCESS  ) 
+          rspCodeSol = RSPCODE_SUCCESS;
+  }
+  
+  return rspCodeSol;
+  
+} // dat_startAllDataCollection
+
+static rspCodeSol_t dat_stopAllDataCollection( void )
+{
+  //rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
+  
+  if( osal_stop_timerEx( mainTask_getTaskId(), MAIN_ASYNCBULK_EVT ) != SUCCESS )
+    osal_clear_event( mainTask_getTaskId(), MAIN_ASYNCBULK_EVT );
+  
+  if( osal_stop_timerEx( sensorMgrTask_getTaskId(), SENSORMGR_DATA_COLLECTOR_EVT ) != SUCCESS )
+    osal_clear_event( sensorMgrTask_getTaskId(), SENSORMGR_DATA_COLLECTOR_EVT );
+    
+  return RSPCODE_SUCCESS;
+  
+} // dat_stopAllDataCollection
+     
+static rspCodeSol_t mspDbg_i2cWrite( void )
+{
+  rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
+  
+  // Save Current I2C frequency
+  i2cClock_t i2cClockCtxSave = mujoeI2C_getSclFreq();
+  mujoeI2C_setSclFreq( i2cClock_33KHZ );
+  
+  uint8 mbBuff[20];
+  if( muJoeGenManager_readMailbox( sizeof(mbBuff), mbBuff ) == SUCCESS )
+    if( mujoeI2C_write( (0x48<<1), mbBuff[0], mbBuff + 1, STOP_CMD ) == mbBuff[0] )
+      rspCodeSol = RSPCODE_SUCCESS;
+
+  // Restore I2C SCL frequency
+  mujoeI2C_setSclFreq( i2cClockCtxSave );
+  
+  return rspCodeSol;
+  
+} // mspDbg_i2cWrite
+
+static rspCodeSol_t mspDbg_i2cRead( void )
+{
+  rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
+  
+  // Save Current I2C frequency
+  i2cClock_t i2cClockCtxSave = mujoeI2C_getSclFreq();
+  mujoeI2C_setSclFreq( i2cClock_33KHZ );
+ 
+  uint8 mbBuff = 0;
+  if( muJoeGenManager_readMailbox( sizeof(mbBuff), &mbBuff ) == SUCCESS )
+  {
+    uint8 i2cRxBuff[20] = {0};
+    // RX bytes from MSPFuelGauge, and write data to Mailbox characteristic
+    if( mujoeI2C_read( (0x48<<1), mbBuff, i2cRxBuff ) == mbBuff )
+      if( muJoeGenManager_writeMailbox( mbBuff, i2cRxBuff ) == SUCCESS )
+        rspCodeSol = RSPCODE_SUCCESS;
+  }
+  
+  // Restore I2C SCL frequency
+  mujoeI2C_setSclFreq( i2cClockCtxSave );
+  
+  return rspCodeSol;
+  
+} // mspDbg_i2cRead
+
+static rspCodeSol_t mspDbg_i2cReadReg( void )
+{
+  rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
+  
+  // Save Current I2C frequency
+  i2cClock_t i2cClockCtxSave = mujoeI2C_getSclFreq();
+  mujoeI2C_setSclFreq( i2cClock_33KHZ );
+  
+  uint8 mbBuff = 0;
+  if( muJoeGenManager_readMailbox( sizeof(mbBuff), &mbBuff ) == SUCCESS )
+     if( mujoeI2C_write( (0x48<<1), 1, &mbBuff, STOP_CMD ) )
+       if( mujoeI2C_read( (0x48<<1), 1, &mbBuff ) )
+          if( muJoeGenManager_writeMailbox( 1, &mbBuff ) == SUCCESS )
+             rspCodeSol = RSPCODE_SUCCESS;
+  
+  // Restore I2C SCL frequency
+  mujoeI2C_setSclFreq( i2cClockCtxSave );
+  
+  return rspCodeSol;
+  
+} // mspDbg_i2cReadReg
 
 /*********************************************************************
 *********************************************************************/

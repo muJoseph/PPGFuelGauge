@@ -20,13 +20,15 @@ boardSensorData_t               brdSensorDat;
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef struct evtCallback_def
-{    
+{   
+    uint16         evt;
     uint32         delay;
     
 }evtCallback_t;
 
 typedef struct sensorDatColl_def
 {
+  bool                  forceStateChange;
   bool                  nextSensor;
   uint8                 currSensor;
   uint8                 numSensors;
@@ -36,7 +38,8 @@ typedef struct sensorDatColl_def
 
 }sensorDatColl_t, *p_sensorDatColl_t;
 
-typedef void (*sensorDatCollFncTbl_t)( p_sensorDatColl_t );
+//typedef void (*sensorDatCollFncTbl_t)( p_sensorDatColl_t );   // DEFAULT
+typedef void (*sensorDatCollFncTbl_t)( uint8 * );
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL FUNCTIONS
@@ -46,12 +49,21 @@ static void sensorMgrTask_ProcessOSALMsg( osal_event_hdr_t *pMsg );
 static void sensorMgrTask_ProcessGATTMsg( gattMsgEvent_t *pMsg );
 static bool sensorMgrTask_initSensors( void );
 
-static void MS560702_dataCollector( p_sensorDatColl_t sdc );
+//static void MS560702_dataCollector( p_sensorDatColl_t sdc );
+static void MS560702_dataCollector( uint8 *pFlgs );
 static void MMA8453_dataCollector( p_sensorDatColl_t sdc );
-static void MSPFuelGauge_dataCollector( p_sensorDatColl_t sdc );
+//static void MSPFuelGauge_dataCollector( p_sensorDatColl_t sdc );
+static void MSPFuelGauge_dataCollector( uint8 *pFlgs );
+
 
 static void sensorMgrTask_dataCollector( void );
 static bool sensorMgrTask_SendOSALMsg( uint8 destTaskID, sensorMgrTask_msg_t msg );
+
+// sensorMgrTask State Management functions
+static uint8 sensorMgrTask_getSensorState( void );
+static void sensorMgrTask_goToNextSensor( void );
+static void sensorMgrTask_goToSensorState( uint8 sensorState, uint32 delay );
+static void sensorMgrTask_setSensorState( uint8 sensorState );
 
 ////////////////////////////////////////////////////////////////////////////////
 // LOCAL VAR
@@ -61,17 +73,18 @@ static uint8                       sensorMgrTask_TaskID;                        
 
 static sensorDatColl_t             sensorDatColl = 
 {
+  .forceStateChange = FALSE,
   .nextSensor = FALSE,
   .currSensor = 0,
   .numSensors = SENSORMGR_MAX_NUM_SENSORS,
 };
 
 // Sensor Data Collection Function Table
-sensorDatCollFncTbl_t       sensorDatCollFncTbl[SENSORMGR_MAX_NUM_SENSORS] = 
+static const sensorDatCollFncTbl_t       sensorDatCollFncTbl[SENSORMGR_MAX_NUM_SENSORS] = 
 {
   MS560702_dataCollector,
-  MMA8453_dataCollector,
-  MSPFuelGauge_dataCollector
+  MSPFuelGauge_dataCollector,
+  //MMA8453_dataCollector,
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -169,14 +182,50 @@ uint16 sensorMgrTask_ProcessEvent( uint8 task_id, uint16 events )
 // STATIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
+static uint8 sensorMgrTask_getSensorState( void )
+{
+  return sensorDatColl.sensorState;
+  
+} // sensorMgrTask_getSensorState
+
+// Force a transition to the next sensor within the sensor manager queue (i.e. current
+// sensor data acquistion cycle has completed )
+static void sensorMgrTask_goToNextSensor( void )
+{
+  sensorDatColl.nextSensor = TRUE;
+  
+} // sensorMgrTask_goToNextSensor
+
+// Go to next state
+// If delay = 0, next state is called immediately
+// If delay != 0, next state is called after a delay of length "delay", where delay is millisec
+static void sensorMgrTask_goToSensorState( uint8 sensorState, uint32 delay )
+{
+  sensorDatColl.sensorState = sensorState;
+  sensorDatColl.forceStateChange = TRUE;
+  sensorDatColl.evtCb.delay = delay;
+  
+} // sensorMgrTask_goToSensorState
+
+// Sets the sensor state, but DOES not transition to it.
+// To be used when state transition is to be triggered by an external
+// event such as an interrupt.
+static void sensorMgrTask_setSensorState( uint8 sensorState )
+{
+  sensorDatColl.sensorState = sensorState;
+  
+} // sensorMgrTask_setSensorState
+
 static void sensorMgrTask_dataCollector( void )
 {
   // Call the current sensor within the queu data collection fnc
   if( sensorDatColl.currSensor < sensorDatColl.numSensors )
-    sensorDatCollFncTbl[sensorDatColl.currSensor](&sensorDatColl);
+    sensorDatCollFncTbl[sensorDatColl.currSensor]( &(sensorDatColl.sensorFlags) );
   
+  // Manage sensor to sensor transition
   if( sensorDatColl.nextSensor )
   {
+    // Inc sensor index to next sensor
     sensorDatColl.currSensor++;
     // If end of sensor queue reached, restart
     if( sensorDatColl.currSensor == sensorDatColl.numSensors )  
@@ -187,11 +236,31 @@ static void sensorMgrTask_dataCollector( void )
     sensorDatColl.sensorFlags = 0;
     VOID memset( &(sensorDatColl.evtCb), 0, sizeof( evtCallback_t ) );
     
+    // Force a state change with a delay equal to that of the sample period
+    sensorDatColl.forceStateChange = TRUE;
+    sensorDatColl.evtCb.delay = 1000;   // TODO: Update this to reflect the actual sample period
+    
     sensorDatColl.nextSensor = FALSE;
   }
   
+  // Manage Sensor State Transition
+  if( sensorDatColl.forceStateChange )
+  {
+    if( sensorDatColl.evtCb.delay )
+    {
+      osal_start_timerEx( sensorMgrTask_TaskID, 
+                          SENSORMGR_DATA_COLLECTOR_EVT, 
+                          sensorDatColl.evtCb.delay );
+      sensorDatColl.evtCb.delay = 0;
+    }
+    else
+      osal_set_event( sensorMgrTask_TaskID, SENSORMGR_DATA_COLLECTOR_EVT );
+    
+    sensorDatColl.forceStateChange = FALSE;
+  }
+  
   // Schedule next event to continue data collection
-  if( sensorDatColl.evtCb.delay )
+  /*if( sensorDatColl.evtCb.delay )
   {
     osal_start_timerEx( sensorMgrTask_TaskID, 
                         SENSORMGR_DATA_COLLECTOR_EVT, 
@@ -200,21 +269,26 @@ static void sensorMgrTask_dataCollector( void )
   }
   else
     osal_set_event( sensorMgrTask_TaskID, SENSORMGR_DATA_COLLECTOR_EVT );
-  
+  */
+    
 } // sensorMgrTask_dataCollector
 
-static void MS560702_dataCollector( p_sensorDatColl_t sdc )
+//static void MS560702_dataCollector( p_sensorDatColl_t sdc )
+static void MS560702_dataCollector( uint8 *pFlgs )
 {
-   switch( sdc->sensorState )
+   //switch( sdc->sensorState )
+   switch( sensorMgrTask_getSensorState() )
    {
      // Trigger Pressure Conversion
      case 0:
-       if( sdc->sensorFlags & 0x01 )
+       if( *pFlgs & 0x01 )
          MS560702_trigTemperatureConv( MS5_OSR_4096 );
        else
          MS560702_trigPressureConv( MS5_OSR_4096 );
-       sdc->evtCb.delay = 100;
-       sdc->sensorState = 1;  
+       
+       sensorMgrTask_goToSensorState(1,100);
+       //sdc->evtCb.delay = 100;
+       //sdc->sensorState = 1;  
        break;
      // Poll and fetch Conversion
      case 1:
@@ -222,22 +296,25 @@ static void MS560702_dataCollector( p_sensorDatColl_t sdc )
         uint32 adcConv;
         if( MS560702_readAdcConv( &adcConv ) )
         {
-            if( sdc->sensorFlags & 0x01 )
+            if( *pFlgs & 0x01 )
             {
               brdSensorDat.ppgfg.barTempCode = adcConv;
-              sdc->nextSensor = TRUE;
+              //sdc->nextSensor = TRUE;
+              sensorMgrTask_goToNextSensor();
             }
             else
             {
               brdSensorDat.ppgfg.barPresCode = adcConv;
-              sdc->sensorFlags |= 0x01;
-              sdc->sensorState = 0;
+              *pFlgs |= 0x01;
+              //sdc->sensorState = 0;
+              sensorMgrTask_goToSensorState( 0, 0 );
             }
         }
         else
         {
-          sdc->sensorState = 1;
-          sdc->evtCb.delay = 100;
+          //sdc->sensorState = 1;
+          //sdc->evtCb.delay = 100;
+          sensorMgrTask_goToSensorState( 1, 100 );
         }
         break;
      }
@@ -253,18 +330,21 @@ static void MMA8453_dataCollector( p_sensorDatColl_t sdc )
   
 } // MMA8453_dataCollector
 
-static void MSPFuelGauge_dataCollector( p_sensorDatColl_t sdc )
+//static void MSPFuelGauge_dataCollector( p_sensorDatColl_t sdc )
+static void MSPFuelGauge_dataCollector( uint8 *pFlgs )
 {
-   switch( sdc->sensorState )
+   switch( sensorMgrTask_getSensorState() )
    {
      // Trigger Single-shot Measurement 
      case 0:
        if( mspfg_sendCommand( MSPFG_CMD_SINGLESHOT_DATA ) )
-         sdc->sensorState = 1;
+         //sdc->sensorState = 1;
+         sensorMgrTask_setSensorState(1);
        else                             // Command not sent, try again
        {
-         sdc->evtCb.delay = 100;
-         sdc->sensorState = 0;
+         //sdc->evtCb.delay = 100;
+         //sdc->sensorState = 0;
+         sensorMgrTask_goToSensorState( 0, 100 );
        }
        break;
      // Read Conversion data
@@ -273,13 +353,18 @@ static void MSPFuelGauge_dataCollector( p_sensorDatColl_t sdc )
         mspfg_data_t     mspfg_data;
         if( mspfg_getAllData( &mspfg_data ) )
         {
-          sdc->sensorState = 0;
-          sdc->nextSensor = TRUE;
+          //sdc->sensorState = 0;
+          //sdc->nextSensor = TRUE;
+          if( mspfg_clearIntFlag() )
+            sensorMgrTask_goToNextSensor();
+          else
+            sensorMgrTask_goToSensorState( 1, 100 );
         }
         else                            // Unable to read data, try again...
         {
-          sdc->evtCb.delay = 100;
-          sdc->sensorState = 1;
+          //sdc->evtCb.delay = 100;
+          //sdc->sensorState = 1;
+          sensorMgrTask_goToSensorState( 1, 100 );
         }
         break;
      }

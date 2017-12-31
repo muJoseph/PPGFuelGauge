@@ -12,12 +12,13 @@
 
 #include "muJoeGenericProfile.h"
 #include "mujoeBoardSettings.h"
+#include "sensorMgrTask.h"
 #include "MSPFuelGauge.h"
 #include "OSAL_Timers.h"
 #include "OSAL.h"
 
 // BEGIN FOR DEBUG
-#include "mujoeI2C.h"
+//#include "mujoeI2C.h"
 // END FOR DEBUG
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -37,6 +38,7 @@
 
 // Command IDs for Command Group "Data"
 #define MUJOE_GRP_DAT_ID_STASYNCBULK        0x01    // Start data collection and post to Async Bulk
+#define MUJOE_GRP_DAT_ID_STASENSORACQ       0x02    // Start sensor data acquisition (DEBUG)
 
 // Command IDs for Command Group "MSP Debug"
 #define MUJOE_GRP_MSPDBG_ID_I2CWRITE        0x01

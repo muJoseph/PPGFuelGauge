@@ -16,10 +16,12 @@
 // TYPEDEFS 
 ////////////////////////////////////////////////////////////////////////////////
 
+// OSAL Event
 typedef struct osalEvt_def
 {
   uint8     taskId;
   uint16    event;
+  uint32    delay;
   
 }osalEvt_t;
 
@@ -48,6 +50,11 @@ typedef struct osalEvt_def
 // Concatenates two bytes into an unsigned 16-bit word
 #define MAKE_UINT16(MSB,LSB)                    ( ( ( (uint16)(MSB) ) << 8 ) + (LSB) )
 
+// Concatenates four bytes into an unsigned 32-bit integer
+#define MAKE_UINT32(XMSB,MSB,LSB,XLSB)          ( (uint32)( ( ( (uint32)(XMSB) ) << 24 ) + \
+                                                ( ( (uint32)(MSB) ) << 16 ) + \
+                                                ( ( (uint32)(LSB) ) << 8 ) + \
+                                                 XLSB) )
 // Used for setting breakpoints during debug
 #define putBreakPointHere()                     asm("nop")
 

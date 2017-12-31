@@ -190,6 +190,9 @@ static uint16 cmdGroup_datGrp( uint8 cmd_id )
       osal_set_event( muJoeGenMgr.asyncBulkCb.tskId, muJoeGenMgr.asyncBulkCb.evtFlg );
       break;
     }
+    case MUJOE_GRP_DAT_ID_STASENSORACQ:
+      osal_set_event( sensorMgrTask_getTaskId(), SENSORMGR_DATA_COLLECTOR_EVT );
+      break;
     // Unsupported Command ID for this Command Group
     default:
       rspVal = MUJOE_RSP_INV_CMD_ID;
