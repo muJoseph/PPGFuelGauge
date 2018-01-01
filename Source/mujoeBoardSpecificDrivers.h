@@ -10,6 +10,7 @@
 // INCLUDE
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "mujoeBoardSettings.h"
 #include "mujoeBoardConfig.h"
 #include "mujoeGPIO.h"
 #include "mujoeI2C.h"

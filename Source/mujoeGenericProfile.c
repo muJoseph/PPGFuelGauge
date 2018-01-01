@@ -705,6 +705,7 @@ bStatus_t muJoeGenProfile_writeMailbox( uint8 *pMailboxBuff, uint8 buffSize )
 void muJoeGenProfile_clearMailbox( void )
 {
   VOID memset(muJoeGenProfileMbox, 0, MUJOEGENERICPROFILE_MBOX_LEN);
+  
 } // muJoeGenProfile_clearMailbox
 
 bStatus_t muJoeGenProfile_writeDeviceInfo( uint16 hwVer , uint16 fwVer )

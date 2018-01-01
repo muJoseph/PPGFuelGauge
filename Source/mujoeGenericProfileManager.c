@@ -13,9 +13,6 @@
 // TYPEDEFS 
 ////////////////////////////////////////////////////////////////////////////////
 
-// Command Group Handler Function Pointer
-//typedef rspCodeSol_t (*cmdGrpHdlr_t)( uint8 cmd_id );
-
 typedef struct cmdGrp_def
 {
     uint8               numCmdIds;
@@ -167,51 +164,3 @@ static void scheduleResponse( void )
                        genProfileMgr.txRspEvt.event,
                        genProfileMgr.txRspEvt.delay ? genProfileMgr.txRspEvt.delay : GENPROFMGR_DEFAULT_RSPDELAY );
 } // scheduleResponse
-
-/*
-static rspCodeSol_t cmdGrpHdlr_sys( uint8 cmd_id )
-{
-  rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
-  
-  switch( (sysGrp_cmdIds_t)cmd_id )
-  { 
-    case SYS_CMDID_PWRDWN:
-      // Call fnc that powers down board
-      rspCodeSol = RSPCODE_SUCCESS;
-      break;
-    // Unsupported Command ID for this Command Group
-    default:
-      rspCodeSol = RSPCODE_INV_CMDID;
-      break;
-  }
-  
-  return rspCodeSol;
-  
-} // cmdGrpHdlr_sys
-
-static rspCodeSol_t cmdGrpHdlr_dat( uint8 cmd_id )
-{
-  rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
-  
-  switch( cmd_id )
-  {
-    case 0:
-      break;
-    case 1:
-      break;
-    default:
-      break;
-  }
-  
-  return rspCodeSol;
-  
-} // cmdGrpHdlr_dat
-
-static rspCodeSol_t cmdGrpHdlr_mspdbg( uint8 cmd_id )
-{
-  rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
-  
-  return rspCodeSol;
-  
-} // cmdGrpHdlr_mspdbg
-*/

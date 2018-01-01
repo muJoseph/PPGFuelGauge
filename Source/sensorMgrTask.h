@@ -48,8 +48,9 @@ extern "C"
 
 typedef struct ppgfgSensorData_def
 {
-  uint32                barPresCode;
-  uint32                barTempCode;
+  uint32                barPresCode;    // 4 Bytes
+  uint32                barTempCode;    // 4 Bytes
+  mspfg_data_t          mspfg;          // 6 Bytes
   
 }ppgfgSensorData_t;
 
@@ -64,6 +65,9 @@ typedef union boardSensorData_def
 ////////////////////////////////////////////////////////////////////////////////
 
 uint8 sensorMgrTask_getTaskId( void );
+
+boardSensorData_t sensorMgrTask_getSensorData( void );
+
 /*
  * Task Initialization for the BLE Application
  */

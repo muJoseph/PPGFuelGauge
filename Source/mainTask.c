@@ -96,8 +96,8 @@ static mainTask_t       mainTask =
   .lengthOfAdvert = 30000,          // ms
 };
 
-static uint16           rspBuffer;         // TEST
-static uint8            asyncBulkBuff[20]; // TEST
+//static uint16           rspBuffer;         // TEST
+//static uint8            asyncBulkBuff[20]; // TEST
 
 // HipScience characteristic notification control identifiers
 static uint8                            mainTask_TaskID;             // Task ID for internal task/event processing
@@ -171,7 +171,7 @@ static void peripheralStateNotificationCB( gaprole_States_t newState );
 static void muJoeGenProfileChangeCB( uint8 paramID );
 static void muJoeDataProfileReadCB( uint8 paramID );
 
-static void mainTask_initMuJoeGenMgrDriver( void );
+//static void mainTask_initMuJoeGenMgrDriver( void );
 static void mainTask_initMuJoeGenManagerDriver( void );
 static void mainTask_beginAdvert( uint32 timeToAdvert );
 static void mainTask_endAdvert( void );
@@ -179,6 +179,7 @@ static void mainTask_pbIntHdlr( void );
 static void mainTask_mspIntHdlr( void );
 static void mainTask_brdLedMgr( void );
 static void mainTask_setStatLEDState( statLedState_t newState );
+static void mainTask_asyncBulkHandler( void );
 
 static rspCodeSol_t sys_powerDown( void );
 
@@ -416,8 +417,8 @@ void mainTask_Init( uint8 task_id )
 #endif // defined ( DC_DC_P0_7 )
 
   // Init App level drivers
-  //mainTask_initMuJoeGenMgrDriver();     // DEFAULT
-  mainTask_initMuJoeGenManagerDriver();   // TEST
+  mainTask_initMuJoeGenManagerDriver();  
+  
   // Register Command Group Callback Tables
   stat = muJoeGenManager_registerCmdIdHandlerTbl( CMDGRPID_SYS, sys_cmdGrp, SYS_NUMID );
   while(!stat); // TRAP MCU
@@ -428,7 +429,6 @@ void mainTask_Init( uint8 task_id )
   
   // Setup a delayed profile startup
   osal_set_event( mainTask_TaskID, MAIN_START_DEVICE_EVT );
-
 }
 
 /*********************************************************************
@@ -479,33 +479,21 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
   // Command Characteristic Write Handler Event 
   if( events & MAIN_CMD_WRITE_EVT )
   {
-     //muJoeGenMgr_cmdWriteHandler();     // DEFAULT
-     muJoeGenManager_rxCmdHandler();    // TEST
+     muJoeGenManager_rxCmdHandler();    
      return ( events ^ MAIN_CMD_WRITE_EVT );
   }
   
   // Response Characteristic Noti Handler Event 
   if( events & MAIN_RSP_NOTI_EVT )
   {
-     //muJoeGenProfile_writeResponse( rspBuffer );        // DEFAULT
-     muJoeGenManager_txRspHandler();                    // TEST
+     muJoeGenManager_txRspHandler();                    
      return ( events ^ MAIN_RSP_NOTI_EVT );
   }
   
   // Async Bulk Data Transfer Event 
   if( events & MAIN_ASYNCBULK_EVT )
   {
-     // Restart timer
-     if ( SBP_PERIODIC_EVT_PERIOD )
-        osal_start_timerEx( mainTask_TaskID, 
-                            MAIN_ASYNCBULK_EVT, 
-                            mujoeBrdSettings.asyncBulkSampPeriod );
-     
-     // BEGIN TEST
-     if( muJoeDataProfile_writeAsyncBulk( asyncBulkBuff, sizeof( asyncBulkBuff ) ) == SUCCESS )
-       asyncBulkBuff[0]++;
-     // END TEST
-     
+     mainTask_asyncBulkHandler();
      return ( events ^ MAIN_ASYNCBULK_EVT );
   }
   
@@ -540,6 +528,23 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
   // Discard unknown events
   return 0;
 }
+
+static void mainTask_asyncBulkHandler( void )
+{
+  // Restart timer
+  if ( SBP_PERIODIC_EVT_PERIOD )
+    osal_start_timerEx( mainTask_TaskID, 
+                        MAIN_ASYNCBULK_EVT, 
+                        mujoeBrdSettings.asyncBulkSampPeriod );
+  
+  boardSensorData_t brdSensorData = sensorMgrTask_getSensorData();
+  
+  //muJoeDataManager_writeAsyncBulk( &(brdSensorData.ppgfg), sizeof(brdSensorData.ppgfg) ); // DEFAULT
+  
+  uint32 capAlgo = (uint32)brdSensorData.ppgfg.mspfg.capAlgo;   // DEBUG
+  muJoeDataManager_writeAsync( &capAlgo, sizeof(capAlgo) );     // DEBUG
+  
+} // mainTask_asyncBulkHandler
 
 // TODO: Abstract this further so multiple LED states and periods can
 //       be tracked and managed simultaneously
@@ -614,6 +619,7 @@ static void mainTask_beginAdvert( uint32 timeToAdvert )
    
 } // mainTask_beginAdvert
 
+/*
 static void mainTask_initMuJoeGenMgrDriver( void )
 {
   muJoeGenMgr_t muJoeGenMgr;
@@ -626,7 +632,7 @@ static void mainTask_initMuJoeGenMgrDriver( void )
   muJoeGenMgr_initDriver( muJoeGenMgr );
   
 } // mainTask_initMuJoeGenMgrDriver
-
+*/
 static void mainTask_initMuJoeGenManagerDriver( void )
 {
   genProfileMgrCfg_t cfg;
@@ -855,8 +861,12 @@ static rspCodeSol_t dat_startAllDataCollection( void )
     uint32 newSampPeriod = MAKE_UINT32(mbBuff[0],mbBuff[1],mbBuff[2],mbBuff[3]);
     
     // Clamp the Async Bulk sample period to a minimum of 100 ms
-    if( newSampPeriod < 100 )
-      newSampPeriod = 100;
+    //if( newSampPeriod < 100 ) // DEFAULT
+      //newSampPeriod = 100;    // DEFAULT
+    
+    // Clamp the Async Bulk sample period to a minimum of 1000 ms
+    if( newSampPeriod < 1000 )   // DEBUG
+      newSampPeriod = 1000;      // DEBUG
     
     mujoeBrdSettings.asyncBulkSampPeriod = newSampPeriod;
     

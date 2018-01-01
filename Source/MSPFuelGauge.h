@@ -20,6 +20,9 @@
 
 #define MSPFG_DEFAULT_I2C_ADDR          (0x48<<1)   // MSPFuelGauge Default I2C Address 
 
+// Configuration Register Bit Map
+#define MSPFG_CFG_EN_HW_INT                     0x01        // If set, enables generation of HW interrupt
+
 // Status Register Bit Map
 #define MSPFG_STAT_CAPOVRFLW                    0x01        // If set, raw capacitance count has overflowed during accumulation window. Updated with each capacitance measurement
 #define MSPFG_STAT_HW_INT_PENDING               0x08        // If set, HW interrupt is asserted. Must be cleared by host to de-assert HW interrupt  line.
@@ -53,12 +56,6 @@ typedef enum
 
 }mspfg_regAddr_t;
 
-typedef struct mspfg_def
-{
-  uint8         i2cWriteAddr;
-  
-}mspfg_t;
-
 typedef struct mspfg_data_def
 {
   uint16        capAlgo;
@@ -68,10 +65,17 @@ typedef struct mspfg_data_def
   
 } mspfg_data_t;
 
+typedef struct mspfgCfg_def
+{
+  bool         enHwInterrupt;
+  
+}mspfgCfg_t;
+
 ////////////////////////////////////////////////////////////////////////////////
 // API FUNCTION PROTOS
 ////////////////////////////////////////////////////////////////////////////////
 
+bool mspfg_initHardware( mspfgCfg_t cfg );
 bool mspfg_sendCommand( uint8 cmd );
 bool mspfg_readReg( uint8 addr, uint8 *pData );
 bool mspfg_writeReg( uint8 addr, uint8 data );

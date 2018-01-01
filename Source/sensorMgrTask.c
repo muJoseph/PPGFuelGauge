@@ -13,8 +13,6 @@
 // GLOBAL VAR
 ////////////////////////////////////////////////////////////////////////////////
 
-boardSensorData_t               brdSensorDat;
-
 ////////////////////////////////////////////////////////////////////////////////
 // TYPEDEFS
 ////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +67,9 @@ static void sensorMgrTask_setSensorState( uint8 sensorState );
 // LOCAL VAR
 ////////////////////////////////////////////////////////////////////////////////
 
-static uint8                       sensorMgrTask_TaskID;                               // Task ID for internal task/event processing
+static uint8                       sensorMgrTask_TaskID;                        // Task ID for internal task/event processing
+
+static boardSensorData_t           brdSensorDat;                                // Sensor Data for this board
 
 static sensorDatColl_t             sensorDatColl = 
 {
@@ -162,7 +162,6 @@ uint16 sensorMgrTask_ProcessEvent( uint8 task_id, uint16 events )
   {
     bool stat = sensorMgrTask_initSensors();
     while( !stat );     // Trap MCU if failure
-    //osal_set_event( sensorMgrTask_TaskID, SENSORMGR_DATA_COLLECTOR_EVT );       // TEST
     return (events ^ SENSORMGR_INIT_SENSORS_EVT);
   }
   
@@ -177,6 +176,12 @@ uint16 sensorMgrTask_ProcessEvent( uint8 task_id, uint16 events )
   return 0;
 } // sensorMgrTask_ProcessEvent
 
+// Returns the current Sensor Data structure contents
+boardSensorData_t sensorMgrTask_getSensorData( void )
+{
+  return brdSensorDat;
+  
+} // sensorMgrTask_getSensorData
 
 ////////////////////////////////////////////////////////////////////////////////
 // STATIC FUNCTIONS
@@ -258,18 +263,6 @@ static void sensorMgrTask_dataCollector( void )
     
     sensorDatColl.forceStateChange = FALSE;
   }
-  
-  // Schedule next event to continue data collection
-  /*if( sensorDatColl.evtCb.delay )
-  {
-    osal_start_timerEx( sensorMgrTask_TaskID, 
-                        SENSORMGR_DATA_COLLECTOR_EVT, 
-                        sensorDatColl.evtCb.delay );
-    sensorDatColl.evtCb.delay = 0;
-  }
-  else
-    osal_set_event( sensorMgrTask_TaskID, SENSORMGR_DATA_COLLECTOR_EVT );
-  */
     
 } // sensorMgrTask_dataCollector
 
@@ -287,8 +280,6 @@ static void MS560702_dataCollector( uint8 *pFlgs )
          MS560702_trigPressureConv( MS5_OSR_4096 );
        
        sensorMgrTask_goToSensorState(1,100);
-       //sdc->evtCb.delay = 100;
-       //sdc->sensorState = 1;  
        break;
      // Poll and fetch Conversion
      case 1:
@@ -299,23 +290,17 @@ static void MS560702_dataCollector( uint8 *pFlgs )
             if( *pFlgs & 0x01 )
             {
               brdSensorDat.ppgfg.barTempCode = adcConv;
-              //sdc->nextSensor = TRUE;
               sensorMgrTask_goToNextSensor();
             }
             else
             {
               brdSensorDat.ppgfg.barPresCode = adcConv;
               *pFlgs |= 0x01;
-              //sdc->sensorState = 0;
               sensorMgrTask_goToSensorState( 0, 0 );
             }
         }
         else
-        {
-          //sdc->sensorState = 1;
-          //sdc->evtCb.delay = 100;
           sensorMgrTask_goToSensorState( 1, 100 );
-        }
         break;
      }
      default:
@@ -338,34 +323,24 @@ static void MSPFuelGauge_dataCollector( uint8 *pFlgs )
      // Trigger Single-shot Measurement 
      case 0:
        if( mspfg_sendCommand( MSPFG_CMD_SINGLESHOT_DATA ) )
-         //sdc->sensorState = 1;
          sensorMgrTask_setSensorState(1);
        else                             // Command not sent, try again
-       {
-         //sdc->evtCb.delay = 100;
-         //sdc->sensorState = 0;
          sensorMgrTask_goToSensorState( 0, 100 );
-       }
+       
        break;
      // Read Conversion data
      case 1:
      {
-        mspfg_data_t     mspfg_data;
-        if( mspfg_getAllData( &mspfg_data ) )
+        //mspfg_data_t     mspfg_data;
+        if( mspfg_getAllData( &brdSensorDat.ppgfg.mspfg ) )
         {
-          //sdc->sensorState = 0;
-          //sdc->nextSensor = TRUE;
           if( mspfg_clearIntFlag() )
             sensorMgrTask_goToNextSensor();
           else
             sensorMgrTask_goToSensorState( 1, 100 );
         }
         else                            // Unable to read data, try again...
-        {
-          //sdc->evtCb.delay = 100;
-          //sdc->sensorState = 1;
           sensorMgrTask_goToSensorState( 1, 100 );
-        }
         break;
      }
      default:
@@ -385,9 +360,13 @@ static bool sensorMgrTask_initSensors( void )
   // Init EEPROM IC
   if( !CAT24C512_initHardware() )
     return FALSE;
+  // Init MSPFG IC
+  mspfgCfg_t cfg = { .enHwInterrupt = TRUE, };
+  if( !mspfg_initHardware( cfg ) )
+    return FALSE;
   
-  // BEGIN TEST
-  sensorMgrTask_SendOSALMsg( mainTask_getTaskId(), SENSORMGR_HWINIT_DONE );     // TEST
+  // Notify mainTask that onboard ICs have been initialized via an OSAL message
+  sensorMgrTask_SendOSALMsg( mainTask_getTaskId(), SENSORMGR_HWINIT_DONE );     
   
   return TRUE;
   
