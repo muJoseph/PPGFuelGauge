@@ -46,19 +46,19 @@ typedef void (*sensorDatCollFncTbl_t)( uint8 * );
 static void sensorMgrTask_ProcessOSALMsg( osal_event_hdr_t *pMsg );
 static void sensorMgrTask_ProcessGATTMsg( gattMsgEvent_t *pMsg );
 static bool sensorMgrTask_initSensors( void );
+static void sensorMgrTask_startDataCollectionHdlr( void );
+static void sensorMgrTask_stopDataCollectionHdlr( void );
 
-//static void MS560702_dataCollector( p_sensorDatColl_t sdc );
 static void MS560702_dataCollector( uint8 *pFlgs );
 static void MMA8453_dataCollector( p_sensorDatColl_t sdc );
-//static void MSPFuelGauge_dataCollector( p_sensorDatColl_t sdc );
 static void MSPFuelGauge_dataCollector( uint8 *pFlgs );
-
 
 static void sensorMgrTask_dataCollector( void );
 static bool sensorMgrTask_SendOSALMsg( uint8 destTaskID, sensorMgrTask_msg_t msg );
 
 // sensorMgrTask State Management functions
 static uint8 sensorMgrTask_getSensorState( void );
+static void sensorMgrTask_resetSensorCollector( void );
 static void sensorMgrTask_goToNextSensor( void );
 static void sensorMgrTask_goToSensorState( uint8 sensorState, uint32 delay );
 static void sensorMgrTask_setSensorState( uint8 sensorState );
@@ -171,6 +171,20 @@ uint16 sensorMgrTask_ProcessEvent( uint8 task_id, uint16 events )
     sensorMgrTask_dataCollector();
     return (events ^ SENSORMGR_DATA_COLLECTOR_EVT);
   }
+  
+  // Start Data Collection Event ///////////////////////////////////////////////
+  if( events & SENSORMGR_START_DATA_COLLECTION_EVT )
+  {
+    sensorMgrTask_startDataCollectionHdlr();
+    return (events ^ SENSORMGR_START_DATA_COLLECTION_EVT);
+  }
+  
+  // Stop Data Collection Event ////////////////////////////////////////////////
+  if( events & SENSORMGR_STOP_DATA_COLLECTION_EVT )
+  {
+    sensorMgrTask_stopDataCollectionHdlr();
+    return (events ^ SENSORMGR_STOP_DATA_COLLECTION_EVT);
+  }
 
   // Discard unknown events
   return 0;
@@ -187,11 +201,38 @@ boardSensorData_t sensorMgrTask_getSensorData( void )
 // STATIC FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
+static void sensorMgrTask_startDataCollectionHdlr( void )
+{
+  sensorMgrTask_resetSensorCollector();
+  
+  osal_set_event( sensorMgrTask_getTaskId(), SENSORMGR_DATA_COLLECTOR_EVT );
+  osal_start_timerEx( mainTask_getTaskId(), MAIN_ASYNCBULK_EVT, 1000 );
+  
+} // sensorMgrTask_startDataCollectionHdlr
+
+static void sensorMgrTask_stopDataCollectionHdlr( void )
+{
+  if( osal_stop_timerEx( mainTask_getTaskId(), MAIN_ASYNCBULK_EVT ) != SUCCESS )
+    osal_clear_event( mainTask_getTaskId(), MAIN_ASYNCBULK_EVT );
+  
+  if( osal_stop_timerEx( sensorMgrTask_getTaskId(), SENSORMGR_DATA_COLLECTOR_EVT ) != SUCCESS )
+    osal_clear_event( sensorMgrTask_getTaskId(), SENSORMGR_DATA_COLLECTOR_EVT );
+  
+} // sensorMgrTask_startDataCollectionHdlr
+
 static uint8 sensorMgrTask_getSensorState( void )
 {
   return sensorDatColl.sensorState;
   
 } // sensorMgrTask_getSensorState
+
+static void sensorMgrTask_resetSensorCollector( void )
+{
+  sensorDatColl.forceStateChange = FALSE;
+  sensorDatColl.nextSensor = FALSE;
+  sensorDatColl.currSensor = 0;
+  
+} // sensorMgrTask_resetSensorCollector
 
 // Force a transition to the next sensor within the sensor manager queue (i.e. current
 // sensor data acquistion cycle has completed )

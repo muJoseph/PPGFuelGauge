@@ -28,10 +28,12 @@
 #define MSPFG_STAT_HW_INT_PENDING               0x08        // If set, HW interrupt is asserted. Must be cleared by host to de-assert HW interrupt  line.
 
 // MSPFuelGauge I2C Commands
+/*
 #define MSPFG_CMD_ST_CONT_DATA                  0x81        // Start Continuous Data collection
 #define MSPFG_CMD_SP_CONT_DATA                  0x82        // Stop Continuous Data collection
 #define MSPFG_CMD_SINGLESHOT_DATA               0x83        // Trigger a single shot measurement
 #define MSPFG_CMD_SLEEP                         0x84        // Put MSPFuelGauge to sleep
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 // TYPEDEFS
@@ -56,6 +58,18 @@ typedef enum
 
 }mspfg_regAddr_t;
 
+// MSPFuelGauge I2C Commands
+typedef enum
+{
+    MSPFG_CMD_ST_CONT_DATA =         0x81,        // Start Continuous Data collection
+    MSPFG_CMD_SP_CONT_DATA =         0x82,        // Stop Continuous Data collection
+    MSPFG_CMD_SINGLESHOT_DATA =      0x83,        // Trigger a single shot measurement
+    MSPFG_CMD_SLEEP =                0x84,        // Put MSPFuelGauge to sleep
+    MSPFG_CMD_UPDATE_BASELINE =      0x85,        // Update baseline tracking of TIs Capacitive touch algorithm
+    MSPFG_CMD_RESET =                0x86,        // Performs a Power-On Reset of the MSP430
+
+}mspfg_i2cCmds_t;
+
 typedef struct mspfg_data_def
 {
   uint16        capAlgo;
@@ -76,7 +90,7 @@ typedef struct mspfgCfg_def
 ////////////////////////////////////////////////////////////////////////////////
 
 bool mspfg_initHardware( mspfgCfg_t cfg );
-bool mspfg_sendCommand( uint8 cmd );
+bool mspfg_sendCommand( mspfg_i2cCmds_t cmd );
 bool mspfg_readReg( uint8 addr, uint8 *pData );
 bool mspfg_writeReg( uint8 addr, uint8 data );
 bool mspfg_bulkRead( uint8 startAddr, uint8 numBytes, uint8 *pData );

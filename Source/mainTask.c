@@ -18,9 +18,6 @@
  * CONSTANTS
  */
 
-// How often to perform periodic event
-#define SBP_PERIODIC_EVT_PERIOD                   5000
-
 // What is the advertising interval when device is discoverable (units of 625us, 160=100ms)
 #define DEFAULT_ADVERTISING_INTERVAL          160
 
@@ -96,9 +93,6 @@ static mainTask_t       mainTask =
   .lengthOfAdvert = 30000,          // ms
 };
 
-//static uint16           rspBuffer;         // TEST
-//static uint8            asyncBulkBuff[20]; // TEST
-
 // HipScience characteristic notification control identifiers
 static uint8                            mainTask_TaskID;             // Task ID for internal task/event processing
 static gaprole_States_t                 gapProfileState = GAPROLE_INIT;
@@ -171,7 +165,6 @@ static void peripheralStateNotificationCB( gaprole_States_t newState );
 static void muJoeGenProfileChangeCB( uint8 paramID );
 static void muJoeDataProfileReadCB( uint8 paramID );
 
-//static void mainTask_initMuJoeGenMgrDriver( void );
 static void mainTask_initMuJoeGenManagerDriver( void );
 static void mainTask_beginAdvert( uint32 timeToAdvert );
 static void mainTask_endAdvert( void );
@@ -183,7 +176,6 @@ static void mainTask_asyncBulkHandler( void );
 
 static rspCodeSol_t sys_powerDown( void );
 
-static rspCodeSol_t dat_startAsyncBulk( void );
 static rspCodeSol_t dat_startAllDataCollection( void );
 static rspCodeSol_t dat_stopAllDataCollection( void );
 
@@ -223,19 +215,20 @@ static muJoeDataProfileCBs_t mainTask_muJoeDataProfileCBs =
   muJoeDataProfileReadCB        // Called when a characteristic is read by central
 };
 
-
+// Command Group "System" ID Callback table
 static cmdIdCallBack_t sys_cmdGrp[ SYS_NUMID ] =
 {
   sys_powerDown,
 };
 
+// Command Group "Data" ID Callback table
 static cmdIdCallBack_t dat_cmdGrp[ DAT_NUMID ] =
 {
-  dat_startAsyncBulk,
   dat_startAllDataCollection,
   dat_stopAllDataCollection
 };
 
+// Command Group "MSP Debug" ID Callback table
 static cmdIdCallBack_t  mspDbg_cmdGrp[ MSPDBG_NUMID ] =
 {
   mspDbg_i2cWrite,
@@ -532,7 +525,7 @@ uint16 mainTask_ProcessEvent( uint8 task_id, uint16 events )
 static void mainTask_asyncBulkHandler( void )
 {
   // Restart timer
-  if ( SBP_PERIODIC_EVT_PERIOD )
+  if ( mujoeBrdSettings.asyncBulkSampPeriod )
     osal_start_timerEx( mainTask_TaskID, 
                         MAIN_ASYNCBULK_EVT, 
                         mujoeBrdSettings.asyncBulkSampPeriod );
@@ -828,29 +821,6 @@ static rspCodeSol_t sys_powerDown( void )
   return rspCodeSol;
 } // sys_powerDown
 
-static rspCodeSol_t dat_startAsyncBulk( void )
-{
-  rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
-  
-  uint8 mbBuff[4] = {0};
-  if( muJoeGenManager_readMailbox( sizeof(mbBuff), mbBuff ) == SUCCESS )
-  {
-    uint32 newSampPeriod = MAKE_UINT32(mbBuff[0],mbBuff[1],mbBuff[2],mbBuff[3]);
-    
-    // Clamp the Async Bulk sample period to a minimum of 100 ms
-    if( newSampPeriod < 100 )
-      newSampPeriod = 100;
-    
-    mujoeBrdSettings.asyncBulkSampPeriod = newSampPeriod;
-    
-    if( osal_set_event( mainTask_getTaskId(),MAIN_ASYNCBULK_EVT ) == SUCCESS )
-      rspCodeSol = RSPCODE_SUCCESS;
-  }
-  
-  return rspCodeSol;
-  
-} // dat_startAsyncBulk
-
 static rspCodeSol_t dat_startAllDataCollection( void )
 {
   rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
@@ -870,9 +840,16 @@ static rspCodeSol_t dat_startAllDataCollection( void )
     
     mujoeBrdSettings.asyncBulkSampPeriod = newSampPeriod;
     
+    if( osal_set_event( sensorMgrTask_getTaskId(), SENSORMGR_START_DATA_COLLECTION_EVT ) == SUCCESS )
+      rspCodeSol = RSPCODE_SUCCESS;
+    
+    /*
+    // BEGIN DEFAULT
     if( osal_set_event( sensorMgrTask_getTaskId(), SENSORMGR_DATA_COLLECTOR_EVT ) == SUCCESS )
       if( osal_start_timerEx( mainTask_getTaskId(), MAIN_ASYNCBULK_EVT, 1000 ) == SUCCESS  ) 
           rspCodeSol = RSPCODE_SUCCESS;
+    // END DEFAULT
+    */
   }
   
   return rspCodeSol;
@@ -881,15 +858,23 @@ static rspCodeSol_t dat_startAllDataCollection( void )
 
 static rspCodeSol_t dat_stopAllDataCollection( void )
 {
-  //rspCodeSol_t rspCodeSol = RSPCODE_FAILURE;
+  if( osal_set_event( sensorMgrTask_getTaskId(), SENSORMGR_STOP_DATA_COLLECTION_EVT ) == SUCCESS )
+    return RSPCODE_SUCCESS;
+  else
+    return RSPCODE_FAILURE;
   
+  /*
+  // BEGIN DEFAULT
   if( osal_stop_timerEx( mainTask_getTaskId(), MAIN_ASYNCBULK_EVT ) != SUCCESS )
     osal_clear_event( mainTask_getTaskId(), MAIN_ASYNCBULK_EVT );
   
   if( osal_stop_timerEx( sensorMgrTask_getTaskId(), SENSORMGR_DATA_COLLECTOR_EVT ) != SUCCESS )
     osal_clear_event( sensorMgrTask_getTaskId(), SENSORMGR_DATA_COLLECTOR_EVT );
-    
+  
   return RSPCODE_SUCCESS;
+  // END DEFAULT
+  */  
+
   
 } // dat_stopAllDataCollection
      

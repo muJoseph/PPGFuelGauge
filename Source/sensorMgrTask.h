@@ -38,6 +38,8 @@ extern "C"
 // Sensor Manager Task Events
 #define SENSORMGR_INIT_SENSORS_EVT                              0x0001
 #define SENSORMGR_DATA_COLLECTOR_EVT                            0x0002
+#define SENSORMGR_START_DATA_COLLECTION_EVT                     0x0004
+#define SENSORMGR_STOP_DATA_COLLECTION_EVT                      0x0008
   
 // Max number of onboard sensors
 #define SENSORMGR_MAX_NUM_SENSORS                               2

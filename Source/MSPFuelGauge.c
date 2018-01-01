@@ -50,11 +50,11 @@ bool mspfg_initHardware( mspfgCfg_t cfg )
 // Send I2C Command to MSPFuelGauge
 // Returns TRUE if command TX was successful
 // Returns FALSE otherwise
-bool mspfg_sendCommand( uint8 cmd )
+bool mspfg_sendCommand( mspfg_i2cCmds_t cmd )
 {
   cmd |= 0x80;  // Set MSBit to designate byte as I2C command
   
-  if( mujoeI2C_write( mspfg.i2cWriteAddr, 1, &cmd, STOP_CMD ) )
+  if( mujoeI2C_write( mspfg.i2cWriteAddr, 1, &cmd , STOP_CMD ) )      
     return TRUE;
   else
     return FALSE;

@@ -44,10 +44,9 @@ typedef enum
 // Data Group Command IDs
 typedef enum
 {
-  DAT_CMDID_STASYNCBULK = 0x00,    // Start data collection and post to Async Bulk
-  DAT_CMDID_STARTDATACOLLECT,      // Start sensor data collection and post via Async Bulk Characteristic
-  DAT_CMDID_STOPDATACOLLECT,       // Stop all sensor data collection
-  DAT_NUMID                        // Number of Command IDs within Data Command Group
+  DAT_CMDID_STARTDATACOLLECT = 0x00,    // Start sensor data collection and post via Async Bulk Characteristic
+  DAT_CMDID_STOPDATACOLLECT,            // Stop all sensor data collection
+  DAT_NUMID                             // Number of Command IDs within Data Command Group
   
 }datGrp_cmdIds_t;
 
